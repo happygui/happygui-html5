@@ -1,0 +1,10 @@
+{
+  "name": "happygui-router",
+  "description": "happygui router component",
+  "dependencies": {
+    "apily/router": "*"
+  },
+  "scripts": [
+    "index.js"
+  ]
+}

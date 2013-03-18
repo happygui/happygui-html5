@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "apily/router": "*",
+    "apily/history": "*",
+    "apily/view": "*"
+  },
+  "paths": [
+    "local"
+  ],
+  "local": [
+    "router"
+  ]
+}
