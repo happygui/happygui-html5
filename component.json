@@ -1,13 +1,9 @@
 {
-  "dependencies": {
-    "apily/router": "*",
-    "apily/history": "*",
-    "apily/view": "*"
-  },
+  "name": "happygui",
   "paths": [
     "local"
   ],
   "local": [
-    "router"
+    "boot"
   ]
 }

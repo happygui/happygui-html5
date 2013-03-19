@@ -1,0 +1,12 @@
+{
+    "name": "boot",
+    "description": "bootstrapping happygui",
+    "dependencies": {
+        "apily/router": "*",
+        "apily/history": "*",
+        "apily/view": "*"
+    },
+    "local": [],
+    "scripts": ["boot.js"],
+    "main": "boot.js"
+}

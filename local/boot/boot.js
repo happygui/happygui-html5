@@ -1,6 +1,4 @@
-module.exports = hg_Router;
-
-var Router = require('apily-router');
+var Router = require('router');
 
 // r is handler for routing
 var r = {
@@ -25,7 +23,7 @@ var r = {
 };
 
 // router is the app route
-var hg_Router = new Router()
+var router = new Router()
   .route('#homepage', r.homepage)
   .route('#new', r.newpage)
   .route('#editor', r.editor)
@@ -34,4 +32,4 @@ var hg_Router = new Router()
   .route('#editor/:type', r.element_editor);
 
 // starting history
-hg_Router.history.start();
+router.history.start();

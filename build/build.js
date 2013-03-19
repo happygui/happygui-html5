@@ -1445,10 +1445,8 @@ View.prototype.hide = function () {
 };
 
 });
-require.register("router/index.js", function(exports, require, module){
-module.exports = hg_Router;
-
-var Router = require('apily-router');
+require.register("boot/boot.js", function(exports, require, module){
+var Router = require('router');
 
 // r is handler for routing
 var r = {
@@ -1473,7 +1471,7 @@ var r = {
 };
 
 // router is the app route
-var hg_Router = new Router()
+var router = new Router()
   .route('#homepage', r.homepage)
   .route('#new', r.newpage)
   .route('#editor', r.editor)
@@ -1482,18 +1480,20 @@ var hg_Router = new Router()
   .route('#editor/:type', r.element_editor);
 
 // starting history
-hg_Router.history.start();
+router.history.start();
 });
-require.alias("apily-router/index.js", "undefined/deps/router/index.js");
+require.alias("boot/boot.js", "happygui/deps/boot/boot.js");
+require.alias("boot/boot.js", "happygui/deps/boot/index.js");
+require.alias("apily-router/index.js", "boot/deps/router/index.js");
 require.alias("apily-history/index.js", "apily-router/deps/history/index.js");
 require.alias("apily-emitter/index.js", "apily-history/deps/emitter/index.js");
 
 require.alias("apily-emitter/index.js", "apily-router/deps/emitter/index.js");
 
-require.alias("apily-history/index.js", "undefined/deps/history/index.js");
+require.alias("apily-history/index.js", "boot/deps/history/index.js");
 require.alias("apily-emitter/index.js", "apily-history/deps/emitter/index.js");
 
-require.alias("apily-view/index.js", "undefined/deps/view/index.js");
+require.alias("apily-view/index.js", "boot/deps/view/index.js");
 require.alias("apily-guid/index.js", "apily-view/deps/guid/index.js");
 
 require.alias("apily-emitter/index.js", "apily-view/deps/emitter/index.js");
@@ -1508,10 +1508,5 @@ require.alias("component-event/index.js", "component-delegate/deps/event/index.j
 
 require.alias("component-domify/index.js", "apily-view/deps/domify/index.js");
 
-require.alias("router/index.js", "undefined/deps/happygui-router/index.js");
-require.alias("apily-router/index.js", "router/deps/router/index.js");
-require.alias("apily-history/index.js", "apily-router/deps/history/index.js");
-require.alias("apily-emitter/index.js", "apily-history/deps/emitter/index.js");
-
-require.alias("apily-emitter/index.js", "apily-router/deps/emitter/index.js");
+require.alias("boot/boot.js", "boot/index.js");
 
