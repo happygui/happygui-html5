@@ -152,10 +152,20 @@ select {
   height: 100%;
 }
 .colorpicker {
-  height: 30px;
   margin: 0 40px;
-  border: 3px solid #000;
   margin-bottom: 1em;
+  height: 30px;
+  border: 3px solid #000;
+}
+.sizemodifier {
+  margin: 0 40px;
+  margin-bottom: 1em;
+}
+.sizemodifier .label {
+  text-decoration: underline;
+}
+.sizemodifier input {
+  border: 0px;
 }
 #editor {
   width: 40%;
