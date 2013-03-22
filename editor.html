@@ -72,20 +72,30 @@
   </header>
 
   <section>
-    <div class="colorpicker cpBackground">
+    {{#hasBackground}}
+    <div class="colorpicker cpBackground" style="background-color: {{backgroundColor}};">
     </div>
-    <div class="colorpicker cpBorderColor">
+    {{/hasBackground}}
+    {{#hasBorderColor}}
+    <div class="colorpicker cpBorderColor" style="background-color: {{borderColor}};">
     </div>
+    {{/hasBorderColor}}
+    {{#hasBorderThickness}}
     <div class="sizemodifier smBorderThickness">
-      <label>Border thickness<input value="" name="smBorderThickness" /></label>
+      <label>Border thickness<input value="{{borderThickness}}" name="smBorderThickness" /></label>
     </div>
+    {{/hasBorderThickness}}
+    {{#hasFontSize}}
     <div class="sizemodifier smFontSize">
-      <label>Font size<input value="" name="smFontSize" /></label>
+      <label>Font size<input value="{{fontSize}}" name="smFontSize" /></label>
     </div>
+    {{/hasFontSize}}
   </section>
 
   <footer>
+    {{#isDeletable}}
     <button class="btn-editor btn-delete">Delete</button>
+    {{/isDeletable}}
   </footer>
 
 </script>
