@@ -21,6 +21,39 @@
 <script type="text/javascript">
   var Router = require('apily-router');
 
+  // Element Class
+  function Element(options) {
+    this.isDeletable = options.isDeletable;
+  }
+
+  // TextElement Class
+  var TextElement = function(options) {
+    Element.call(this, options); // Super
+
+    this.hasFontSize = true;
+    this.hasFontColor = true;
+
+    this.fontSize = "13px";
+    this.fontColor = "#000";
+  };
+  TextElement.prototype = Object.create(Element.prototype);
+  TextElement.prototype.constructor = TextElement;
+
+  // TextElement Class
+  var ShapeElement = function(options) {
+    Element.call(this, options); // Super
+
+    this.hasBorderColor = true;
+    this.hasBorderThickness = true;
+    this.hasBackgroundColor = true;
+
+    this.borderColor = "#cc0000";
+    this.borderThickness = "5px";
+    this.backgroundColor = "#00cc00";
+  };
+  ShapeElement.prototype = Object.create(Element.prototype);
+  ShapeElement.prototype.constructor = ShapeElement;
+
   // r is handler for routing
   var r = {
     homepage: function() {
@@ -80,6 +113,10 @@
     <div class="colorpicker cpBorderColor" style="background-color: {{borderColor}};">
     </div>
     {{/hasBorderColor}}
+    {{#hasFontColor}}
+    <div class="colorpicker cpFontColor" style="background-color: {{fontColor}};">
+    </div>
+    {{/hasFontColor}}
     {{#hasBorderThickness}}
     <div class="sizemodifier smBorderThickness">
       <label>Border thickness<input value="{{borderThickness}}" name="smBorderThickness" /></label>
