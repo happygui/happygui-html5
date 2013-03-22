@@ -18,6 +18,13 @@
   height: 100%;
 }
 
+.colorpicker {
+  height: 30px;
+  margin: 0 40px;
+  border: 3px solid #000;
+  margin-bottom: 1em;
+}
+
 // Identity objects
 #editor {
   width: @editorWidth;
@@ -25,11 +32,14 @@
   background-color: @editorBackground;
   .fixedPosition(0px,0px);
 }
+
 #preview {
   margin-left: @editorWidth;
   height: 100%;
   min-height: 800px;
 }
+
+
 
 //@media all and (orientation: portrait) {
 @media (max-width : 800px) {
