@@ -151,21 +151,35 @@ select {
   width: 100%;
   height: 100%;
 }
+.editorElement {
+  margin: 0 10%;
+  margin-top: 10%;
+}
 .colorpicker {
-  margin: 0 40px;
-  margin-bottom: 1em;
-  height: 30px;
+  margin: 0 10%;
+  margin-top: 10%;
+  height: 4em;
   border: 3px solid #000;
 }
 .sizemodifier {
-  margin: 0 40px;
-  margin-bottom: 1em;
+  margin: 0 10%;
+  margin-top: 10%;
 }
-.sizemodifier .label {
+.sizemodifier label {
   text-decoration: underline;
 }
 .sizemodifier input {
   border: 0px;
+}
+.btn-editor {
+  margin: 0 10%;
+  margin-top: 10%;
+  padding: 20px 40px;
+  background: #ffff99;
+  border: 0;
+}
+.btn-editor.btn-delete {
+  background-color: #cc0000;
 }
 #editor {
   width: 40%;
@@ -174,6 +188,15 @@ select {
   position: fixed;
   top: 0px;
   left: 0px;
+}
+#editor footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 10px;
+}
+#editor footer .btn-editor {
+  float: right;
 }
 #preview {
   margin-left: 40%;

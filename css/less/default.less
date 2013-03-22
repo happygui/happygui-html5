@@ -19,22 +19,22 @@
 }
 
 .editorElement {
+  margin: 0 10%;
+  margin-top: 10%;
 }
 
 // Sub class objects
 .colorpicker {
-  margin: 0 40px;
-  margin-bottom: 1em;
+  .editorElement;
 
-  height: 30px;
+  height: 4em;
   border: 3px solid #000;
 }
 
 .sizemodifier {
-  margin: 0 40px;
-  margin-bottom: 1em;
+  .editorElement;
 
-  .label {
+  label {
     text-decoration: underline;
   }
   input {
@@ -43,12 +43,40 @@
 
 }
 
+.btn-editor {
+  .editorElement;
+  padding: 20px 40px;
+  background: #ffff99;
+  border: 0;
+
+  &.btn-delete {
+    background-color: #cc0000;
+  }
+}
+
 // Identity objects
 #editor {
   width: @editorWidth;
   height: 100%;
   background-color: @editorBackground;
   .fixedPosition(0px,0px);
+
+  header {
+
+  }
+  section {
+
+  }
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: 10px;
+
+    .btn-editor {
+      float: right;
+    }
+  }
 }
 
 #preview {
