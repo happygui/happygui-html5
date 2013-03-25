@@ -213,9 +213,9 @@
 
       console.log("YUHU WE ARE IN collection");
     },
-    element_editor: function(type) {
+    element_editor: function(type, id) {
       editorView
-          .select({type: type, id: null})
+          .select({type: type, id: id})
           .render();
 
       console.log("YUHU WE ARE IN editor:"+type);
@@ -229,7 +229,8 @@
       .route('#editor', Views.editor)
       .route("#help", Views.help)
       .route("#collection", Views.collection)
-      .route('#editor/:type', Views.element_editor);
+      .route('#editor/:type', Views.element_editor)
+      .route('#editor/:type/:id', Views.element_editor);
 
   // starting history
   router.history.start();
