@@ -18,8 +18,103 @@
 
 <script type="text/javascript" src="js/handlebars.js"></script>
 <script type="text/javascript" src="build/build.js"></script>
+
+<script id="editor_tpl" type="text/html">
+  <header>
+    <div class="colorpicker cpBackground" style="background-color: {{backgroundColor}};">
+    </div>
+  </header>
+
+  <section>
+  </section>
+
+  <footer>
+
+  </footer>
+
+</script>
+
+<script id="element_editor_tpl" type="text/html">
+  <header>
+
+  </header>
+
+  <section>
+    {{#hasBackground}}
+    <div class="colorpicker cpBackground" style="background-color: {{backgroundColor}};">
+    </div>
+    {{/hasBackground}}
+    {{#hasBorderColor}}
+    <div class="colorpicker cpBorderColor" style="background-color: {{borderColor}};">
+    </div>
+    {{/hasBorderColor}}
+    {{#hasFontColor}}
+    <div class="colorpicker cpFontColor" style="background-color: {{fontColor}};">
+    </div>
+    {{/hasFontColor}}
+    {{#hasBorderThickness}}
+    <div class="sizemodifier smBorderThickness">
+      <label>Border thickness<input value="{{borderThickness}}" name="smBorderThickness" /></label>
+    </div>
+    {{/hasBorderThickness}}
+    {{#hasFontSize}}
+    <div class="sizemodifier smFontSize">
+      <label>Font size<input value="{{fontSize}}" name="smFontSize" /></label>
+    </div>
+    {{/hasFontSize}}
+  </section>
+
+  <footer>
+    {{#isDeletable}}
+    <button class="btn-editor btn-delete">Delete</button>
+    {{/isDeletable}}
+  </footer>
+
+</script>
+
 <script type="text/javascript">
   var Router = require('apily-router');
+
+  var Templates = new function() {
+    this.compile = function(doc) {
+      return Handlebars.compile(doc.innerHTML);
+    };
+    this.editor = this.compile(document.getElementById('editor_tpl'));
+    this.element_editor = this.compile(document.getElementById('element_editor_tpl'));
+  };
+
+  function EditorView (options) {
+    options = options || {};
+
+    this.element = options.element;
+    this.container = options.container;
+
+    return this;
+  }
+
+  EditorView.prototype.el = function(html) {
+    document.getElementById(this.container || 'editor').innerHTML = html;
+    return this;
+  };
+
+  EditorView.prototype.render = function () {
+    var html, data;
+
+    if (this.element) {
+      data = {name: "Hello"};
+      html = Templates.element_editor(data);
+    } else {
+      data = {name: "ciao"};
+      html = Templates.editor(data);
+    }
+
+    this.el(html);
+
+    return this;
+  };
+
+  var editorView = new EditorView();
+
 
   // Element Class
   function Element(options) {
@@ -57,12 +152,8 @@
   // r is handler for routing
   var r = {
     homepage: function() {
-      var editor_tpl = document.getElementById('editor_tpl').innerHTML;
-      var template = Handlebars.compile(editor_tpl);
-      var data = {name: "Hello"};
 
-      document.getElementById('editor').innerHTML = template(data);
-
+      editorView.render();
       console.log("YUHU WE ARE IN HOMEPAGE");
     },
     newpage: function() {
@@ -96,44 +187,6 @@
 
   // set the page on #homepage onload
   window.location = "#homepage";
-
-</script>
-
-<script id="editor_tpl" type="text/html">
-  <header>
-
-  </header>
-
-  <section>
-    {{#hasBackground}}
-    <div class="colorpicker cpBackground" style="background-color: {{backgroundColor}};">
-    </div>
-    {{/hasBackground}}
-    {{#hasBorderColor}}
-    <div class="colorpicker cpBorderColor" style="background-color: {{borderColor}};">
-    </div>
-    {{/hasBorderColor}}
-    {{#hasFontColor}}
-    <div class="colorpicker cpFontColor" style="background-color: {{fontColor}};">
-    </div>
-    {{/hasFontColor}}
-    {{#hasBorderThickness}}
-    <div class="sizemodifier smBorderThickness">
-      <label>Border thickness<input value="{{borderThickness}}" name="smBorderThickness" /></label>
-    </div>
-    {{/hasBorderThickness}}
-    {{#hasFontSize}}
-    <div class="sizemodifier smFontSize">
-      <label>Font size<input value="{{fontSize}}" name="smFontSize" /></label>
-    </div>
-    {{/hasFontSize}}
-  </section>
-
-  <footer>
-    {{#isDeletable}}
-    <button class="btn-editor btn-delete">Delete</button>
-    {{/isDeletable}}
-  </footer>
 
 </script>
 
