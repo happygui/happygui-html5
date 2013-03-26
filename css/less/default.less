@@ -46,6 +46,7 @@
   background-color: #efefef;
   color: #fff;
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     border: 2px solid #000000;
@@ -136,20 +137,32 @@ body {
 
 // Colors
 
+@green: #62BB11;
+@pink: #CE264A;
+@yellow: #d9ba00;
+@orange: #ea6e26;
+
+.colour_bg(@color) {
+  background-color: @color;
+  &:hover {
+    border-color: darken(@color, 20%);
+  }
+}
+
 .green_bg {
-  background-color: #62BB11;
+  .colour_bg(@green);
 }
 
 .pink_bg {
-  background-color: #CE264A;
+  .colour_bg(@pink);
 }
 
 .yellow_bg {
-  background-color: #d9ba00;
+  .colour_bg(@yellow);
 }
 
 .orange_bg {
-  background-color: #ea6e26;
+  .colour_bg(@orange);
 }
 
 //@media all and (orientation: portrait) {

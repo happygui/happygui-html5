@@ -172,6 +172,7 @@ select {
   background-color: #efefef;
   color: #fff;
   text-decoration: none;
+  cursor: pointer;
 }
 .btn:hover {
   border: 2px solid #000000;
@@ -199,6 +200,7 @@ select {
   background-color: #efefef;
   color: #fff;
   text-decoration: none;
+  cursor: pointer;
   margin: 0 10%;
   margin-top: 10%;
   padding: 20px 40px;
@@ -247,16 +249,28 @@ body {
   font-size: 2em;
 }
 .green_bg {
-  background-color: #62BB11;
+  background-color: #62bb11;
+}
+.green_bg:hover {
+  border-color: #315e08;
 }
 .pink_bg {
-  background-color: #CE264A;
+  background-color: #ce264a;
+}
+.pink_bg:hover {
+  border-color: #78162b;
 }
 .yellow_bg {
   background-color: #d9ba00;
 }
+.yellow_bg:hover {
+  border-color: #736300;
+}
 .orange_bg {
   background-color: #ea6e26;
+}
+.orange_bg:hover {
+  border-color: #9b420f;
 }
 @media (max-width: 800px) {
   #editor {
