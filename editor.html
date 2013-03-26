@@ -141,6 +141,12 @@
     return this;
   };
 
+  View.prototype.el = function(html) {
+    document.getElementById(this.container || this.defaultContainer).innerHTML = html;
+
+    return this;
+  };
+
   function PreviewView (options) {
     View.call(this, options);
     options = options || {};
@@ -151,6 +157,12 @@
   }
   PreviewView.prototype = Object.create(View.prototype);
   PreviewView.prototype.constructor = PreviewView;
+
+  PreviewView.prototype.render = function () {
+
+    this.el("").show();
+    return this;
+  };
 
   function EditorView (options) {
     View.call(this, options);
@@ -165,12 +177,6 @@
   }
   EditorView.prototype = Object.create(View.prototype);
   EditorView.prototype.constructor = EditorView;
-
-  EditorView.prototype.el = function(html) {
-    document.getElementById(this.container || 'editor').innerHTML = html;
-
-    return this;
-  };
 
   EditorView.prototype.select = function(element) {
     this.currentElement = element || null;
@@ -232,16 +238,20 @@
   ShapeElement.prototype.constructor = ShapeElement;
 
   // Views service
-  var Views = function(editorView) {
+  var Views = function(editorView, previewView) {
     return {
       homepage: function() {
         editorView
+            .hide();
+        previewView
             .hide();
 
         console.log("YUHU WE ARE IN HOMEPAGE");
       },
       newpage: function() {
         editorView
+            .hide();
+        previewView
             .hide();
 
         console.log("YUHU WE ARE IN NEWPAGE");
@@ -251,16 +261,23 @@
             .select(null)
             .render();
 
+        previewView
+            .render();
+
         console.log("YUHU WE ARE IN editor");
       },
       help: function() {
         editorView
+            .hide();
+        previewView
             .hide();
 
         console.log("YUHU WE ARE IN help");
       },
       collection: function() {
         editorView
+            .hide();
+        previewView
             .hide();
 
         console.log("YUHU WE ARE IN collection");
@@ -270,6 +287,9 @@
             .select({type: type, id: id})
             .render();
 
+        previewView
+            .render();
+
         console.log("YUHU WE ARE IN editor:"+type);
       }
     }
@@ -277,8 +297,9 @@
 
   // Main
   var editor = new EditorView({container: 'editor'});
+  var preview = new PreviewView({container: 'preview'});
   var filesCollection = new Collection(); // TODO here get files from system
-  var views = Views(editor);
+  var views = Views(editor, preview);
   var router = new Router()
       .route('#homepage', views.homepage)
       .route('#new', views.newpage)
