@@ -28,6 +28,23 @@
   margin-top: 10%;
 }
 
+.btn-block {
+}
+
+.btn {
+  display: inline-block;
+  border: 0;
+  padding: 20px 40px;
+  background-color: #efefef;
+  color: #fff;
+  text-decoration: none;
+
+  &:hover {
+    border: 2px solid #000000;
+    padding: 18px 38px;
+  }
+}
+
 // Sub class objects
 .colorpicker {
   .editorElement;
@@ -49,10 +66,10 @@
 }
 
 .btn-editor {
+  .btn;
   .editorElement;
   padding: 20px 40px;
   background: #ffff99;
-  border: 0;
 
   &.btn-delete {
     background-color: #cc0000;
@@ -60,6 +77,17 @@
 }
 
 // Identity objects
+body {
+  font-family: sans-serif;
+}
+
+#page {
+  .btn-block {
+    width: 405px;
+    margin: 0 auto;
+    margin-top: 15%;
+  }
+}
 #editor {
   width: @editorWidth;
   height: 100%;
@@ -91,6 +119,23 @@
 }
 
 
+// Colors
+
+.green_bg {
+  background-color: #62BB11;
+}
+
+.pink_bg {
+  background-color: #CE264A;
+}
+
+.yellow_bg {
+  background-color: #d9ba00;
+}
+
+.orange_bg {
+  background-color: #ea6e26;
+}
 
 //@media all and (orientation: portrait) {
 @media (max-width : 800px) {

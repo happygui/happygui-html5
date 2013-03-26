@@ -158,6 +158,18 @@ select {
   margin: 0 10%;
   margin-top: 10%;
 }
+.btn {
+  display: inline-block;
+  border: 0;
+  padding: 20px 40px;
+  background-color: #efefef;
+  color: #fff;
+  text-decoration: none;
+}
+.btn:hover {
+  border: 2px solid #000000;
+  padding: 18px 38px;
+}
 .colorpicker {
   margin: 0 10%;
   margin-top: 10%;
@@ -175,14 +187,30 @@ select {
   border: 0px;
 }
 .btn-editor {
+  display: inline-block;
+  border: 0;
+  background-color: #efefef;
+  color: #fff;
+  text-decoration: none;
   margin: 0 10%;
   margin-top: 10%;
   padding: 20px 40px;
   background: #ffff99;
-  border: 0;
+}
+.btn-editor:hover {
+  border: 2px solid #000000;
+  padding: 18px 38px;
 }
 .btn-editor.btn-delete {
   background-color: #cc0000;
+}
+body {
+  font-family: sans-serif;
+}
+#page .btn-block {
+  width: 405px;
+  margin: 0 auto;
+  margin-top: 15%;
 }
 #editor {
   width: 40%;
@@ -205,6 +233,18 @@ select {
   margin-left: 40%;
   height: 100%;
   min-height: 800px;
+}
+.green_bg {
+  background-color: #62BB11;
+}
+.pink_bg {
+  background-color: #CE264A;
+}
+.yellow_bg {
+  background-color: #d9ba00;
+}
+.orange_bg {
+  background-color: #ea6e26;
 }
 @media (max-width: 800px) {
   #editor {
