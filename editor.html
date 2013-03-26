@@ -191,6 +191,23 @@
     return this;
   };
 
+  function PageView (options) {
+    View.call(this, options);
+    options = options || {};
+
+    this.defaultContainer = "page";
+
+    return this;
+  }
+  PageView.prototype = Object.create(View.prototype);
+  PageView.prototype.constructor = PageView;
+
+  PageView.prototype.render = function () {
+
+    this.show();
+    return this;
+  };
+
   function EditorView (options) {
     View.call(this, options);
     options = options || {};
@@ -265,15 +282,17 @@
   ShapeElement.prototype.constructor = ShapeElement;
 
   // Views service
-  var Views = function(editorView, previewView) {
+  var Views = function(editorView, previewView, pageView) {
     return {
       homepage: function() {
-
-        document.getElementById('page').innerHTML = Templates.get('homepage')(null);
 
         //TODO handle with events
         editorView.hide();
         previewView.hide();
+
+        pageView
+            .el(Templates.get('homepage')(null))
+            .show();
 
         console.log("YUHU WE ARE IN HOMEPAGE");
       },
@@ -283,7 +302,9 @@
         previewView
             .hide();
 
-        document.getElementById('page').innerHTML = Templates.get('newpage')(null);
+        pageView
+            .el(Templates.get('newpage')(null))
+            .show();
 
         console.log("YUHU WE ARE IN NEWPAGE");
       },
@@ -295,6 +316,9 @@
         previewView
             .render();
 
+        pageView
+            .hide();
+
         console.log("YUHU WE ARE IN editor");
       },
       help: function() {
@@ -302,8 +326,9 @@
             .hide();
         previewView
             .hide();
-
-        document.getElementById('page').innerHTML = Templates.get('help')(null);
+        pageView
+            .el(Templates.get('help')(null))
+            .show();
 
         console.log("YUHU WE ARE IN help");
       },
@@ -312,8 +337,9 @@
             .hide();
         previewView
             .hide();
-
-        document.getElementById('page').innerHTML = Templates.get('collection')({collection: []});
+        pageView
+            .el(Templates.get('collection')({collection: []}))
+            .show();
 
         console.log("YUHU WE ARE IN collection");
       },
@@ -325,6 +351,9 @@
         previewView
             .render();
 
+        pageView
+            .hide();
+
         console.log("YUHU WE ARE IN editor:"+type);
       }
     }
@@ -333,8 +362,9 @@
   // Main
   var editor = new EditorView({container: 'editor'});
   var preview = new PreviewView({container: 'preview'});
+  var page = new PageView({container: 'page'});
   var filesCollection = new Collection(); // TODO here get files from system
-  var views = Views(editor, preview);
+  var views = Views(editor, preview, page);
   var router = new Router()
       .route('#homepage', views.homepage)
       .route('#new', views.newpage)
