@@ -110,7 +110,8 @@
   function EditorView (options) {
     options = options || {};
 
-    this.element = options.element;
+    this.currentElement = options.element;
+    this.elements = new Collection(options.elements);
     this.container = options.container;
     this.hidden = false;
 
@@ -124,7 +125,7 @@
   };
 
   EditorView.prototype.select = function(element) {
-    this.element = element || null;
+    this.currentElement = element || null;
 
     console.log("EditorView#select ", this.element);
 
@@ -156,14 +157,14 @@
   EditorView.prototype.render = function () {
     var html, data;
 
-    if (this.element) {
+    if (this.currentElement) {
       data = {name: "Hello"};
       html = Templates.element_editor(data);
-      console.log("rendering element_editor", this.element);
+      console.log("rendering element_editor", this.currentElement);
     } else {
       data = {name: "ciao"};
       html = Templates.editor(data);
-      console.log("rendering editor", this.element);
+      console.log("rendering editor", this.elements);
     }
 
     this.el(html).show();
@@ -250,6 +251,7 @@
 
   // Main
   var editor = new EditorView({container: 'editor'});
+  var filesCollection = new Collection();
   var views = Views(editor);
   var router = new Router()
       .route('#homepage', views.homepage)
