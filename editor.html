@@ -98,13 +98,21 @@
 
 
   var Templates = new function() {
-    this.compile = function(doc) {
+    var compile = function(doc) {
       return Handlebars.compile(doc.innerHTML);
     };
+    this.t = {};
 
-    // Todo render all templates
-    this.editor = this.compile(document.getElementById('editor_tpl'));
-    this.element_editor = this.compile(document.getElementById('element_editor_tpl'));
+    var allScripts = document.getElementsByTagName('script');
+    for (var i=0; i<allScripts.length; i++) {
+      if (allScripts[i].getAttribute('type') === 'text/html') {
+        this.t[allScripts[i].getAttribute('id').replace("_tpl",'')] = compile(allScripts[i]);
+      }
+    }
+
+    this.get = function (template) {
+      return this.t[template];
+    }
   };
 
   function View (options) {
@@ -177,11 +185,11 @@
 
     if (this.currentElement) {
       data = {name: "Hello"};
-      html = Templates.element_editor(data);
+      html = Templates.get("element_editor")(data);
       console.log("rendering element_editor", this.currentElement);
     } else {
       data = {name: "ciao"};
-      html = Templates.editor(data);
+      html = Templates.get("editor")(data);
       console.log("rendering editor", this.elements);
     }
 
