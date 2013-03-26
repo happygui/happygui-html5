@@ -36,7 +36,11 @@
 </script>
 
 <script id="collection_tpl" type="text/html">
-  Here there are the collections
+  {{#if collections }}
+
+  {{else}}
+  <div class="centred"> No app drawn yet, <a href="#new">create one!</a></div>
+  {{/if}}
 </script>
 
 <script id="editor_tpl" type="text/html">
@@ -306,7 +310,7 @@
         previewView
             .hide();
 
-        document.getElementById('page').innerHTML = Templates.get('collection')(null);
+        document.getElementById('page').innerHTML = Templates.get('collection')({collection: []});
 
         console.log("YUHU WE ARE IN collection");
       },
