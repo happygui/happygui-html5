@@ -75,10 +75,34 @@
 <script type="text/javascript">
   var Router = require('apily-router');
 
+
+  function Collection(models) {
+    this.models = models || [];
+  }
+
+  Collection.prototype.__iterate__ = function(){
+    var self = this;
+    return {
+      length: function(){ return self.length() },
+      get: function(i){ return self.models[i] }
+    }
+  };
+
+  Collection.prototype.length = function(){
+    return this.models.length;
+  };
+
+  Collection.prototype.push = function(model){
+    return this.models.push(model);
+  };
+
+
   var Templates = new function() {
     this.compile = function(doc) {
       return Handlebars.compile(doc.innerHTML);
     };
+
+    // Todo render all templates
     this.editor = this.compile(document.getElementById('editor_tpl'));
     this.element_editor = this.compile(document.getElementById('element_editor_tpl'));
   };
@@ -147,9 +171,6 @@
     return this;
   };
 
-  var editorView = new EditorView();
-
-
   // Element Class
   function Element(options) {
     this.isDeletable = options.isDeletable;
@@ -183,59 +204,63 @@
   ShapeElement.prototype = Object.create(Element.prototype);
   ShapeElement.prototype.constructor = ShapeElement;
 
-  // r is handler for routing
-  var Views = {
-    homepage: function() {
-      editorView
-          .hide();
-      console.log("YUHU WE ARE IN HOMEPAGE");
-    },
-    newpage: function() {
-      editorView
-          .hide();
-      console.log("YUHU WE ARE IN NEWPAGE");
-    },
-    editor: function() {
-      editorView
-          .select(null)
-          .render();
-      console.log("YUHU WE ARE IN editor");
-    },
-    help: function() {
-      editorView
-          .hide();
+  // Views service
+  var Views = function(editorView) {
+    return {
+      homepage: function() {
+        editorView
+            .hide();
 
-      console.log("YUHU WE ARE IN help");
-    },
-    collection: function() {
-      editorView
-          .hide();
+        console.log("YUHU WE ARE IN HOMEPAGE");
+      },
+      newpage: function() {
+        editorView
+            .hide();
 
-      console.log("YUHU WE ARE IN collection");
-    },
-    element_editor: function(type, id) {
-      editorView
-          .select({type: type, id: id})
-          .render();
+        console.log("YUHU WE ARE IN NEWPAGE");
+      },
+      editor: function() {
+        editorView
+            .select(null)
+            .render();
 
-      console.log("YUHU WE ARE IN editor:"+type);
+        console.log("YUHU WE ARE IN editor");
+      },
+      help: function() {
+        editorView
+            .hide();
+
+        console.log("YUHU WE ARE IN help");
+      },
+      collection: function() {
+        editorView
+            .hide();
+
+        console.log("YUHU WE ARE IN collection");
+      },
+      element_editor: function(type, id) {
+        editorView
+            .select({type: type, id: id})
+            .render();
+
+        console.log("YUHU WE ARE IN editor:"+type);
+      }
     }
   };
 
-  // router is the app route
+  // Main
+  var editor = new EditorView({container: 'editor'});
+  var views = Views(editor);
   var router = new Router()
-      .route('#homepage', Views.homepage)
-      .route('#new', Views.newpage)
-      .route('#editor', Views.editor)
-      .route("#help", Views.help)
-      .route("#collection", Views.collection)
-      .route('#editor/:type', Views.element_editor)
-      .route('#editor/:type/:id', Views.element_editor);
+      .route('#homepage', views.homepage)
+      .route('#new', views.newpage)
+      .route("#help", views.help)
+      .route("#collection", views.collection)
+      .route('#editor', views.editor)
+      .route('#editor/:type', views.element_editor)
+      .route('#editor/:type/:id', views.element_editor)
+      .history.start();
 
-  // starting history
-  router.history.start();
-
-  // set the page on #homepage onload
   if (window.location.hash === "") {
     window.location = "#homepage";
   }
