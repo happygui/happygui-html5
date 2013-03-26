@@ -107,16 +107,56 @@
     this.element_editor = this.compile(document.getElementById('element_editor_tpl'));
   };
 
-  function EditorView (options) {
+  function View (options) {
     options = options || {};
 
-    this.currentElement = options.element;
-    this.elements = new Collection(options.elements);
+    this.defaultContainer = "example";
     this.container = options.container;
     this.hidden = false;
+  }
+
+  View.prototype.show = function() {
+    if (this.hidden == true) {
+      this.hidden = false;
+      document.getElementById(this.container || this.defaultContainer).className = "";
+    }
+
+    return this;
+  };
+
+  View.prototype.hide = function() {
+    if (this.hidden == false) {
+      this.hidden = true;
+      document.getElementById(this.container || this.defaultContainer).className = "hidden";
+    }
+
+    return this;
+  };
+
+  function PreviewView (options) {
+    View.call(this, options);
+    options = options || {};
+
+    this.defaultContainer = "preview";
 
     return this;
   }
+  PreviewView.prototype = Object.create(View.prototype);
+  PreviewView.prototype.constructor = PreviewView;
+
+  function EditorView (options) {
+    View.call(this, options);
+    options = options || {};
+
+    this.defaultContainer = "editor";
+
+    this.currentElement = options.element;
+    this.elements = new Collection(options.elements);
+
+    return this;
+  }
+  EditorView.prototype = Object.create(View.prototype);
+  EditorView.prototype.constructor = EditorView;
 
   EditorView.prototype.el = function(html) {
     document.getElementById(this.container || 'editor').innerHTML = html;
@@ -128,28 +168,6 @@
     this.currentElement = element || null;
 
     console.log("EditorView#select ", this.element);
-
-    return this;
-  };
-
-  EditorView.prototype.show = function() {
-    if (this.hidden == true) {
-      this.hidden = false;
-      document.getElementById(this.container || 'editor').className = "";
-    }
-
-    console.log("EditorView#show", this.hidden);
-
-    return this;
-  };
-
-  EditorView.prototype.hide = function() {
-    if (this.hidden == false) {
-      this.hidden = true;
-      document.getElementById(this.container || 'editor').className = "hidden";
-    }
-
-    console.log("EditorView#hide", this.hidden);
 
     return this;
   };
@@ -251,7 +269,7 @@
 
   // Main
   var editor = new EditorView({container: 'editor'});
-  var filesCollection = new Collection();
+  var filesCollection = new Collection(); // TODO here get files from system
   var views = Views(editor);
   var router = new Router()
       .route('#homepage', views.homepage)
