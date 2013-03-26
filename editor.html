@@ -6,18 +6,36 @@
 </head>
 <body>
 <div class="wrapper">
-  <div id="editor">
-    <a href="#new">Go</a>
+  <div id="page"></div>
+  <div id="editor" class="hidden">
     <!-- editorViews will be imported here -->
   </div>
 
-  <div id="preview">
+  <div id="preview" class="hidden">
     <!-- elements drawn by the user -->
   </div>
 </div>
 
 <script type="text/javascript" src="js/handlebars.js"></script>
 <script type="text/javascript" src="build/build.js"></script>
+
+<script id="homepage_tpl" type="text/html">
+  <a href="#collection">Open</a>
+  <a href="#new">Create new</a>
+  <a href="#help">Help</a>
+</script>
+
+<script id="newpage_tpl" type="text/html">
+  <input placeholder="Enter a name" value=""/>
+</script>
+
+<script id="help_tpl" type="text/html">
+  Help page
+</script>
+
+<script id="collection_tpl" type="text/html">
+  Here there are the collections
+</script>
 
 <script id="editor_tpl" type="text/html">
   <header>
@@ -241,10 +259,12 @@
   var Views = function(editorView, previewView) {
     return {
       homepage: function() {
-        editorView
-            .hide();
-        previewView
-            .hide();
+
+        document.getElementById('page').innerHTML = Templates.get('homepage')(null);
+
+        //TODO handle with events
+        editorView.hide();
+        previewView.hide();
 
         console.log("YUHU WE ARE IN HOMEPAGE");
       },
@@ -253,6 +273,8 @@
             .hide();
         previewView
             .hide();
+
+        document.getElementById('page').innerHTML = Templates.get('newpage')(null);
 
         console.log("YUHU WE ARE IN NEWPAGE");
       },
@@ -272,6 +294,8 @@
         previewView
             .hide();
 
+        document.getElementById('page').innerHTML = Templates.get('help')(null);
+
         console.log("YUHU WE ARE IN help");
       },
       collection: function() {
@@ -279,6 +303,8 @@
             .hide();
         previewView
             .hide();
+
+        document.getElementById('page').innerHTML = Templates.get('collection')(null);
 
         console.log("YUHU WE ARE IN collection");
       },
