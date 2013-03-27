@@ -29,8 +29,8 @@
 
 <script id="newpage_tpl" type="text/html">
   <div class="centred" id="newpage">
-    <div><input placeholder="Enter a name" value=""/></div>
-    <div class="btn orange_bg">Save</div>
+    <div><input id="collectionName" placeholder="Enter a name" value=""/></div>
+    <div id="collectionSave" class="btn orange_bg">Save</div>
   </div>
 </script>
 
@@ -42,7 +42,7 @@
   {{#if collections }}
 
   {{else}}
-  <div class="centred"> No app drawn yet, <a href="#new">create one!</a></div>
+  <div class="centred">No app drawn yet, <a href="#new">create one!</a></div>
   {{/if}}
 </script>
 
@@ -102,6 +102,8 @@
 <script type="text/javascript">
   var Router = require('apily-router');
   var delegate = require('component-delegate');
+  var event = require('component-event');
+  var Emitter = require('component-emitter');
 
   function Collection(models) {
     this.models = models || [];
@@ -123,24 +125,46 @@
     return this.models.push(model);
   };
 
+  // Singleton
+  var FilesCollection = (function(){
+    var filesCollection = new Collection();
 
-  var Templates = new function() {
-    var compile = function(doc) {
-      return Handlebars.compile(doc.innerHTML);
-    };
-    this.t = {};
+    return {
+      get: function() {
+        return filesCollection;
+      },
+      save: function() {
+        var name = document.getElementById("collectionName").value
+        filesCollection.push(name);
+        console.log("Files collection", filesCollection);
+        return this;
+      }
+    }
+  })();
 
+  var filesCollection = new Collection(); // TODO here get files from system
+
+  // Singleton
+  var Templates = (function Templates2 (){
+    var templates = {};
     var allScripts = document.getElementsByTagName('script');
+
+    function compile (doc) {
+      return Handlebars.compile(doc.innerHTML);
+    }
+
     for (var i=0; i<allScripts.length; i++) {
       if (allScripts[i].getAttribute('type') === 'text/html') {
-        this.t[allScripts[i].getAttribute('id').replace("_tpl",'')] = compile(allScripts[i]);
+        templates[allScripts[i].getAttribute('id').replace("_tpl",'')] = compile(allScripts[i]);
       }
     }
 
-    this.get = function (template) {
-      return this.t[template];
-    }
-  };
+    return {
+      get: function (template) {
+        return templates[template];
+      }
+    };
+  })();
 
   function View (options) {
     options = options || {};
@@ -149,8 +173,12 @@
     this.container = options.container;
     this.hidden = false;
   }
+  View.prototype = Object.create(Emitter.prototype);
 
-  View.prototype.on = function(str, method) {
+  View.prototype.broadcast = function(emitter, event, method) {
+
+  }
+  View.prototype.bind = function(str, method) {
     // From component/view
     var parts = str.split(' ');
     var event = parts.shift();
@@ -211,6 +239,11 @@
   }
   PageView.prototype = Object.create(View.prototype);
   PageView.prototype.constructor = PageView;
+
+  PageView.prototype.clear = function() {
+    this.el('');
+    return this;
+  };
 
   PageView.prototype.render = function (template, data) {
 
@@ -299,27 +332,18 @@
     return {
       homepage: function() {
 
-        //TODO handle with events
-        editorView.hide();
-        previewView.hide();
-
         pageView
             .render('homepage', null)
 
-        console.log("YUHU WE ARE IN HOMEPAGE");
       },
       newpage: function() {
-        editorView
-            .hide();
-        previewView
-            .hide();
 
         pageView
             .render('newpage', null);
 
-        console.log("YUHU WE ARE IN NEWPAGE");
       },
       editor: function() {
+
         editorView
             .select(null)
             .render();
@@ -327,32 +351,22 @@
         previewView
             .render();
 
-        pageView
-            .hide();
-
-        console.log("YUHU WE ARE IN editor");
       },
       help: function() {
-        editorView
-            .hide();
-        previewView
-            .hide();
+
         pageView
             .render('help', null);
 
         console.log("YUHU WE ARE IN help");
       },
       collection: function() {
-        editorView
-            .hide();
-        previewView
-            .hide();
+
         pageView
             .render("collection", {collection:[]});
 
-        console.log("YUHU WE ARE IN collection");
       },
       element_editor: function(type, id) {
+
         editorView
             .select({type: type, id: id})
             .render();
@@ -360,10 +374,6 @@
         previewView
             .render();
 
-        pageView
-            .hide();
-
-        console.log("YUHU WE ARE IN editor:"+type);
       }
     }
   };
@@ -372,9 +382,18 @@
   var editor = new EditorView({container: 'editor'});
   var preview = new PreviewView({container: 'preview'});
   var page = new PageView({container: 'page'});
-  var filesCollection = new Collection(); // TODO here get files from system
+  //page.bind('click #collectionSave', FilesCollection.save);
   var views = Views(editor, preview, page);
-  var router = new Router()
+
+  // Clean before router cleans
+  window.addEventListener("hashchange", function() {
+    editor.hide();
+    preview.hide();
+    page.hide();
+  }, true);
+
+  var router = new Router();
+  router
       .route('#homepage', views.homepage)
       .route('#new', views.newpage)
       .route("#help", views.help)
@@ -387,6 +406,7 @@
   if (window.location.hash === "") {
     window.location = "#homepage";
   }
+
 
 </script>
 

@@ -4,7 +4,8 @@
     "dependencies": {
         "apily/router": "*",
         "apily/history": "*",
-        "apily/view": "*"
+        "apily/view": "*",
+        "component/emitter": "*"
     },
     "local": [],
     "scripts": ["boot.js"],
