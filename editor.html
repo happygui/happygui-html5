@@ -101,7 +101,7 @@
 
 <script type="text/javascript">
   var Router = require('apily-router');
-
+  var delegate = require('component-delegate');
 
   function Collection(models) {
     this.models = models || [];
@@ -149,6 +149,16 @@
     this.container = options.container;
     this.hidden = false;
   }
+
+  View.prototype.on = function(str, method) {
+    // From component/view
+    var parts = str.split(' ');
+    var event = parts.shift();
+    var selector = parts.join(' ');
+    var meth = this[method];
+    if (!meth) throw new TypeError('method "' + method + '" is not defined');
+    var fn = delegate.bind(this.el, selector, event, meth.bind(this));
+  };
 
   View.prototype.show = function() {
     if (this.hidden == true) {
@@ -202,9 +212,12 @@
   PageView.prototype = Object.create(View.prototype);
   PageView.prototype.constructor = PageView;
 
-  PageView.prototype.render = function () {
+  PageView.prototype.render = function (template, data) {
 
-    this.show();
+    this
+        .el(Templates.get(template)(data))
+        .show();
+
     return this;
   };
 
@@ -291,8 +304,7 @@
         previewView.hide();
 
         pageView
-            .el(Templates.get('homepage')(null))
-            .show();
+            .render('homepage', null)
 
         console.log("YUHU WE ARE IN HOMEPAGE");
       },
@@ -303,8 +315,7 @@
             .hide();
 
         pageView
-            .el(Templates.get('newpage')(null))
-            .show();
+            .render('newpage', null);
 
         console.log("YUHU WE ARE IN NEWPAGE");
       },
@@ -327,8 +338,7 @@
         previewView
             .hide();
         pageView
-            .el(Templates.get('help')(null))
-            .show();
+            .render('help', null);
 
         console.log("YUHU WE ARE IN help");
       },
@@ -338,8 +348,7 @@
         previewView
             .hide();
         pageView
-            .el(Templates.get('collection')({collection: []}))
-            .show();
+            .render("collection", {collection:[]});
 
         console.log("YUHU WE ARE IN collection");
       },
