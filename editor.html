@@ -126,7 +126,7 @@
   };
 
   // Singleton
-  var FilesCollection = (function(){
+  var CollectionCtrl = (function(){
     var filesCollection = new Collection();
 
     return {
@@ -134,9 +134,10 @@
         return filesCollection;
       },
       save: function() {
-        var name = document.getElementById("collectionName").value
+        var name = document.getElementById("collectionName").value;
         filesCollection.push(name);
-        console.log("Files collection", filesCollection);
+        document.getElementById("collectionName").value = '';
+        window.location = "#editor/test";
         return this;
       }
     }
@@ -176,16 +177,18 @@
   View.prototype = Object.create(Emitter.prototype);
 
   View.prototype.broadcast = function(emitter, event, method) {
+  };
 
-  }
   View.prototype.bind = function(str, method) {
     // From component/view
     var parts = str.split(' ');
     var event = parts.shift();
     var selector = parts.join(' ');
-    var meth = this[method];
+/*    var meth = this[method];
     if (!meth) throw new TypeError('method "' + method + '" is not defined');
-    var fn = delegate.bind(this.el, selector, event, meth.bind(this));
+*/
+    var meth = method;
+    var fn = delegate.bind(document.getElementById(this.container || this.defaultContainer), selector, event, meth.bind(this));
   };
 
   View.prototype.show = function() {
@@ -342,7 +345,7 @@
             .render('newpage', null);
 
       },
-      editor: function() {
+      editor: function(collection) {
 
         editorView
             .select(null)
@@ -365,7 +368,7 @@
             .render("collection", {collection:[]});
 
       },
-      element_editor: function(type, id) {
+      element_editor: function(collection,type, id) {
 
         editorView
             .select({type: type, id: id})
@@ -382,7 +385,7 @@
   var editor = new EditorView({container: 'editor'});
   var preview = new PreviewView({container: 'preview'});
   var page = new PageView({container: 'page'});
-  //page.bind('click #collectionSave', FilesCollection.save);
+  page.bind('click #collectionSave', CollectionCtrl.save);
   var views = Views(editor, preview, page);
 
   // Clean before router cleans
@@ -398,9 +401,9 @@
       .route('#new', views.newpage)
       .route("#help", views.help)
       .route("#collection", views.collection)
-      .route('#editor', views.editor)
-      .route('#editor/:type', views.element_editor)
-      .route('#editor/:type/:id', views.element_editor)
+      .route('#editor/:collection', views.editor)
+      .route('#editor/:collection/:type', views.element_editor)
+      .route('#editor/:collection/:type/:id', views.element_editor)
       .history.start();
 
   if (window.location.hash === "") {
