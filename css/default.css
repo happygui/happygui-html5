@@ -161,6 +161,18 @@ select {
   width: 100%;
   height: 100%;
 }
+.collection {
+  float: left;
+  margin: 0px 30px 10px 0px;
+}
+.collection .preview {
+  width: 160px;
+  height: 90px;
+  background-color: #62bb11;
+}
+.collection .title {
+  text-transform: uppercase;
+}
 .editorElement {
   margin: 0 10%;
   margin-top: 10%;
