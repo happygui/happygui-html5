@@ -41,12 +41,14 @@
 <script id="collection_tpl" type="text/html">
   {{#if collection }}
     {{#collection}}
+      <a href="#editor/{{@index}}">
       <div class="collection">
         <div class="preview">
           <!-- Image here -->
         </div>
         <div class="title">{{name}}</div>
       </div>
+      </a>
     {{/collection}}
   {{else}}
   <div class="centred">No app drawn yet, <a href="#new">create one!</a></div>
@@ -59,7 +61,22 @@
     </div>
   </header>
 
-  <section>
+  <section id="elementsNew">
+    <div class="elementNew" id="squareNew">
+      Square
+    </div>
+    <div class="elementNew" id="circleNew">
+      Circle
+    </div>
+    <div class="elementNew" id="TextNew">
+      Text
+    </div>
+    <div class="elementNew" id="cameraNew">
+      Camera
+    </div>
+    <div class="elementNew" id="imageNew">
+      Image
+    </div>
   </section>
 
   <footer>
@@ -169,7 +186,7 @@
     var reset = function () {
       filesCollection.models = [];
       localStorage.clear();
-    }
+    };
 
     var filesCollection = new Collection(get());
 
@@ -311,7 +328,9 @@
 
     this.defaultContainer = "editor";
 
+    this.currentCollection = options.collection;
     this.currentElement = options.element;
+
     this.elements = new Collection(options.elements);
 
     return this;
@@ -319,10 +338,14 @@
   EditorView.prototype = Object.create(View.prototype);
   EditorView.prototype.constructor = EditorView;
 
-  EditorView.prototype.select = function(element) {
+  EditorView.prototype.select = function(collection, element) {
     this.currentElement = element || null;
 
-    console.log("EditorView#select ", this.element);
+    if (element == null || element == false || typeof element == 'undefined'){
+      this.currentCollection = collection;
+    }
+
+    console.log("EditorView#select ", this.currentElement, this.currentCollection);
 
     return this;
   };
@@ -396,7 +419,7 @@
       editor: function(collection) {
 
         editorView
-            .select(null)
+            .select(collection, null)
             .render();
 
         previewView
@@ -420,7 +443,7 @@
       element_editor: function(collection,type, id) {
 
         editorView
-            .select({type: type, id: id})
+            .select(collection, {type: type, id: id})
             .render();
 
         previewView
