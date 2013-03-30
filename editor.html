@@ -194,9 +194,12 @@
       get: function() {
         return filesCollection.models;
       },
+      getCollection: function (index) {
+        return filesCollection.models[index];
+      },
       create: function() {
         var name = document.getElementById("collectionName").value;
-        create({name: name});
+        create({name: name, elements: []});
         document.getElementById("collectionName").value = '';
         window.location = "#editor/" + (filesCollection.length()-1);
         return this;
@@ -339,11 +342,17 @@
   EditorView.prototype.constructor = EditorView;
 
   EditorView.prototype.select = function(collection, element) {
+
     this.currentElement = element || null;
 
     if (element == null || element == false || typeof element == 'undefined'){
       this.currentCollection = collection;
     }
+
+    console.log(CollectionCtrl.getCollection(this.currentCollection))
+
+    // TODO throw an error
+    this.elements = CollectionCtrl.getCollection(this.currentCollection)['elements'] || [];
 
     console.log("EditorView#select ", this.currentElement, this.currentCollection);
 
