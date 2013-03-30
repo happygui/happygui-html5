@@ -39,7 +39,7 @@
 </script>
 
 <script id="collection_tpl" type="text/html">
-  {{#if collections }}
+  {{#if collection }}
 
   {{else}}
   <div class="centred">No app drawn yet, <a href="#new">create one!</a></div>
@@ -105,6 +105,16 @@
   var event = require('component-event');
   var Emitter = require('component-emitter');
 
+  /* Momentaneous quick fix */
+  Storage.prototype.setObject = function(key, value) {
+    this.setItem(key, JSON.stringify(value));
+  }
+
+  Storage.prototype.getObject = function(key) {
+    var value = this.getItem(key);
+    return value && JSON.parse(value);
+  }
+
   function Collection(models) {
     this.models = models || [];
   }
@@ -125,25 +135,56 @@
     return this.models.push(model);
   };
 
+  // Adapter
+
+
   // Singleton
   var CollectionCtrl = (function(){
-    var filesCollection = new Collection();
+
+    var get = function () {
+      if (localStorage) {
+        return localStorage.getObject('happygui-collection');
+      } else {
+        return alert("You are using a platform which is not recognised!");
+      }
+    };
+
+    var create = function (name) {
+      filesCollection.push(name);
+
+      if (localStorage) {
+        localStorage.setObject('happygui-collection', filesCollection.models);
+      } else {
+        return alert("You are using a platform which is not recognised!");
+      }
+    };
+
+    var reset = function () {
+      filesCollection.models = [];
+      localStorage.clear();
+    }
+
+    var filesCollection = new Collection(get());
 
     return {
       get: function() {
-        return filesCollection;
+        return filesCollection.models;
       },
-      save: function() {
+      create: function() {
         var name = document.getElementById("collectionName").value;
-        filesCollection.push(name);
+        create(name);
         document.getElementById("collectionName").value = '';
-        window.location = "#editor/test";
+        window.location = "#editor/" + (filesCollection.length()-1);
         return this;
+      },
+      reset: function() {
+        if (confirm("Your data will be lost forever, are you fine with that?")) {
+          reset();
+        }
+        return this
       }
     }
   })();
-
-  var filesCollection = new Collection(); // TODO here get files from system
 
   // Singleton
   var Templates = (function Templates2 (){
@@ -365,7 +406,7 @@
       collection: function() {
 
         pageView
-            .render("collection", {collection:[]});
+            .render("collection", CollectionCtrl.get());
 
       },
       element_editor: function(collection,type, id) {
@@ -385,7 +426,7 @@
   var editor = new EditorView({container: 'editor'});
   var preview = new PreviewView({container: 'preview'});
   var page = new PageView({container: 'page'});
-  page.bind('click #collectionSave', CollectionCtrl.save);
+  page.bind('click #collectionSave', CollectionCtrl.create);
   var views = Views(editor, preview, page);
 
   // Clean before router cleans
@@ -406,8 +447,12 @@
       .route('#editor/:collection/:type/:id', views.element_editor)
       .history.start();
 
+
+  // This happens on page refresh
   if (window.location.hash === "") {
-    window.location = "#homepage";
+    window.location.hash = "#homepage"
+  } else {
+    //TODO load view
   }
 
 
