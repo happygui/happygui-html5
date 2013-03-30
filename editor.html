@@ -68,7 +68,7 @@
     <div class="elementNew" id="circleNew">
       Circle
     </div>
-    <div class="elementNew" id="TextNew">
+    <div class="elementNew" id="textNew">
       Text
     </div>
     <div class="elementNew" id="cameraNew">
@@ -352,7 +352,7 @@
     console.log(CollectionCtrl.getCollection(this.currentCollection))
 
     // TODO throw an error
-    this.elements = CollectionCtrl.getCollection(this.currentCollection)['elements'] || [];
+    this.elements.models = CollectionCtrl.getCollection(this.currentCollection)['elements'] || [];
 
     console.log("EditorView#select ", this.currentElement, this.currentCollection);
 
@@ -363,7 +363,7 @@
     var html, data;
 
     if (this.currentElement) {
-      data = {name: "Hello"};
+      data = this.currentElement || {name: "Hello"};
       html = Templates.get("element_editor")(data);
       console.log("rendering element_editor", this.currentElement);
     } else {
@@ -379,7 +379,8 @@
 
   // Element Class
   function Element(options) {
-    this.isDeletable = options.isDeletable;
+    options = options || {};
+    this.isDeletable = options.isDeletable || null;
   }
 
   // TextElement Class
@@ -464,6 +465,28 @@
 
   // Main
   var editor = new EditorView({container: 'editor'});
+  editor.bind('click .elementNew', function(e) {
+    var type = e.target.id.replace('New','');
+
+    //TODO check if type exists
+    var element;
+
+    switch (type) {
+      case "image":
+        break;
+      case "circle":
+        break;
+      case "text":
+          element = new TextElement();
+        break;
+      default:
+        alert("type not recognised, sorry");
+        return;
+    }
+
+    // CollectionCtrl.createElement({type: type});
+    window.location = "#editor/"+editor.currentCollection+"/"+type;
+  });
   var preview = new PreviewView({container: 'preview'});
   var page = new PageView({container: 'page'});
   page.bind('click #collectionSave', CollectionCtrl.create);
