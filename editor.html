@@ -194,8 +194,15 @@
       get: function() {
         return filesCollection.models;
       },
-      getCollection: function (index) {
-        return filesCollection.models[index];
+      getCollection: function (collection) {
+        collection = collection || this.currentCollection;
+        return filesCollection.models[collection];
+      },
+      getElement: function(collection, element) {
+        collection = collection || this.currentCollection;
+        element = element || this.currentElement;
+
+        return filesCollection.models[collection].elements[element];
       },
       create: function() {
         var name = document.getElementById("collectionName").value;
@@ -341,20 +348,22 @@
   EditorView.prototype = Object.create(View.prototype);
   EditorView.prototype.constructor = EditorView;
 
+  EditorView.prototype.selectCollection = function(collection) {
+    this.currentCollection = collection;
+    this.elements.models = CollectionCtrl.getCollection()['elements'] || [];
+    return this;
+  };
+
+  EditorView.prototype.selectElement = function (element) {
+    this.currentElement = element;
+    CollectionCtrl.getElement()
+    return this;
+  };
+
   EditorView.prototype.select = function(collection, element) {
 
-    this.currentElement = element || null;
-
-    if (element == null || element == false || typeof element == 'undefined'){
-      this.currentCollection = collection;
-    }
-
-    console.log(CollectionCtrl.getCollection(this.currentCollection))
-
-    // TODO throw an error
-    this.elements.models = CollectionCtrl.getCollection(this.currentCollection)['elements'] || [];
-
-    console.log("EditorView#select ", this.currentElement, this.currentCollection);
+    this.selectCollection(collection)
+        .selectElement(element);
 
     return this;
   };
@@ -450,7 +459,7 @@
             .render("collection", {collection: CollectionCtrl.get()});
 
       },
-      element_editor: function(collection,type, id) {
+      element_editor: function(collection, type, id) {
 
         editorView
             .select(collection, {type: type, id: id})
