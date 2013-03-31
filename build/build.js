@@ -805,7 +805,7 @@ History.prototype.onchange = function (event) {
       return true;
     }
   }
-  
+
   return false;
 };
 
@@ -1622,6 +1622,15 @@ View.prototype.hide = function () {
 };
 
 });
+require.register("happygui-element/index.js", function(exports, require, module){
+function Element(options) {
+  options = options || {};
+  this.type = options.type;
+  this.isDeletable = options.isDeletable;
+}
+
+module.exports = Element;
+});
 require.register("boot/boot.js", function(exports, require, module){
 
 });
@@ -1656,6 +1665,8 @@ require.alias("component-domify/index.js", "apily-view/deps/domify/index.js");
 
 require.alias("component-emitter/index.js", "boot/deps/emitter/index.js");
 require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
+require.alias("happygui-element/index.js", "boot/deps/happygui-element/index.js");
 
 require.alias("boot/boot.js", "boot/index.js");
 

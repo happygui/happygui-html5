@@ -1,0 +1,11 @@
+{
+    "name": "happygui-element",
+    "description": "Element model",
+    "version": "0.0.1",
+    "dependencies": {
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

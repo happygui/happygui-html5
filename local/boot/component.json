@@ -7,7 +7,9 @@
         "apily/view": "*",
         "component/emitter": "*"
     },
-    "local": [],
+    "local": [
+        "happygui-element"
+    ],
     "scripts": ["boot.js"],
     "main": "boot.js"
 }

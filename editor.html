@@ -124,20 +124,24 @@
 </script>
 
 <script type="text/javascript">
+  // Dependencies
   var Router = require('apily-router');
   var delegate = require('component-delegate');
   var event = require('component-event');
   var Emitter = require('component-emitter');
 
-  /* Momentaneous quick fix */
+  // Happygui dependencies
+  var Element = require('happygui-element');
+
+  /* Quick quick fix */
   Storage.prototype.setObject = function(key, value) {
     this.setItem(key, JSON.stringify(value));
-  }
+  };
 
   Storage.prototype.getObject = function(key) {
     var value = this.getItem(key);
     return value && JSON.parse(value);
-  }
+  };
 
   function Collection(models) {
     this.models = models || [];
@@ -173,19 +177,28 @@
       }
     };
 
-    var create = function (obj) {
-      filesCollection.push(obj);
-
+    var save = function () {
       if (localStorage) {
         localStorage.setObject('happygui-collection', filesCollection.models);
       } else {
-        return alert("You are using a platform which is not recognised!");
+        // TODO throw an error
+        alert("You are using a platform which is not recognised!");
       }
+    };
+
+    var create = function (obj) {
+      filesCollection.push(obj);
+      save();
     };
 
     var reset = function () {
       filesCollection.models = [];
-      localStorage.clear();
+      if (localStorage) {
+        localStorage.clear();
+      } else {
+        // TODO throw an error
+        alert("You are using a platform which is not recognised!");
+      }
     };
 
     var filesCollection = new Collection(get());
@@ -198,11 +211,20 @@
         collection = collection || this.currentCollection;
         return filesCollection.models[collection];
       },
-      getElement: function(collection, element) {
+      getElement: function(element, collection) {
         collection = collection || this.currentCollection;
         element = element || this.currentElement;
 
         return filesCollection.models[collection].elements[element];
+      },
+      update: function (doc, collection) {
+        if (doc && collection) {
+          filesCollection.models[collection] = doc;
+        }
+        else if (doc) {
+          filesCollection.models = doc;
+        }
+        save();
       },
       create: function() {
         var name = document.getElementById("collectionName").value;
@@ -211,17 +233,36 @@
         window.location = "#editor/" + (filesCollection.length()-1);
         return this;
       },
+      createElement: function (collection, doc) {
+        var element;
+
+        switch (doc.type) {
+          case "image":
+            break;
+          case "circle":
+            break;
+          case "text":
+            element = new TextElement(doc);
+            break;
+          default:
+
+            //TODO throw error
+            alert("type not recognised, sorry");
+        }
+
+        return filesCollection.models[collection].elements.push(element);
+      },
       reset: function() {
         if (confirm("Your data will be lost forever, are you fine with that?")) {
           reset();
         }
-        return this
+        return this;
       }
     }
   })();
 
   // Singleton
-  var Templates = (function Templates2 (){
+  var Templates = (function (){
     var templates = {};
     var allScripts = document.getElementsByTagName('script');
 
@@ -341,29 +382,43 @@
     this.currentCollection = options.collection;
     this.currentElement = options.element;
 
-    this.elements = new Collection(options.elements);
-
     return this;
   }
   EditorView.prototype = Object.create(View.prototype);
   EditorView.prototype.constructor = EditorView;
 
-  EditorView.prototype.selectCollection = function(collection) {
+  EditorView.prototype.elements = function(element) {
+    if (typeof element == 'undefined') {
+      return CollectionCtrl.getCollection(this.currentCollection);
+    }
+
+    return CollectionCtrl.getElement(element);
+  };
+
+  EditorView.prototype.setCollection = function(collection) {
     this.currentCollection = collection;
-    this.elements.models = CollectionCtrl.getCollection()['elements'] || [];
+    // TODO throw errors
     return this;
   };
 
-  EditorView.prototype.selectElement = function (element) {
-    this.currentElement = element;
-    CollectionCtrl.getElement()
+  EditorView.prototype.setElement = function (type, id) {
+    // TODO throw errors
+    if (type) {
+      this.currentElement = id || CollectionCtrl.createElement(this.currentCollection, {type: type});
+      console.log(editor.currentElement);
+    } else {
+
+    }
+
     return this;
   };
 
   EditorView.prototype.select = function(collection, element) {
 
-    this.selectCollection(collection)
-        .selectElement(element);
+    element = element || {};
+
+    this.setCollection(collection)
+        .setElement(element.type, element.id);
 
     return this;
   };
@@ -374,23 +429,15 @@
     if (this.currentElement) {
       data = this.currentElement || {name: "Hello"};
       html = Templates.get("element_editor")(data);
-      console.log("rendering element_editor", this.currentElement);
     } else {
       data = {name: "ciao"};
       html = Templates.get("editor")(data);
-      console.log("rendering editor", this.elements);
     }
 
     this.el(html).show();
 
     return this;
   };
-
-  // Element Class
-  function Element(options) {
-    options = options || {};
-    this.isDeletable = options.isDeletable || null;
-  }
 
   // TextElement Class
   var TextElement = function(options) {
@@ -476,24 +523,6 @@
   var editor = new EditorView({container: 'editor'});
   editor.bind('click .elementNew', function(e) {
     var type = e.target.id.replace('New','');
-
-    //TODO check if type exists
-    var element;
-
-    switch (type) {
-      case "image":
-        break;
-      case "circle":
-        break;
-      case "text":
-          element = new TextElement();
-        break;
-      default:
-        alert("type not recognised, sorry");
-        return;
-    }
-
-    // CollectionCtrl.createElement({type: type});
     window.location = "#editor/"+editor.currentCollection+"/"+type;
   });
   var preview = new PreviewView({container: 'preview'});
