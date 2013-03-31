@@ -184,13 +184,13 @@
         return filesCollection.models;
       },
       getCollection: function (collection) {
-        collection = collection || this.currentCollection;
         return filesCollection.models[collection];
       },
+      getElements: function(collection) {
+        return filesCollection.models[collection].elements;
+      },
       getElement: function(element, collection) {
-        collection = collection || this.currentCollection;
-        element = element || this.currentElement;
-
+        console.log("getElement", element, collection);
         return filesCollection.models[collection].elements[element];
       },
       update: function (doc, collection) {
@@ -293,15 +293,18 @@
   EditorView.prototype = Object.create(View.prototype);
   EditorView.prototype.constructor = EditorView;
 
-  EditorView.prototype.elements = function(element) {
+  EditorView.prototype.collection = function () {
+    return CollectionCtrl.getCollection(this.currentCollection);
+  };
+  EditorView.prototype.elements = function (element) {
     if (typeof element == 'undefined') {
-      return CollectionCtrl.getCollection(this.currentCollection);
+      return CollectionCtrl.getElements(this.currentCollection);
     }
 
-    return CollectionCtrl.getElement(element);
+    return CollectionCtrl.getElement(element, this.currentCollection);
   };
 
-  EditorView.prototype.setCollection = function(collection) {
+  EditorView.prototype.setCollection = function (collection) {
     this.currentCollection = collection;
     // TODO throw errors
     return this;
@@ -333,10 +336,10 @@
     var html, data;
 
     if (this.currentElement) {
-      data = this.currentElement || {name: "Hello"};
+      data = this.elements(this.currentElement);
       html = Templates.get("element_editor")(data);
     } else {
-      data = {name: "ciao"};
+      data = this.collection();
       html = Templates.get("editor")(data);
     }
 
