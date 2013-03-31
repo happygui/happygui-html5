@@ -1631,6 +1631,65 @@ function Element(options) {
 
 module.exports = Element;
 });
+require.register("happygui-collection/index.js", function(exports, require, module){
+function Collection(models) {
+  this.models = models || [];
+}
+
+Collection.prototype.__iterate__ = function(){
+  var self = this;
+  return {
+    length: function(){ return self.length() },
+    get: function(i){ return self.models[i] }
+  }
+};
+
+Collection.prototype.length = function(){
+  return this.models.length;
+};
+
+Collection.prototype.push = function(model){
+  return this.models.push(model);
+};
+
+module.exports = Collection;
+});
+require.register("happygui-textelement/index.js", function(exports, require, module){
+var Element = require('happygui-element');
+
+var TextElement = function(options) {
+  Element.call(this, options); // Super
+
+  this.hasFontSize = true;
+  this.hasFontColor = true;
+
+  this.fontSize = "13px";
+  this.fontColor = "#000";
+};
+TextElement.prototype = Object.create(Element.prototype);
+TextElement.prototype.constructor = TextElement;
+
+module.exports = TextElement;
+});
+require.register("happygui-shapeelement/index.js", function(exports, require, module){
+var Element = require('happygui-element');
+
+var ShapeElement = function(options) {
+  Element.call(this, options); // Super
+
+  this.hasBorderColor = true;
+  this.hasBorderThickness = true;
+  this.hasBackgroundColor = true;
+
+  this.borderColor = "#cc0000";
+  this.borderThickness = "5px";
+  this.backgroundColor = "#00cc00";
+};
+ShapeElement.prototype = Object.create(Element.prototype);
+ShapeElement.prototype.constructor = ShapeElement;
+
+module.exports = ShapeElement;
+});
 require.register("boot/boot.js", function(exports, require, module){
 
 });
@@ -1667,6 +1726,14 @@ require.alias("component-emitter/index.js", "boot/deps/emitter/index.js");
 require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
 
 require.alias("happygui-element/index.js", "boot/deps/happygui-element/index.js");
+
+require.alias("happygui-collection/index.js", "boot/deps/happygui-collection/index.js");
+
+require.alias("happygui-textelement/index.js", "boot/deps/happygui-textelement/index.js");
+require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
+
+require.alias("happygui-shapeelement/index.js", "boot/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
 
 require.alias("boot/boot.js", "boot/index.js");
 

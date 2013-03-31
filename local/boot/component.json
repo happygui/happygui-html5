@@ -8,7 +8,10 @@
         "component/emitter": "*"
     },
     "local": [
-        "happygui-element"
+        "happygui-element",
+        "happygui-collection",
+        "happygui-textelement",
+        "happygui-shapeelement"
     ],
     "scripts": ["boot.js"],
     "main": "boot.js"

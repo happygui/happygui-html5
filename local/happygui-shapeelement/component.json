@@ -1,0 +1,12 @@
+{
+    "name": "happygui-shapeelement",
+    "description": "Shape element",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-element": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

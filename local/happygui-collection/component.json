@@ -1,0 +1,11 @@
+{
+    "name": "happygui-collection",
+    "description": "Collection of models",
+    "version": "0.0.1",
+    "dependencies": {
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

@@ -132,6 +132,9 @@
 
   // Happygui dependencies
   var Element = require('happygui-element');
+  var TextElement = require('happygui-textelement');
+  var ShapeElement = require('happygui-shapeelement');
+  var Collection = require('happygui-collection');
 
   /* Quick quick fix */
   Storage.prototype.setObject = function(key, value) {
@@ -141,26 +144,6 @@
   Storage.prototype.getObject = function(key) {
     var value = this.getItem(key);
     return value && JSON.parse(value);
-  };
-
-  function Collection(models) {
-    this.models = models || [];
-  }
-
-  Collection.prototype.__iterate__ = function(){
-    var self = this;
-    return {
-      length: function(){ return self.length() },
-      get: function(i){ return self.models[i] }
-    }
-  };
-
-  Collection.prototype.length = function(){
-    return this.models.length;
-  };
-
-  Collection.prototype.push = function(model){
-    return this.models.push(model);
   };
 
   // Adapter
@@ -438,34 +421,6 @@
 
     return this;
   };
-
-  // TextElement Class
-  var TextElement = function(options) {
-    Element.call(this, options); // Super
-
-    this.hasFontSize = true;
-    this.hasFontColor = true;
-
-    this.fontSize = "13px";
-    this.fontColor = "#000";
-  };
-  TextElement.prototype = Object.create(Element.prototype);
-  TextElement.prototype.constructor = TextElement;
-
-  // TextElement Class
-  var ShapeElement = function(options) {
-    Element.call(this, options); // Super
-
-    this.hasBorderColor = true;
-    this.hasBorderThickness = true;
-    this.hasBackgroundColor = true;
-
-    this.borderColor = "#cc0000";
-    this.borderThickness = "5px";
-    this.backgroundColor = "#00cc00";
-  };
-  ShapeElement.prototype = Object.create(Element.prototype);
-  ShapeElement.prototype.constructor = ShapeElement;
 
   // Views service
   var Views = function(editorView, previewView, pageView) {
