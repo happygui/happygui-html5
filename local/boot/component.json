@@ -13,7 +13,8 @@
         "happygui-collection",
         "happygui-textelement",
         "happygui-shapeelement",
-        "happygui-view"
+        "happygui-view",
+        "happygui-templates"
     ],
     "scripts": ["boot.js"],
     "main": "boot.js"

@@ -1743,6 +1743,30 @@ View.prototype.el = function(html) {
 
 module.exports = View;
 });
+require.register("happygui-templates/index.js", function(exports, require, module){
+var Templates = (function (){
+  var templates = {};
+  var allScripts = document.getElementsByTagName('script');
+
+  function compile (doc) {
+    return Handlebars.compile(doc.innerHTML);
+  }
+
+  for (var i=0; i<allScripts.length; i++) {
+    if (allScripts[i].getAttribute('type') === 'text/html') {
+      templates[allScripts[i].getAttribute('id').replace("_tpl",'')] = compile(allScripts[i]);
+    }
+  }
+
+  return {
+    get: function (template) {
+      return templates[template];
+    }
+  };
+})();
+
+module.exports = Templates;
+});
 require.register("boot/boot.js", function(exports, require, module){
 
 });
@@ -1803,6 +1827,8 @@ require.alias("component-delegate/index.js", "happygui-view/deps/delegate/index.
 require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
 
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
+
+require.alias("happygui-templates/index.js", "boot/deps/happygui-templates/index.js");
 
 require.alias("boot/boot.js", "boot/index.js");
 

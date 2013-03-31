@@ -1,0 +1,11 @@
+{
+    "name": "happygui-templates",
+    "description": "Template singleton",
+    "version": "0.0.1",
+    "dependencies": {
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}
