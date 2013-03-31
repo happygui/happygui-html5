@@ -62,8 +62,8 @@
   </header>
 
   <section id="elementsNew">
-    <div class="elementNew" id="squareNew">
-      Square
+    <div class="elementNew" id="rectNew">
+      Rect
     </div>
     <div class="elementNew" id="circleNew">
       Circle
@@ -226,7 +226,9 @@
             alert("type not recognised, sorry");
         }
 
-        return filesCollection.models[collection].elements.push(element);
+        var index = filesCollection.models[collection].elements.push(element) - 1;
+        console.log("createElement#index", index);
+        return index;
       },
       reset: function() {
         if (confirm("Your data will be lost forever, are you fine with that?")) {
@@ -286,7 +288,7 @@
     this.defaultContainer = "editor";
 
     this.currentCollection = options.collection;
-    this.currentElement = options.element;
+    this.currentElement = options.element || false;
 
     return this;
   }
@@ -297,7 +299,8 @@
     return CollectionCtrl.getCollection(this.currentCollection);
   };
   EditorView.prototype.elements = function (element) {
-    if (typeof element == 'undefined') {
+    console.log("elements", element);
+    if (element === null) {
       return CollectionCtrl.getElements(this.currentCollection);
     }
 
@@ -314,9 +317,9 @@
     // TODO throw errors
     if (type) {
       this.currentElement = id || CollectionCtrl.createElement(this.currentCollection, {type: type});
-      console.log(editor.currentElement);
+      console.log("setElement", editor.currentElement);
     } else {
-
+      console.log("no type");
     }
 
     return this;
@@ -332,10 +335,16 @@
     return this;
   };
 
+  EditorView.prototype.reset = function () {
+    this.currentCollection = null;
+    this.currentElement = null;
+    return this;
+  };
+
   EditorView.prototype.render = function () {
     var html, data;
 
-    if (this.currentElement) {
+    if (this.currentElement !== null) {
       data = this.elements(this.currentElement);
       html = Templates.get("element_editor")(data);
     } else {
@@ -366,6 +375,7 @@
       editor: function(collection) {
 
         editorView
+            .reset()
             .select(collection, null)
             .render();
 
@@ -382,7 +392,7 @@
       },
       collection: function() {
 
-        console.log(CollectionCtrl.get());
+        console.log("collection()", CollectionCtrl.get());
         pageView
             .render("collection", {collection: CollectionCtrl.get()});
 
@@ -390,6 +400,7 @@
       element_editor: function(collection, type, id) {
 
         editorView
+            .reset()
             .select(collection, {type: type, id: id})
             .render();
 

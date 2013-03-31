@@ -1626,7 +1626,7 @@ require.register("happygui-element/index.js", function(exports, require, module)
 function Element(options) {
   options = options || {};
   this.type = options.type;
-  this.isDeletable = options.isDeletable;
+  this.isDeletable = (options.isDeletable != undefined) ? options.isDeletable : true;
 }
 
 module.exports = Element;
