@@ -383,6 +383,135 @@ Emitter.prototype.hasListeners = function(event){
 };
 
 });
+require.register("component-matches-selector/index.js", function(exports, require, module){
+
+/**
+ * Element prototype.
+ */
+
+var proto = Element.prototype;
+
+/**
+ * Vendor function.
+ */
+
+var vendor = proto.matchesSelector
+  || proto.webkitMatchesSelector
+  || proto.mozMatchesSelector
+  || proto.msMatchesSelector
+  || proto.oMatchesSelector;
+
+/**
+ * Expose `match()`.
+ */
+
+module.exports = match;
+
+/**
+ * Match `el` to `selector`.
+ *
+ * @param {Element} el
+ * @param {String} selector
+ * @return {Boolean}
+ * @api public
+ */
+
+function match(el, selector) {
+  if (vendor) return vendor.call(el, selector);
+  var nodes = el.parentNode.querySelectorAll(selector);
+  for (var i = 0; i < nodes.length; ++i) {
+    if (nodes[i] == el) return true;
+  }
+  return false;
+}
+});
+require.register("component-event/index.js", function(exports, require, module){
+
+/**
+ * Bind `el` event `type` to `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @return {Function}
+ * @api public
+ */
+
+exports.bind = function(el, type, fn, capture){
+  if (el.addEventListener) {
+    el.addEventListener(type, fn, capture || false);
+  } else {
+    el.attachEvent('on' + type, fn);
+  }
+  return fn;
+};
+
+/**
+ * Unbind `el` event `type`'s callback `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @return {Function}
+ * @api public
+ */
+
+exports.unbind = function(el, type, fn, capture){
+  if (el.removeEventListener) {
+    el.removeEventListener(type, fn, capture || false);
+  } else {
+    el.detachEvent('on' + type, fn);
+  }
+  return fn;
+};
+
+});
+require.register("component-delegate/index.js", function(exports, require, module){
+
+/**
+ * Module dependencies.
+ */
+
+var matches = require('matches-selector')
+  , event = require('event');
+
+/**
+ * Delegate event `type` to `selector`
+ * and invoke `fn(e)`. A callback function
+ * is returned which may be passed to `.unbind()`.
+ *
+ * @param {Element} el
+ * @param {String} selector
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @return {Function}
+ * @api public
+ */
+
+exports.bind = function(el, selector, type, fn, capture){
+  return event.bind(el, type, function(e){
+    if (matches(e.target, selector)) fn.call(el, e);
+  }, capture);
+};
+
+/**
+ * Unbind event `type`'s callback `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @api public
+ */
+
+exports.unbind = function(el, type, fn, capture){
+  event.unbind(el, type, fn, capture);
+};
+
+});
 require.register("apily-emitter/index.js", function(exports, require, module){
 /**
  * Emitter
@@ -926,135 +1055,6 @@ function selectors_map (el, selectors, result) {
 
   return result;
 }
-
-});
-require.register("component-matches-selector/index.js", function(exports, require, module){
-
-/**
- * Element prototype.
- */
-
-var proto = Element.prototype;
-
-/**
- * Vendor function.
- */
-
-var vendor = proto.matchesSelector
-  || proto.webkitMatchesSelector
-  || proto.mozMatchesSelector
-  || proto.msMatchesSelector
-  || proto.oMatchesSelector;
-
-/**
- * Expose `match()`.
- */
-
-module.exports = match;
-
-/**
- * Match `el` to `selector`.
- *
- * @param {Element} el
- * @param {String} selector
- * @return {Boolean}
- * @api public
- */
-
-function match(el, selector) {
-  if (vendor) return vendor.call(el, selector);
-  var nodes = el.parentNode.querySelectorAll(selector);
-  for (var i = 0; i < nodes.length; ++i) {
-    if (nodes[i] == el) return true;
-  }
-  return false;
-}
-});
-require.register("component-event/index.js", function(exports, require, module){
-
-/**
- * Bind `el` event `type` to `fn`.
- *
- * @param {Element} el
- * @param {String} type
- * @param {Function} fn
- * @param {Boolean} capture
- * @return {Function}
- * @api public
- */
-
-exports.bind = function(el, type, fn, capture){
-  if (el.addEventListener) {
-    el.addEventListener(type, fn, capture || false);
-  } else {
-    el.attachEvent('on' + type, fn);
-  }
-  return fn;
-};
-
-/**
- * Unbind `el` event `type`'s callback `fn`.
- *
- * @param {Element} el
- * @param {String} type
- * @param {Function} fn
- * @param {Boolean} capture
- * @return {Function}
- * @api public
- */
-
-exports.unbind = function(el, type, fn, capture){
-  if (el.removeEventListener) {
-    el.removeEventListener(type, fn, capture || false);
-  } else {
-    el.detachEvent('on' + type, fn);
-  }
-  return fn;
-};
-
-});
-require.register("component-delegate/index.js", function(exports, require, module){
-
-/**
- * Module dependencies.
- */
-
-var matches = require('matches-selector')
-  , event = require('event');
-
-/**
- * Delegate event `type` to `selector`
- * and invoke `fn(e)`. A callback function
- * is returned which may be passed to `.unbind()`.
- *
- * @param {Element} el
- * @param {String} selector
- * @param {String} type
- * @param {Function} fn
- * @param {Boolean} capture
- * @return {Function}
- * @api public
- */
-
-exports.bind = function(el, selector, type, fn, capture){
-  return event.bind(el, type, function(e){
-    if (matches(e.target, selector)) fn.call(el, e);
-  }, capture);
-};
-
-/**
- * Unbind event `type`'s callback `fn`.
- *
- * @param {Element} el
- * @param {String} type
- * @param {Function} fn
- * @param {Boolean} capture
- * @api public
- */
-
-exports.unbind = function(el, type, fn, capture){
-  event.unbind(el, type, fn, capture);
-};
 
 });
 require.register("apily-delegate-manager/index.js", function(exports, require, module){
@@ -1690,11 +1690,69 @@ ShapeElement.prototype.constructor = ShapeElement;
 
 module.exports = ShapeElement;
 });
+require.register("happygui-view/index.js", function(exports, require, module){
+var delegate = require('delegate');
+
+function View (options) {
+  options = options || {};
+
+  this.defaultContainer = "example";
+  this.container = options.container;
+  this.hidden = false;
+}
+View.prototype = Object.create(Emitter.prototype);
+
+View.prototype.broadcast = function(emitter, event, method) {
+};
+
+View.prototype.bind = function(str, method) {
+  // From component/view
+  var parts = str.split(' ');
+  var event = parts.shift();
+  var selector = parts.join(' ');
+  /*    var meth = this[method];
+   if (!meth) throw new TypeError('method "' + method + '" is not defined');
+   */
+  var meth = method;
+  var fn = delegate.bind(document.getElementById(this.container || this.defaultContainer), selector, event, meth.bind(this));
+};
+
+View.prototype.show = function() {
+  if (this.hidden == true) {
+    this.hidden = false;
+    document.getElementById(this.container || this.defaultContainer).className = "";
+  }
+
+  return this;
+};
+
+View.prototype.hide = function() {
+  if (this.hidden == false) {
+    this.hidden = true;
+    document.getElementById(this.container || this.defaultContainer).className = "hidden";
+  }
+
+  return this;
+};
+
+View.prototype.el = function(html) {
+  document.getElementById(this.container || this.defaultContainer).innerHTML = html;
+
+  return this;
+};
+
+module.exports = View;
+});
 require.register("boot/boot.js", function(exports, require, module){
 
 });
 require.alias("component-emitter/index.js", "happygui/deps/emitter/index.js");
 require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
+require.alias("component-delegate/index.js", "happygui/deps/delegate/index.js");
+require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
+
+require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
 
 require.alias("boot/boot.js", "happygui/deps/boot/boot.js");
 require.alias("boot/boot.js", "happygui/deps/boot/index.js");
@@ -1725,6 +1783,11 @@ require.alias("component-domify/index.js", "apily-view/deps/domify/index.js");
 require.alias("component-emitter/index.js", "boot/deps/emitter/index.js");
 require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
 
+require.alias("component-delegate/index.js", "boot/deps/delegate/index.js");
+require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
+
+require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
+
 require.alias("happygui-element/index.js", "boot/deps/happygui-element/index.js");
 
 require.alias("happygui-collection/index.js", "boot/deps/happygui-collection/index.js");
@@ -1734,6 +1797,12 @@ require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-e
 
 require.alias("happygui-shapeelement/index.js", "boot/deps/happygui-shapeelement/index.js");
 require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-view/index.js", "boot/deps/happygui-view/index.js");
+require.alias("component-delegate/index.js", "happygui-view/deps/delegate/index.js");
+require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
+
+require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
 
 require.alias("boot/boot.js", "boot/index.js");
 

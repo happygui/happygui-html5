@@ -1,0 +1,12 @@
+{
+    "name": "happygui-view",
+    "description": "View",
+    "version": "0.0.1",
+    "dependencies": {
+        "component/delegate": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

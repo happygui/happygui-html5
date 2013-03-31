@@ -5,13 +5,15 @@
         "apily/router": "*",
         "apily/history": "*",
         "apily/view": "*",
-        "component/emitter": "*"
+        "component/emitter": "*",
+        "component/delegate": "*"
     },
     "local": [
         "happygui-element",
         "happygui-collection",
         "happygui-textelement",
-        "happygui-shapeelement"
+        "happygui-shapeelement",
+        "happygui-view"
     ],
     "scripts": ["boot.js"],
     "main": "boot.js"
