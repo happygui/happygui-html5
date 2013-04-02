@@ -248,6 +248,10 @@
         console.log("getElement", element, collection);
         return filesCollection.models[collection].elements[element];
       },
+      delElement: function(element, collection) {
+        filesCollection.models[collection].elements.splice(element, 1);
+        save();
+      },
       update: function (doc, collection) {
         if (doc && collection) {
           filesCollection.models[collection] = doc;
@@ -479,6 +483,10 @@
   editor.bind('click .elementNew', function(e) {
     var type = e.target.id.replace('New','');
     window.location = "#editor/"+editor.currentCollection+"/"+type;
+  });
+  editor.bind('click #editor .btn-delete', function(e) {
+    CollectionCtrl.delElement(editor.currentElement, editor.currentCollection);
+    window.location = "#editor/"+editor.currentCollection;
   });
   var preview = new PreviewView({container: 'preview'});
   var page = new PageView({container: 'page'});
