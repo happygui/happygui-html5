@@ -6,7 +6,8 @@
         "apily/history": "*",
         "apily/view": "*",
         "component/emitter": "*",
-        "component/delegate": "*"
+        "component/delegate": "*",
+        "component/gesture": "*"
     },
     "local": [
         "happygui-element",

@@ -129,6 +129,7 @@
   var delegate = require('component-delegate');
   var event = require('component-event');
   var Emitter = require('component-emitter');
+  var gesture = require('component-gesture');
 
   // Happygui dependencies
   var Element = require('happygui-element');
@@ -141,6 +142,60 @@
   /* Quick quick fix */
   Storage.prototype.setObject = function(key, value) {this.setItem(key, JSON.stringify(value));};
   Storage.prototype.getObject = function(key) {var value = this.getItem(key); return value && JSON.parse(value);};
+
+
+  (function() {
+    var elementGesture, height, image, offset, origin, prevScale, scale, screenOrigin, translate, width, wrap;
+
+    // elementGesture = gesture(document.getElementsByClassName("element"));
+
+    image = document.getElementsByClassName("element");
+    gesture(image);
+    wrap = document.getElementById("preview");
+    width = 300;
+    height = 300;
+    offset = 100;
+    origin = {
+      x: 0,
+      y: 0
+    };
+    screenOrigin = {
+      x: 0,
+      y: 0
+    };
+    translate = {
+      x: 0,
+      y: 0
+    };
+    scale = 1;
+    prevScale = 1;
+
+    elementGesture.on('transform start', function(e) {
+      screenOrigin.x = (e.originalEvent.touches[0].clientX + e.originalEvent.touches[1].clientX) / 2;
+      return screenOrigin.y = (e.originalEvent.touches[0].clientY + e.originalEvent.touches[1].clientY) / 2;
+    });
+
+    elementGesture.on('transform', function(event) {
+      var newHeight, newWidth;
+      scale = prevScale * event.scale;
+      newWidth = 300 * scale;
+      newHeight = 300 * scale;
+      origin.x = screenOrigin.x - offset.left - translate.x;
+      origin.y = screenOrigin.y - offset.top - translate.y;
+      translate.x += -origin.x * (newWidth - width) / newWidth;
+      translate.y += -origin.y * (newHeight - height) / newHeight;
+      image.css('-webkit-transform', "scale3d(" + scale + ", " + scale + ", 1)");
+      wrap.css('-webkit-transform', "translate3d(" + translate.x + "px, " + translate.y + "px, 0)");
+      width = newWidth;
+      return height = newHeight;
+    });
+
+    elementGesture.on('transform end', function(event) {
+      return prevScale = scale;
+    });
+  })
+      //.call(this);
+
 
   // Singleton
   var CollectionCtrl = (function(){
@@ -250,9 +305,17 @@
   PreviewView.prototype = Object.create(View.prototype);
   PreviewView.prototype.constructor = PreviewView;
 
-  PreviewView.prototype.render = function () {
+  PreviewView.prototype.render = function (collection) {
 
-    this.el("").show();
+    var collection = CollectionCtrl.getCollection(collection);
+
+    var html = "", element;
+
+    for (element in collection.elements) {
+      html += "<button>"+element.type+"</button>"
+    }
+
+    this.el(html).show();
     return this;
   };
 
@@ -380,7 +443,7 @@
             .render();
 
         previewView
-            .render();
+            .render(collection);
 
       },
       help: function() {
@@ -405,7 +468,7 @@
             .render();
 
         previewView
-            .render();
+            .render(collection);
 
       }
     }
