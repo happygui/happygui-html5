@@ -313,10 +313,11 @@
 
     var collection = CollectionCtrl.getCollection(collection);
 
-    var html = "", element;
+    var html = "", element, i = 0;
 
-    for (element in collection.elements) {
-      html += "<button>"+element.type+"</button>"
+    for (i = 0; i < collection.elements.length; i++) {
+      element = collection.elements[i];
+      html += '<button id="el_'+i+'">'+element.type+'</button>';
     }
 
     this.el(html).show();
@@ -488,6 +489,17 @@
     CollectionCtrl.delElement(editor.currentElement, editor.currentCollection);
     window.location = "#editor/"+editor.currentCollection;
   });
+  editor.bind('click #editor .colorpicker', function(e) {
+    // TODO use external libs
+    alert("Pick a color");
+  });
+
+  // Only for testing
+  editor.bind('click #preview button', function(e) {
+    // TODO delete this
+    parseInt(e.target.id.replace("el_",''));
+  });
+
   var preview = new PreviewView({container: 'preview'});
   var page = new PageView({container: 'page'});
   page.bind('click #collectionSave', CollectionCtrl.create);
