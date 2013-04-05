@@ -62,20 +62,24 @@
   </header>
 
   <section id="elementsNew">
-    <div class="elementNew" id="rectNew">
-      Rect
+    <div class="row">
+      <div class="elementNew" id="rectNew">
+        Rect
+      </div>
+      <div class="elementNew" id="circleNew">
+        Circle
+      </div>
+      <div class="elementNew" id="textNew">
+        Text
+      </div>
+      <div class="elementNew" id="cameraNew">
+        Camera
+      </div>
     </div>
-    <div class="elementNew" id="circleNew">
-      Circle
-    </div>
-    <div class="elementNew" id="textNew">
-      Text
-    </div>
-    <div class="elementNew" id="cameraNew">
-      Camera
-    </div>
-    <div class="elementNew" id="imageNew">
-      Image
+    <div class="row">
+      <div class="elementNew" id="imageNew">
+        Image
+      </div>
     </div>
   </section>
 
@@ -494,13 +498,16 @@
     alert("Pick a color");
   });
 
+  var preview = new PreviewView({container: 'preview'});
+
   // Only for testing
-  editor.bind('click #preview button', function(e) {
+  preview.bind('click #preview button', function(e) {
     // TODO delete this
-    parseInt(e.target.id.replace("el_",''));
+    var elementId = parseInt(e.target.id.replace("el_",''));
+    var element = CollectionCtrl.getElement(elementId, editor.currentCollection);
+    window.location = "#editor/"+editor.currentCollection+"/"+element.type+"/"+elementId;
   });
 
-  var preview = new PreviewView({container: 'preview'});
   var page = new PageView({container: 'page'});
   page.bind('click #collectionSave', CollectionCtrl.create);
   var views = Views(editor, preview, page);

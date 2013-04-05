@@ -174,30 +174,27 @@ select {
   text-transform: uppercase;
 }
 .editorElement {
-  margin: 0 10%;
   margin-top: 10%;
 }
 .btn {
   display: inline-block;
   border: 0;
-  padding: 20px 40px;
   background-color: #efefef;
   color: #fff;
   text-decoration: none;
   cursor: pointer;
+  padding: 20px 40px;
 }
 .btn:hover {
   border: 2px solid #000000;
   padding: 18px 38px;
 }
 .colorpicker {
-  margin: 0 10%;
   margin-top: 10%;
   height: 4em;
   border: 3px solid #000;
 }
 .sizemodifier {
-  margin: 0 10%;
   margin-top: 10%;
 }
 .sizemodifier label {
@@ -213,7 +210,6 @@ select {
   color: #fff;
   text-decoration: none;
   cursor: pointer;
-  margin: 0 10%;
   margin-top: 10%;
   padding: 20px 40px;
   background: #ffff99;
@@ -241,6 +237,12 @@ body {
   top: 0px;
   left: 0px;
 }
+#editor header {
+  margin: 0 10%;
+}
+#editor section {
+  margin: 0 10%;
+}
 #editor footer {
   position: absolute;
   bottom: 0;
@@ -249,6 +251,9 @@ body {
 }
 #editor footer .btn-editor {
   float: right;
+}
+#editor .row > div:last-child {
+  margin-right: 0;
 }
 #preview {
   margin-left: 40%;
@@ -259,6 +264,21 @@ body {
   border: 2px solid #000;
   padding: 10px;
   font-size: 2em;
+}
+#elementsNew {
+  margin-top: 10%;
+}
+#elementsNew .elementNew {
+  margin-top: 5%;
+  background-color: #efefef;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
+  float: left;
+  width: 22%;
+  margin-right: 4%;
+  padding: 8% 0;
 }
 .green_bg {
   background-color: #62bb11;

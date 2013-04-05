@@ -12,6 +12,22 @@
   left: @left;
 }
 
+.btnize (@padding1, @padding2) {
+  display: inline-block;
+  border: 0;
+  background-color: #efefef;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  padding: @padding1 @padding2;
+
+  &:hover {
+    border: 2px solid #000000;
+    padding: (@padding1 - 2) (@padding2 - 2);
+  }
+}
+
+
 // Attributes
 .hidden {
   display: none;
@@ -44,7 +60,6 @@
 }
 
 .editorElement {
-  margin: 0 10%;
   margin-top: 10%;
 }
 
@@ -52,18 +67,7 @@
 }
 
 .btn {
-  display: inline-block;
-  border: 0;
-  padding: 20px 40px;
-  background-color: #efefef;
-  color: #fff;
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    border: 2px solid #000000;
-    padding: 18px 38px;
-  }
+  .btnize(20px, 40px);
 }
 
 // Sub class objects
@@ -116,10 +120,10 @@ body {
   .fixedPosition(0px,0px);
 
   header {
-
+    margin: 0 10%;
   }
   section {
-
+    margin: 0 10%;
   }
   footer {
     position: absolute;
@@ -129,6 +133,12 @@ body {
 
     .btn-editor {
       float: right;
+    }
+  }
+
+  .row > div {
+    &:last-child {
+      margin-right: 0;
     }
   }
 }
@@ -144,6 +154,23 @@ body {
     border: 2px solid #000;
     padding: 10px;
     font-size: 2em;
+  }
+}
+
+#elementsNew {
+  .editorElement;
+
+  .elementNew {
+    margin-top: 5%;
+    background-color: #efefef;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+    float: left;
+    width: 22%;
+    margin-right: 4%;
+    padding: 8% 0;
   }
 }
 
