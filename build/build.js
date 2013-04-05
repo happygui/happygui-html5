@@ -2560,7 +2560,7 @@ var TextElement = function(options) {
   this.hasFontSize = true;
   this.hasFontColor = true;
 
-  this.fontSize = options.fontSize || "13px";
+  this.fontSize = options.fontSize || 13;
   this.fontColor = options.fontColor || "#000";
 };
 TextElement.prototype = Object.create(Element.prototype);
@@ -2578,9 +2578,9 @@ var ShapeElement = function(options) {
   this.hasBorderThickness = true;
   this.hasBackgroundColor = true;
 
-  this.borderColor = "#cc0000";
-  this.borderThickness = "5px";
-  this.backgroundColor = "#00cc00";
+  this.borderColor = options.borderColor || "#cc0000";
+  this.borderThickness = options.borderThickness || 5;
+  this.backgroundColor = options.backgroundColor || "#00cc00";
 };
 ShapeElement.prototype = Object.create(Element.prototype);
 ShapeElement.prototype.constructor = ShapeElement;
@@ -2594,14 +2594,7 @@ var CircleElement = function(options) {
   ShapeElement.call(this, options); // Super
   options = options || {};
 
-  this.hasBorderColor = true;
-  this.hasBorderThickness = true;
-  this.hasBackgroundColor = true;
   this.hasRadius = true;
-
-  this.borderColor = options.borderColor || "#cc0000";
-  this.borderThickness = options.borderThickness || "5px";
-  this.backgroundColor = options.backgroundColor || "#00cc00";
   this.radius = options.radius || 80;
 };
 CircleElement.prototype = Object.create(ShapeElement.prototype);
@@ -2614,18 +2607,8 @@ var ShapeElement = require('happygui-shapeelement');
 
 var RectElement = function(options) {
   ShapeElement.call(this, options); // Super
+  options = options || {};
 
-  this.hasBorderColor = true;
-  this.hasBorderThickness = true;
-  this.hasBackgroundColor = true;
-  this.hasWidth = true;
-  this.hasHeight = true;
-
-  this.borderColor = options.borderColor || "#cc0000";
-  this.borderThickness = options.borderThickness || "5px";
-  this.backgroundColor = options.backgroundColor || "#00cc00";
-  this.width = options.width || 80;
-  this.height = options.height || 40;
 };
 RectElement.prototype = Object.create(ShapeElement.prototype);
 RectElement.prototype.constructor = RectElement;
