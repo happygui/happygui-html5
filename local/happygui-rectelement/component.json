@@ -1,0 +1,12 @@
+{
+    "name": "happygui-rectelement",
+    "description": "Rectangle element",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-shapeelement": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

@@ -2609,6 +2609,29 @@ CircleElement.prototype.constructor = CircleElement;
 
 module.exports = CircleElement;
 });
+require.register("happygui-rectelement/index.js", function(exports, require, module){
+var ShapeElement = require('happygui-shapeelement');
+
+var RectElement = function(options) {
+  ShapeElement.call(this, options); // Super
+
+  this.hasBorderColor = true;
+  this.hasBorderThickness = true;
+  this.hasBackgroundColor = true;
+  this.hasWidth = true;
+  this.hasHeight = true;
+
+  this.borderColor = options.borderColor || "#cc0000";
+  this.borderThickness = options.borderThickness || "5px";
+  this.backgroundColor = options.backgroundColor || "#00cc00";
+  this.width = options.width || 80;
+  this.height = options.height || 40;
+};
+RectElement.prototype = Object.create(ShapeElement.prototype);
+RectElement.prototype.constructor = RectElement;
+
+module.exports = RectElement;
+});
 require.register("happygui-view/index.js", function(exports, require, module){
 var delegate = require('delegate');
 
@@ -2755,6 +2778,10 @@ require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-
 
 require.alias("happygui-circleelement/index.js", "boot/deps/happygui-circleelement/index.js");
 require.alias("happygui-shapeelement/index.js", "happygui-circleelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-rectelement/index.js", "boot/deps/happygui-rectelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-rectelement/deps/happygui-shapeelement/index.js");
 require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
 
 require.alias("happygui-view/index.js", "boot/deps/happygui-view/index.js");
