@@ -139,6 +139,7 @@
   var Element = require('happygui-element');
   var TextElement = require('happygui-textelement');
   var ShapeElement = require('happygui-shapeelement');
+  var CircleElement = require('happygui-circleelement');
   var Collection = require('happygui-collection');
   var View = require('happygui-view');
   var Templates = require('happygui-templates');
@@ -279,6 +280,7 @@
           case "image":
             break;
           case "circle":
+          	element = new CircleElement(doc);
             break;
           case "text":
             element = new TextElement(doc);

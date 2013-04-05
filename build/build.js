@@ -1,11 +1,4 @@
 
-
-/**
- * hasOwnProperty.
- */
-
-var has = Object.prototype.hasOwnProperty;
-
 /**
  * Require the given path.
  *
@@ -82,10 +75,10 @@ require.resolve = function(path) {
 
   for (var i = 0; i < paths.length; i++) {
     var path = paths[i];
-    if (has.call(require.modules, path)) return path;
+    if (require.modules.hasOwnProperty(path)) return path;
   }
 
-  if (has.call(require.aliases, index)) {
+  if (require.aliases.hasOwnProperty(index)) {
     return require.aliases[index];
   }
 };
@@ -139,7 +132,7 @@ require.register = function(path, definition) {
  */
 
 require.alias = function(from, to) {
-  if (!has.call(require.modules, from)) {
+  if (!require.modules.hasOwnProperty(from)) {
     throw new Error('Failed to alias "' + from + '", it does not exist');
   }
   require.aliases[to] = from;
@@ -201,7 +194,7 @@ require.relative = function(parent) {
    */
 
   localRequire.exists = function(path) {
-    return has.call(require.modules, localRequire.resolve(path));
+    return require.modules.hasOwnProperty(localRequire.resolve(path));
   };
 
   return localRequire;
@@ -1826,7 +1819,7 @@ History.prototype.onchange = function (event) {
       return true;
     }
   }
-
+  
   return false;
 };
 
@@ -2559,8 +2552,8 @@ var TextElement = function(options) {
   this.hasFontSize = true;
   this.hasFontColor = true;
 
-  this.fontSize = "13px";
-  this.fontColor = "#000";
+  this.fontSize = options.fontSize || "13px";
+  this.fontColor = options.fontColor || "#000";
 };
 TextElement.prototype = Object.create(Element.prototype);
 TextElement.prototype.constructor = TextElement;
@@ -2585,6 +2578,27 @@ ShapeElement.prototype = Object.create(Element.prototype);
 ShapeElement.prototype.constructor = ShapeElement;
 
 module.exports = ShapeElement;
+});
+require.register("happygui-circleelement/index.js", function(exports, require, module){
+var ShapeElement = require('happygui-shapeelement');
+
+var CircleElement = function(options) {
+  ShapeElement.call(this, options); // Super
+
+  this.hasBorderColor = true;
+  this.hasBorderThickness = true;
+  this.hasBackgroundColor = true;
+  this.hasRadius = true;
+
+  this.borderColor = options.borderColor || "#cc0000";
+  this.borderThickness = options.borderThickness || "5px";
+  this.backgroundColor = options.backgroundColor || "#00cc00";
+  this.radius = options.radius || 80;
+};
+CircleElement.prototype = Object.create(ShapeElement.prototype);
+CircleElement.prototype.constructor = CircleElement;
+
+module.exports = CircleElement;
 });
 require.register("happygui-view/index.js", function(exports, require, module){
 var delegate = require('delegate');
@@ -2728,6 +2742,10 @@ require.alias("happygui-textelement/index.js", "boot/deps/happygui-textelement/i
 require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
 
 require.alias("happygui-shapeelement/index.js", "boot/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-circleelement/index.js", "boot/deps/happygui-circleelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-circleelement/deps/happygui-shapeelement/index.js");
 require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
 
 require.alias("happygui-view/index.js", "boot/deps/happygui-view/index.js");
