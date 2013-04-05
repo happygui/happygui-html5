@@ -33,6 +33,15 @@
   display: none;
 }
 
+.no_selection {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .centred {
   width: 100%;
   margin: 0 auto;
@@ -114,6 +123,7 @@ body {
   }
 }
 #editor {
+  .no_selection;
   width: @editorWidth;
   height: 100%;
   background-color: @editorBackground;
