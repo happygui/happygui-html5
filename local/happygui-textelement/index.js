@@ -2,6 +2,7 @@ var Element = require('happygui-element');
 
 var TextElement = function(options) {
   Element.call(this, options); // Super
+  options = options || {};
 
   this.hasFontSize = true;
   this.hasFontColor = true;

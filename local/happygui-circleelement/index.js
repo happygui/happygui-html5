@@ -2,6 +2,7 @@ var ShapeElement = require('happygui-shapeelement');
 
 var CircleElement = function(options) {
   ShapeElement.call(this, options); // Super
+  options = options || {};
 
   this.hasBorderColor = true;
   this.hasBorderThickness = true;

@@ -96,25 +96,25 @@
 
   <section>
     {{#hasBackground}}
-    <div class="colorpicker cpBackground" style="background-color: {{backgroundColor}};">
+    <div class="colorpicker cp_background" style="background-color: {{backgroundColor}};">
     </div>
     {{/hasBackground}}
     {{#hasBorderColor}}
-    <div class="colorpicker cpBorderColor" style="background-color: {{borderColor}};">
+    <div class="colorpicker cp_borderColor" style="background-color: {{borderColor}};">
     </div>
     {{/hasBorderColor}}
     {{#hasFontColor}}
-    <div class="colorpicker cpFontColor" style="background-color: {{fontColor}};">
+    <div class="colorpicker cp_fontColor" style="background-color: {{fontColor}};">
     </div>
     {{/hasFontColor}}
     {{#hasBorderThickness}}
-    <div class="sizemodifier smBorderThickness">
-      <label>Border thickness<input value="{{borderThickness}}" name="smBorderThickness" /></label>
+    <div class="sizemodifier sm_borderThickness">
+      <label>Border thickness<input value="{{borderThickness}}" name="sm_borderThickness" /></label>
     </div>
     {{/hasBorderThickness}}
     {{#hasFontSize}}
-    <div class="sizemodifier smFontSize">
-      <label>Font size<input value="{{fontSize}}" name="smFontSize" /></label>
+    <div class="sizemodifier sm_fontSize">
+      <label>Font size<input value="{{fontSize}}" name="sm_fontSize" /></label>
     </div>
     {{/hasFontSize}}
   </section>
@@ -253,6 +253,15 @@
         console.log("getElement", element, collection);
         return filesCollection.models[collection].elements[element];
       },
+      setElementAttribute: function(element, collection, key, value) {
+        // Validation
+        if (key.slice(0,3) == "has") return this;
+        var current = filesCollection.models[collection].elements[element];
+        if (typeof current[key] === 'undefined') return this;
+
+        filesCollection.models[collection].elements[element][key] = value;
+        return this;
+      },
       delElement: function(element, collection) {
         filesCollection.models[collection].elements.splice(element, 1);
         save();
@@ -387,6 +396,10 @@
     return this;
   };
 
+  EditorView.prototype.setAttribute = function (key, value) {
+    CollectionCtrl.setElementAttribute(this.currentElement, this.currentCollection, key, value);
+  };
+
   EditorView.prototype.setElement = function (type, id) {
     // TODO throw errors
     if (type) {
@@ -490,6 +503,12 @@
   editor.bind('click .elementNew', function(e) {
     var type = e.target.id.replace('New','');
     window.location = "#editor/"+editor.currentCollection+"/"+type;
+  });
+  editor.bind('keyup #editor input', function(e) {
+    var key = e.target.name.replace("sm_", "");
+    var value = e.target.value;
+    console.log(key, value);
+    editor.setAttribute(key, value);
   });
   editor.bind('click #editor .btn-delete', function(e) {
     CollectionCtrl.delElement(editor.currentElement, editor.currentCollection);
