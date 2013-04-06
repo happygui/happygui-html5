@@ -9,6 +9,7 @@
   "dependencies": {
     "component/emitter": "*",
     "component/delegate": "*",
-    "component/gesture": "*"
+    "component/gesture": "*",
+    "richthegeek/raphael": "*"
   }
 }

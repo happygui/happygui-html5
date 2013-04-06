@@ -134,6 +134,7 @@
   var event = require('component-event');
   var Emitter = require('component-emitter');
   var gesture = require('component-gesture');
+  var Raphael = require('richthegeek-raphael');
 
   // Happygui dependencies
   var Element = require('happygui-element');
@@ -144,6 +145,29 @@
   var Collection = require('happygui-collection');
   var View = require('happygui-view');
   var Templates = require('happygui-templates');
+
+
+  /* var width;
+  var height;
+  var maxWidth = 480;
+  var maxHeight = 800;
+  var widthPer;
+
+  function setSize() {
+    width = window.innerWidth * 0.7;
+    if (width > maxWidth) width = maxWidth;
+    widthPer = width / maxWidth;
+    height = widthPer * maxHeight;
+  }
+  var paper = Raphael(document.getElementById("preview"), 480, 800);
+  paper.setViewBox(0, 0, 480, 800, true);
+
+  window.onresize = function(event) {
+    setSize();
+    paper.setSize(width,height);
+    //redraw_element();
+  };
+  */
 
   /* Quick quick fix */
   Storage.prototype.setObject = function(key, value) {this.setItem(key, JSON.stringify(value));};
@@ -267,14 +291,15 @@
         filesCollection.models[collection].elements.splice(element, 1);
         save();
       },
-      update: function (doc, collection) {
-        if (doc && collection) {
+      update: function (toSave, doc, collection, element) {
+        if (doc !== undefined && collection !== undefined && element !== undefined) {
+          filesCollection.models[collection].elements[element] = doc;
+        } else if (doc !== undefined && collection !== undefined) {
           filesCollection.models[collection] = doc;
-        }
-        else if (doc) {
+        } else if (doc !== undefined) {
           filesCollection.models = doc;
         }
-        save();
+        if (toSave) save();
       },
       create: function() {
         var name = document.getElementById("collectionName").value;
@@ -322,24 +347,50 @@
     options = options || {};
 
     this.defaultContainer = "preview";
+    this.paper = Raphael(document.getElementById(options.container || options.defaultContainer), 480, 800);
 
     return this;
   }
   PreviewView.prototype = Object.create(View.prototype);
   PreviewView.prototype.constructor = PreviewView;
 
-  PreviewView.prototype.render = function (collection) {
+  PreviewView.prototype.render = function (currentCollection) {
 
-    var collection = CollectionCtrl.getCollection(collection);
+    var collection = CollectionCtrl.getCollection(currentCollection);
 
     var html = "", element, i = 0;
 
-    for (i = 0; i < collection.elements.length; i++) {
-      element = collection.elements[i];
-      html += '<button id="el_'+i+'">'+element.type+'</button>';
-    }
+    var self = this;
+    collection.elements.forEach(function(element, currentElement) {
 
-    this.el(html).show();
+
+      // TODO MAKE FACTORY
+      console.log(element.type);
+      switch (element.type) {
+        case "image":
+          break;
+        case "circle":
+          element = new CircleElement(element);
+          break;
+        case "rect":
+          element = new RectElement(element);
+          break;
+        case "text":
+          element = new TextElement(element);
+          break;
+        default:
+
+          //TODO throw error
+          alert("type not recognised, sorry");
+      }
+
+      element.draw(self.paper, function(x,y) {
+        CollectionCtrl.update(false, element, currentCollection, currentElement);
+      });
+    });
+
+    this.show();
+
     return this;
   };
 
@@ -414,6 +465,10 @@
     }
 
     return this;
+  };
+
+  EditorView.prototype.saveElement = function (toSave, doc) {
+    CollectionCtrl.update(toSave, doc, this.currentCollection, this.currentElement);
   };
 
   EditorView.prototype.select = function(collection, element) {
@@ -540,6 +595,9 @@
   // Clean before router cleans
   window.addEventListener("hashchange", function() {
     editor.hide();
+    // TODO move preview paper clear from here
+    // TODO dont clear/redraw when same collection
+    preview.paper.clear();
     preview.hide();
     page.hide();
   }, true);
