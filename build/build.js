@@ -2995,7 +2995,7 @@ CircleElement.prototype.draw = function (paper, callback) {
   var self = this;
 
   return paper
-    .circle(self.radius + self.x, self.radius + self.y, self.radius)
+    .circle(self.x, self.y, self.radius)
     .attr({
       stroke: self.borderColor,
       fill: self.backgroundColor,
@@ -3010,7 +3010,6 @@ CircleElement.prototype.draw = function (paper, callback) {
       });
     }, function () {
     }, function () {
-      console.log(this.attr("cx"), this.attr("cy"));
       self.x = this.attr("cx");
       self.y = this.attr("cy");
       callback(self.x, self.y);
