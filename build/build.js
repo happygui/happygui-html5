@@ -3003,18 +3003,22 @@ CircleElement.prototype.draw = function (paper, callback) {
       "stroke-width": self.borderThickness,
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
-    }).drag(function (dx, dy) {
-      this.attr({
-        cx: Math.min(Math.max(self.x + dx, self.radius + 5), 480-(self.radius+5)),
-        cy: Math.min(Math.max(self.y + dy, self.radius + 5), 800-(self.radius+5))
-      });
-    }, function () {
-    }, function () {
-      self.x = this.attr("cx");
-      self.y = this.attr("cy");
-      callback(self.x, self.y);
-    });
-
+    })
+    .drag(
+      function (dx, dy) {
+        this.attr({
+          cx: Math.min(Math.max(self.x + dx, self.radius + 5), 480-(self.radius+5)),
+          cy: Math.min(Math.max(self.y + dy, self.radius + 5), 800-(self.radius+5))
+        });
+      },
+      function () {
+      },
+      function () {
+        self.x = this.attr("cx");
+        self.y = this.attr("cy");
+        callback(self.x, self.y);
+      }
+    );
 };
 
 module.exports = CircleElement;
@@ -3029,6 +3033,34 @@ var RectElement = function(options) {
 };
 RectElement.prototype = Object.create(ShapeElement.prototype);
 RectElement.prototype.constructor = RectElement;
+
+RectElement.prototype.draw = function (paper, callback) {
+  var self = this;
+
+  return paper
+    .rect(self.x, self.y, self.width, self.height)
+    .attr({
+      stroke: self.borderColor,
+      fill: self.backgroundColor,
+      "fill-opacity": .5,
+      "stroke-width": self.borderThickness,
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round"
+    })
+    .drag(
+      function(dx, dy, x, y) {
+        this.attr({x: self.x + dx, y: self.y + dy});
+      },
+      function () {
+      },
+      function () {
+        self.x = this.attr("x");
+        self.y = this.attr("y");
+        callback(self.x, self.y);
+      }
+    );
+
+};
 
 module.exports = RectElement;
 });
