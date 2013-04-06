@@ -386,6 +386,7 @@
 
       element.draw(self.paper, function(x,y) {
         CollectionCtrl.update(false, element, currentCollection, currentElement);
+        window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
       });
     });
 
