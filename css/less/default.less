@@ -6,6 +6,12 @@
 @editorWidth: 40%;
 
 // Functions
+.box-shadow(@style, @c) {
+  box-shadow:         @style @c;
+  -webkit-box-shadow: @style @c;
+  -moz-box-shadow:    @style @c;
+}
+
 .fixedPosition(@top, @left) {
   position: fixed;
   top: @top;
@@ -157,6 +163,9 @@ body {
   margin-left: @editorWidth;
   height: 100%;
   min-height: 800px;
+  svg {
+    .box-shadow(5px 0px 36px, #eee);
+  }
 }
 
 #newpage {
