@@ -5,7 +5,7 @@ var CircleElement = function(options) {
   options = options || {};
 
   this.hasRadius = true;
-  this.radius = options.radius || 30;
+  this.radius = options.radius || 60;
 };
 CircleElement.prototype = Object.create(ShapeElement.prototype);
 CircleElement.prototype.constructor = CircleElement;
