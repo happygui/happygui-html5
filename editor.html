@@ -137,14 +137,11 @@
   var Raphael = require('richthegeek-raphael');
 
   // Happygui dependencies
-  var Element = require('happygui-element');
-  var TextElement = require('happygui-textelement');
-  var ShapeElement = require('happygui-shapeelement');
-  var CircleElement = require('happygui-circleelement');
-  var RectElement = require('happygui-rectelement');
   var Collection = require('happygui-collection');
   var View = require('happygui-view');
   var Templates = require('happygui-templates');
+
+  var ElementFactory = require('happygui-elementfactory');
 
 
   /* var width;
@@ -226,16 +223,30 @@
   })
       //.call(this);
 
-
   // Singleton
   var CollectionCtrl = (function(){
 
     var get = function () {
       if (localStorage) {
-        return localStorage.getObject('happygui-collection');
+        var objects = localStorage.getObject('happygui-collection');
       } else {
         return alert("You are using a platform which is not recognised!");
       }
+
+      //TODO evaluate prototype towards re-creation of element
+      objects.forEach(function(collection) {
+        collection.elements.forEach(function(element) {
+          element = 0;
+        });
+      });
+
+      return objects.map(function(collection) {
+        collection.elements = collection.elements.map(function(element){
+          element.__proto__ = ElementFactory.prototype(element.type);
+          return element;
+        });
+        return collection;
+      });
     };
 
     var save = function () {
@@ -261,6 +272,8 @@
         alert("You are using a platform which is not recognised!");
       }
     };
+
+
 
     var filesCollection = new Collection(get());
 
@@ -309,28 +322,8 @@
         return this;
       },
       createElement: function (collection, doc) {
-        var element;
-
-        switch (doc.type) {
-          case "image":
-            break;
-          case "circle":
-          	element = new CircleElement(doc);
-            break;
-          case "rect":
-          	element = new RectElement(doc);
-            break;
-          case "text":
-            element = new TextElement(doc);
-            break;
-          default:
-
-            //TODO throw error
-            alert("type not recognised, sorry");
-        }
-
+        var element = ElementFactory.create(doc);
         var index = filesCollection.models[collection].elements.push(element) - 1;
-        console.log("createElement#index", index);
         return index;
       },
       reset: function() {
@@ -362,27 +355,6 @@
 
     var self = this;
     collection.elements.forEach(function(element, currentElement) {
-
-
-      // TODO MAKE FACTORY
-      console.log(element.type);
-      switch (element.type) {
-        case "image":
-          break;
-        case "circle":
-          element = new CircleElement(element);
-          break;
-        case "rect":
-          element = new RectElement(element);
-          break;
-        case "text":
-          element = new TextElement(element);
-          break;
-        default:
-
-          //TODO throw error
-          alert("type not recognised, sorry");
-      }
 
       element.draw(self.paper, function(x,y) {
         CollectionCtrl.update(false, element, currentCollection, currentElement);

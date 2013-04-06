@@ -3109,6 +3109,58 @@ var Templates = (function (){
 
 module.exports = Templates;
 });
+require.register("happygui-elementfactory/index.js", function(exports, require, module){
+var TextElement = require('happygui-textelement');
+var CircleElement = require('happygui-circleelement');
+var RectElement = require('happygui-rectelement');
+
+var ElementFactory = {
+  create: function (doc) {
+    var element;
+
+    switch (doc.type) {
+      case "image":
+        break;
+      case "circle":
+        element = new CircleElement(doc);
+        break;
+      case "rect":
+        element = new RectElement(doc);
+        break;
+      case "text":
+        element = new TextElement(doc);
+        break;
+      default:
+        //TODO throw error
+        alert("type not recognised, sorry");
+    }
+
+    return element;
+  },
+  prototype: function (type) {
+    var prototype;
+    switch (type) {
+      case "image":
+        break;
+      case "circle":
+        prototype = CircleElement.prototype;
+        break;
+      case "rect":
+        prototype = RectElement.prototype;
+        break;
+      case "text":
+        prototype = TextElement.prototype;
+        break;
+      default:
+        //TODO throw error
+        alert("type not recognised, sorry");
+    }
+    return prototype;
+  }
+};
+
+module.exports = ElementFactory;
+});
 require.register("boot/boot.js", function(exports, require, module){
 
 });
@@ -3207,6 +3259,18 @@ require.alias("component-matches-selector/index.js", "component-delegate/deps/ma
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
 
 require.alias("happygui-templates/index.js", "boot/deps/happygui-templates/index.js");
+
+require.alias("happygui-elementfactory/index.js", "boot/deps/happygui-elementfactory/index.js");
+require.alias("happygui-circleelement/index.js", "happygui-elementfactory/deps/happygui-circleelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-circleelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-rectelement/index.js", "happygui-elementfactory/deps/happygui-rectelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-rectelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-textelement/index.js", "happygui-elementfactory/deps/happygui-textelement/index.js");
+require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
 
 require.alias("boot/boot.js", "boot/index.js");
 

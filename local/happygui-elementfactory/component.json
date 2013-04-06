@@ -1,0 +1,14 @@
+{
+    "name": "happygui-elementfactory",
+    "description": "Rectangle element",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-circleelement": "*",
+        "happygui-rectelement": "*",
+        "happygui-textelement": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

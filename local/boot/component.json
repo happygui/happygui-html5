@@ -18,7 +18,8 @@
         "happygui-circleelement",
         "happygui-rectelement",
         "happygui-view",
-        "happygui-templates"
+        "happygui-templates",
+        "happygui-elementfactory"
     ],
     "scripts": ["boot.js"],
     "main": "boot.js"
