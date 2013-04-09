@@ -200,16 +200,33 @@ select {
 .colorpicker {
   margin-top: 10%;
   height: 4em;
-  border: 3px solid #000;
+  border: 3px solid #fff;
+  border-width: 2px 4px 6px 3px;
+  border-shadow: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  box-shadow: 0px 2px 0px #000000;
+  -webkit-box-shadow: 0px 2px 0px #000000;
+  -moz-box-shadow: 0px 2px 0px #000000;
 }
 .sizemodifier {
   margin-top: 10%;
 }
 .sizemodifier label {
-  text-decoration: underline;
+  color: white;
+  font-size: 2em;
+  text-shadow: 0px 1px 1px #000;
 }
 .sizemodifier input {
   border: 0px;
+  font-size: 1em;
+  float: right;
+  width: 30%;
+  margin-top: -2%;
+  padding: 2%;
+  text-align: center;
+  color: #333;
+  font-family: sans-serif;
 }
 .btn-editor {
   display: inline-block;
@@ -231,6 +248,7 @@ select {
 }
 body {
   font-family: sans-serif;
+  background-color: #f2f3f5;
 }
 #page .btn-block {
   width: 405px;
@@ -246,7 +264,7 @@ body {
   user-select: none;
   width: 40%;
   height: 100%;
-  background-color: #dddddd;
+  background-color: #484a63;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -273,11 +291,11 @@ body {
   margin-left: 40%;
   height: 100%;
   min-height: 800px;
-}
-#preview svg {
-  box-shadow: 5px 0px 36px #eeeeee;
-  -webkit-box-shadow: 5px 0px 36px #eeeeee;
-  -moz-box-shadow: 5px 0px 36px #eeeeee;
+  width: 480px;
+  background-color: #fff;
+  box-shadow: 10px 0px 20px #e2e6ec;
+  -webkit-box-shadow: 10px 0px 20px #e2e6ec;
+  -moz-box-shadow: 10px 0px 20px #e2e6ec;
 }
 #newpage input {
   border: 2px solid #000;

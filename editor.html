@@ -109,19 +109,19 @@
     {{/hasFontColor}}
     {{#hasBorderThickness}}
     <div class="sizemodifier sm_borderThickness">
-      <label>Border thickness<input value="{{borderThickness}}" name="sm_borderThickness" /></label>
+      <label>Border<input value="{{borderThickness}}" name="sm_borderThickness" /></label>
     </div>
     {{/hasBorderThickness}}
     {{#hasFontSize}}
     <div class="sizemodifier sm_fontSize">
-      <label>Font size<input value="{{fontSize}}" name="sm_fontSize" /></label>
+      <label>Size<input value="{{fontSize}}" name="sm_fontSize" /></label>
     </div>
     {{/hasFontSize}}
   </section>
 
   <footer>
     {{#isDeletable}}
-    <button class="btn-editor btn-delete">Delete</button>
+    <a class="btn-editor btn-delete">Delete</a>
     {{/isDeletable}}
   </footer>
 
@@ -276,8 +276,6 @@
       }
     };
 
-
-
     var filesCollection = new Collection(get());
 
     return {
@@ -319,7 +317,7 @@
       },
       create: function() {
         var name = document.getElementById("collectionName").value;
-        create({name: name, elements: []});
+        create({name: name, elements: [], backgroundColor: "#fff"});
         document.getElementById("collectionName").value = '';
         window.location = "#editor/" + (filesCollection.length()-1);
         return this;
