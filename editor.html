@@ -234,12 +234,15 @@
       }
 
       //TODO evaluate prototype towards re-creation of element
+      /* if (objects && objects.length > 0)
       objects.forEach(function(collection) {
+        if (collection.elements.length > 0)
         collection.elements.forEach(function(element) {
           element = 0;
         });
-      });
+      });*/
 
+      if (objects && objects.length > 0)
       return objects.map(function(collection) {
         collection.elements = collection.elements.map(function(element){
           element.__proto__ = ElementFactory.prototype(element.type);
@@ -354,6 +357,7 @@
     var html = "", element, i = 0;
 
     var self = this;
+    if (collection.elements.length > 0)
     collection.elements.forEach(function(element, currentElement) {
 
       element.draw(self.paper, function(x,y) {
