@@ -290,7 +290,7 @@ body {
 #preview {
   margin-left: 40%;
   height: 100%;
-  min-height: 800px;
+  min-height: 600px;
   width: 480px;
   background-color: #fff;
   box-shadow: 10px 0px 20px #e2e6ec;

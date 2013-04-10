@@ -3058,7 +3058,7 @@ CircleElement.prototype.draw = function (paper, callback) {
       function (dx, dy) {
         this.attr({
           cx: Math.min(Math.max(self.x + dx, self.radius + 5), 480-(self.radius+5)),
-          cy: Math.min(Math.max(self.y + dy, self.radius + 5), 800-(self.radius+5))
+          cy: Math.min(Math.max(self.y + dy, self.radius + 5), 600-(self.radius+5))
         });
       },
       function () {
