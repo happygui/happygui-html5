@@ -13,6 +13,12 @@ var TextElement = function(options) {
 TextElement.prototype = Object.create(Element.prototype);
 TextElement.prototype.constructor = TextElement;
 
+TextElement.prototype.redraw = function () {
+  this.drawing.attr({
+    fill: this.fontColor,
+    font: "italic "+this.fontSize+"px Helvetica"
+  });
+}
 TextElement.prototype.draw = function (paper, callback) {
   var self = this;
 

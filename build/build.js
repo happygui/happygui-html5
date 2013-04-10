@@ -2953,6 +2953,12 @@ var TextElement = function(options) {
 TextElement.prototype = Object.create(Element.prototype);
 TextElement.prototype.constructor = TextElement;
 
+TextElement.prototype.redraw = function () {
+  this.drawing.attr({
+    fill: this.fontColor,
+    font: "italic "+this.fontSize+"px Helvetica"
+  });
+}
 TextElement.prototype.draw = function (paper, callback) {
   var self = this;
 
@@ -3025,6 +3031,15 @@ CircleElement.prototype.setPos = function (x,y) {
   this.y = y;
   console.log(x,y, this.x, this.y);
 };
+CircleElement.prototype.redraw = function () {
+  this.drawing.attr({
+    stroke: this.borderColor,
+    fill: this.backgroundColor,
+    "stroke-width": this.borderThickness
+  });
+
+  return this;
+};
 CircleElement.prototype.draw = function (paper, callback) {
 
   var self = this;
@@ -3070,6 +3085,14 @@ var RectElement = function(options) {
 };
 RectElement.prototype = Object.create(ShapeElement.prototype);
 RectElement.prototype.constructor = RectElement;
+
+RectElement.prototype.redraw = function() {
+  this.drawing.attr({
+    stroke: this.borderColor,
+      fill: this.backgroundColor,
+    "stroke-width": this.borderThickness
+  });
+};
 
 RectElement.prototype.draw = function (paper, callback) {
   var self = this;

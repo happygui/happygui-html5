@@ -14,6 +14,15 @@ CircleElement.prototype.setPos = function (x,y) {
   this.y = y;
   console.log(x,y, this.x, this.y);
 };
+CircleElement.prototype.redraw = function () {
+  this.drawing.attr({
+    stroke: this.borderColor,
+    fill: this.backgroundColor,
+    "stroke-width": this.borderThickness
+  });
+
+  return this;
+};
 CircleElement.prototype.draw = function (paper, callback) {
 
   var self = this;

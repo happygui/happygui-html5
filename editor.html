@@ -462,6 +462,9 @@
 
     return CollectionCtrl.getElement(element, this.currentCollection);
   };
+  EditorView.prototype.element = function (element) {
+    return this.elements(element || this.currentElement);
+  };
 
   EditorView.prototype.setCollection = function (collection) {
   	collection = parseInt(collection);
@@ -473,6 +476,8 @@
 
   EditorView.prototype.setAttribute = function (key, value) {
     CollectionCtrl.setElementAttribute(this.currentElement, this.currentCollection, key, value);
+    var attr;
+    this.element().redraw();
   };
 
   EditorView.prototype.setElement = function (type, id) {

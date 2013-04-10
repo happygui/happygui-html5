@@ -8,6 +8,14 @@ var RectElement = function(options) {
 RectElement.prototype = Object.create(ShapeElement.prototype);
 RectElement.prototype.constructor = RectElement;
 
+RectElement.prototype.redraw = function() {
+  this.drawing.attr({
+    stroke: this.borderColor,
+      fill: this.backgroundColor,
+    "stroke-width": this.borderThickness
+  });
+};
+
 RectElement.prototype.draw = function (paper, callback) {
   var self = this;
 
