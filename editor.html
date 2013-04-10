@@ -589,7 +589,14 @@
           editorView
               .reset()
               .select(collection, {type: type, id: id})
-              .render();
+
+          if (id) {
+            editorView.render();
+          } else {
+            window.location = "#editor/"+collection+"/"+type+"/"+editorView.currentElement;
+            // delete history
+            return this;
+          }
 
         } catch(exception) {
           console.log(exception, exception.message);
@@ -619,7 +626,8 @@
   var editor = new EditorView({container: 'editor'});
   editor.bind('click .elementNew', function(e) {
     var type = e.target.id.replace('New','');
-    window.location = "#editor/"+editor.currentCollection+"/"+type;
+    var id = CollectionCtrl.createElement(this.currentCollection, {type: type});
+    window.location = "#editor/"+this.currentCollection+"/"+type+"/"+id;
   });
   editor.bind('keyup #editor input', function(e) {
     var key = e.target.name.replace("sm_", "");
