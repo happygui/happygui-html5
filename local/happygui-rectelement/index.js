@@ -11,7 +11,7 @@ RectElement.prototype.constructor = RectElement;
 RectElement.prototype.draw = function (paper, callback) {
   var self = this;
 
-  return paper
+  this.drawing = paper
     .rect(self.x, self.y, self.width, self.height)
     .attr({
       stroke: self.borderColor,
@@ -34,6 +34,7 @@ RectElement.prototype.draw = function (paper, callback) {
       }
     );
 
+  return this.drawing;
 };
 
 module.exports = RectElement;

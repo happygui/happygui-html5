@@ -253,8 +253,14 @@
     };
 
     var save = function () {
+      var toSave = filesCollection.models;
+      for (var i = 0; i < filesCollection.models.length; i++) {
+        for (var j = 0; j < filesCollection.models[i].elements.length; j++) {
+          delete toSave[i].elements[j].drawing;
+        }
+      }
       if (localStorage) {
-        localStorage.setObject('happygui-collection', filesCollection.models);
+        localStorage.setObject('happygui-collection', toSave);
       } else {
         // TODO throw an error
         alert("You are using a platform which is not recognised!");
@@ -358,7 +364,7 @@
     if (collection.elements.length > 0)
     collection.elements.forEach(function(element, currentElement) {
 
-      element.draw(self.paper, function(x,y) {
+      element.draw(self.paper, function() {
         CollectionCtrl.update(false, element, currentCollection, currentElement);
         window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
       });
@@ -556,12 +562,13 @@
   var preview = new PreviewView({container: 'preview'});
 
   // Only for testing
-  preview.bind('click #preview button', function(e) {
+  /* preview.bind('click #preview button', function(e) {
     // TODO delete this
     var elementId = parseInt(e.target.id.replace("el_",''));
     var element = CollectionCtrl.getElement(elementId, editor.currentCollection);
     window.location = "#editor/"+editor.currentCollection+"/"+element.type+"/"+elementId;
   });
+  */
 
   var page = new PageView({container: 'page'});
   page.bind('click #collectionSave', CollectionCtrl.create);

@@ -2909,6 +2909,7 @@ function Element(options) {
   this.y = options.y !== undefined ? options.y : 120;
   this.height = options.height || 60;
   this.width = options.width || 90;
+  this.drawing = options.drawing || false;
 }
 
 module.exports = Element;
@@ -2956,7 +2957,7 @@ TextElement.prototype.draw = function (paper, callback) {
   var self = this;
 
 
-  return paper
+  this.drawing = paper
     .text(self.x, self.y, "Jeaaaaaaaaaaaaaaah")
     .attr({
       fill: self.fontColor,
@@ -2969,7 +2970,6 @@ TextElement.prototype.draw = function (paper, callback) {
       console.log(dx, dy, x, y);
       this.attr({x: self.x + dx, y: self.y + dy, dy:0, dx:0});
       console.log("one", this.attr("x")+dx, this.attr("y")+dy);
-      console.log(this.getBBox());
     },
     function () {
       console.log("two", this.attr("x"),this.attr("y"));
@@ -2984,6 +2984,7 @@ TextElement.prototype.draw = function (paper, callback) {
     }
   );
 
+  return this.drawing;
 };
 
 module.exports = TextElement;
@@ -3028,7 +3029,7 @@ CircleElement.prototype.draw = function (paper, callback) {
 
   var self = this;
 
-  return paper
+  this.drawing = paper
     .circle(self.x, self.y, self.radius)
     .attr({
       stroke: self.borderColor,
@@ -3053,6 +3054,8 @@ CircleElement.prototype.draw = function (paper, callback) {
         callback(self.x, self.y);
       }
     );
+
+  return this.drawing;
 };
 
 module.exports = CircleElement;
@@ -3071,7 +3074,7 @@ RectElement.prototype.constructor = RectElement;
 RectElement.prototype.draw = function (paper, callback) {
   var self = this;
 
-  return paper
+  this.drawing = paper
     .rect(self.x, self.y, self.width, self.height)
     .attr({
       stroke: self.borderColor,
@@ -3094,6 +3097,7 @@ RectElement.prototype.draw = function (paper, callback) {
       }
     );
 
+  return this.drawing;
 };
 
 module.exports = RectElement;

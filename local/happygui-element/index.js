@@ -6,6 +6,7 @@ function Element(options) {
   this.y = options.y !== undefined ? options.y : 120;
   this.height = options.height || 60;
   this.width = options.width || 90;
+  this.drawing = options.drawing || false;
 }
 
 module.exports = Element;

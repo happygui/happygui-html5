@@ -18,7 +18,7 @@ CircleElement.prototype.draw = function (paper, callback) {
 
   var self = this;
 
-  return paper
+  this.drawing = paper
     .circle(self.x, self.y, self.radius)
     .attr({
       stroke: self.borderColor,
@@ -43,6 +43,8 @@ CircleElement.prototype.draw = function (paper, callback) {
         callback(self.x, self.y);
       }
     );
+
+  return this.drawing;
 };
 
 module.exports = CircleElement;

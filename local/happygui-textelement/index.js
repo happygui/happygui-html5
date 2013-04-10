@@ -17,7 +17,7 @@ TextElement.prototype.draw = function (paper, callback) {
   var self = this;
 
 
-  return paper
+  this.drawing = paper
     .text(self.x, self.y, "Jeaaaaaaaaaaaaaaah")
     .attr({
       fill: self.fontColor,
@@ -44,6 +44,7 @@ TextElement.prototype.draw = function (paper, callback) {
     }
   );
 
+  return this.drawing;
 };
 
 module.exports = TextElement;
