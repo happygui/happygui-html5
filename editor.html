@@ -222,6 +222,28 @@
     });
   })
       //.call(this);
+      
+  function NoPlatformException (message) {
+	  this.message = message || "";
+	  this.name = "NoPlatformException";
+  }
+  NoPlatformException.prototype = new Error();
+  NoPlatformException.prototype.constructor = NoPlatformException;  
+  
+  
+  function NullElement (message) {
+	  this.message = message || "";
+	  this.name = "NullElement";
+  }
+  NullElement.prototype = new Error();
+  NullElement.prototype.constructor = NullElement;  
+  
+  function NullCollection (message) {
+	  this.message = message || "";
+	  this.name = "NullCollection";
+  }
+  NullCollection.prototype = new Error();
+  NullCollection.prototype.constructor = NullCollection;  
 
   // Singleton
   var CollectionCtrl = (function(){
@@ -230,7 +252,7 @@
       if (localStorage) {
         var objects = localStorage.getObject('happygui-collection');
       } else {
-        return alert("You are using a platform which is not recognised!");
+	    throw new NoPlatformException('Cannot get');
       }
 
       //TODO evaluate prototype towards re-creation of element
@@ -262,8 +284,7 @@
       if (localStorage) {
         localStorage.setObject('happygui-collection', toSave);
       } else {
-        // TODO throw an error
-        alert("You are using a platform which is not recognised!");
+	    throw new NoPlatformException('Cannot save')
       }
     };
 
@@ -277,31 +298,47 @@
       if (localStorage) {
         localStorage.clear();
       } else {
-        // TODO throw an error
-        alert("You are using a platform which is not recognised!");
+	    throw new NoPlatformException('Cannot reset');
       }
     };
 
+    var getCollection = function(collection) {
+      console.log("getCollection returns:", filesCollection.models[collection]);
+      if (filesCollection.models[collection] === undefined) {
+        throw new NullCollection ("No collection found");
+      }
+      return filesCollection.models[collection];
+    };
+
+    var getElement = function(element, collection) {
+      var collectionModel = getCollection(collection);
+      if (collectionModel.elements[element] === undefined) {
+        throw new NullElement ("No collection found");
+      }
+      return collectionModel.elements[element];
+    };
+
+
     var filesCollection = new Collection(get());
+
 
     return {
       get: function() {
         return filesCollection.models;
       },
-      getCollection: function (collection) {
-        return filesCollection.models[collection];
+      getCollection: function(collection) {
+        return getCollection(collection);
       },
       getElements: function(collection) {
-        return filesCollection.models[collection].elements;
+        return getCollection(collection).elements;
       },
       getElement: function(element, collection) {
-        console.log("getElement", element, collection);
-        return filesCollection.models[collection].elements[element];
+        return getElement(element, collection);
       },
       setElementAttribute: function(element, collection, key, value) {
         // Validation
         if (key.slice(0,3) == "has") return this;
-        var current = filesCollection.models[collection].elements[element];
+        var current = getElement(element, collection);
         if (typeof current[key] === 'undefined') return this;
 
         filesCollection.models[collection].elements[element][key] = value;
@@ -427,8 +464,10 @@
   };
 
   EditorView.prototype.setCollection = function (collection) {
-    this.currentCollection = collection;
-    // TODO throw errors
+  	collection = parseInt(collection);
+  	if (isNaN(collection)) throw new NullCollection ("Collection id must be a number");
+    this.currentCollection = collection; // TODO try&catch errors
+
     return this;
   };
 
@@ -437,12 +476,11 @@
   };
 
   EditorView.prototype.setElement = function (type, id) {
-    // TODO throw errors
+
     if (type) {
       this.currentElement = id || CollectionCtrl.createElement(this.currentCollection, {type: type});
-      console.log("setElement", editor.currentElement);
     } else {
-      console.log("no type");
+      throw new NullElement("type does not exist");
     }
 
     return this;
@@ -454,11 +492,13 @@
 
   EditorView.prototype.select = function(collection, element) {
 
-    element = element || {};
 
-    this.setCollection(collection)
-        .setElement(element.type, element.id);
+    this.setCollection(collection);
 
+    if (element !== undefined ) {
+		  this.setElement(element.type, element.id);
+	  }
+    	    
     return this;
   };
 
@@ -501,13 +541,32 @@
       },
       editor: function(collection) {
 
-        editorView
-            .reset()
-            .select(collection, null)
-            .render();
+		    try {
 
-        previewView
-            .render(collection);
+		        editorView
+		            .reset()
+		            .select(collection)
+		            .render();
+	
+		    } catch(exception) {
+			  console.log(exception, exception.message);
+		    
+		    // TODO this should not appear in history
+			  if (exception instanceof NullCollection) {
+			  	this.currentCollection = null;
+			    window.location = "#collection";
+			    return null;
+			  }
+/*
+		      if (exception instanceof NullElement) {
+			  	this.currentElement = null;
+			  }
+*/
+
+			}
+			
+			previewView
+				.render(collection);
 
       },
       help: function() {
@@ -526,10 +585,28 @@
       },
       element_editor: function(collection, type, id) {
 
-        editorView
-            .reset()
-            .select(collection, {type: type, id: id})
-            .render();
+        try {
+          editorView
+              .reset()
+              .select(collection, {type: type, id: id})
+              .render();
+
+        } catch(exception) {
+          console.log(exception, exception.message);
+
+          // TODO this should not appear in history
+          if (exception instanceof NullCollection) {
+            this.currentCollection = null; //TODO CHECK
+            window.location = "#collection";
+            return null;
+          }
+
+          if (exception instanceof NullElement) {
+            this.currentElement = null;
+            window.location = "#editor/"+collection;
+          }
+
+        }
 
         previewView
             .render(collection);
