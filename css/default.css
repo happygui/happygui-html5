@@ -307,7 +307,6 @@ body {
 }
 #elementsNew .elementNew {
   margin-top: 5%;
-  background-color: #efefef;
   color: #fff;
   text-decoration: none;
   cursor: pointer;
@@ -316,6 +315,26 @@ body {
   width: 22%;
   margin-right: 4%;
   padding: 8% 0;
+}
+#textNew {
+  font-size: 62px;
+  padding: 1% 0% !important;
+  text-align: center;
+}
+#rectNew {
+  box-shadow: inset 0px 0px 0px 11px #c24f4f;
+  -webkit-box-shadow: inset 0px 0px 0px 11px #c24f4f;
+  -moz-box-shadow: inset 0px 0px 0px 11px #c24f4f;
+  background-color: #00ff00;
+}
+#circleNew {
+  border-shadow: 60px;
+  -webkit-border-radius: 60px;
+  -moz-border-radius: 60px;
+  box-shadow: inset 0px 0px 0px 11px #c24f4f;
+  -webkit-box-shadow: inset 0px 0px 0px 11px #c24f4f;
+  -moz-box-shadow: inset 0px 0px 0px 11px #c24f4f;
+  background-color: #00ff00;
 }
 .green_bg {
   background-color: #62bb11;

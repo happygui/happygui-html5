@@ -64,13 +64,13 @@
   <section id="elementsNew">
     <div class="row">
       <div class="elementNew" id="rectNew">
-        Rect
+        &nbsp;
       </div>
       <div class="elementNew" id="circleNew">
-        Circle
+        &nbsp;
       </div>
       <div class="elementNew" id="textNew">
-        Text
+        T
       </div>
       <div class="elementNew" id="cameraNew">
         Camera
@@ -123,6 +123,7 @@
     {{#isDeletable}}
     <a class="btn-editor btn-delete">Delete</a>
     {{/isDeletable}}
+    <a class="btn-editor go-editor green_bg">Editor</a>
   </footer>
 
 </script>
@@ -611,11 +612,14 @@
     var key = e.target.name.replace("sm_", "");
     var value = e.target.value;
     console.log(key, value);
-    editor.setAttribute(key, value);
+    this.setAttribute(key, value);
   });
   editor.bind('click #editor .btn-delete', function(e) {
-    CollectionCtrl.delElement(editor.currentElement, editor.currentCollection);
-    window.location = "#editor/"+editor.currentCollection;
+    CollectionCtrl.delElement(this.currentElement, this.currentCollection);
+    window.location = "#editor/"+this.currentCollection;
+  });
+  editor.bind('click #editor .go-editor', function(e) {
+    window.location = "#editor/"+this.currentCollection;
   });
   editor.bind('click #editor .colorpicker', function(e) {
     // TODO use external libs
@@ -623,15 +627,6 @@
   });
 
   var preview = new PreviewView({container: 'preview'});
-
-  // Only for testing
-  /* preview.bind('click #preview button', function(e) {
-    // TODO delete this
-    var elementId = parseInt(e.target.id.replace("el_",''));
-    var element = CollectionCtrl.getElement(elementId, editor.currentCollection);
-    window.location = "#editor/"+editor.currentCollection+"/"+element.type+"/"+elementId;
-  });
-  */
 
   var page = new PageView({container: 'page'});
   page.bind('click #collectionSave', CollectionCtrl.createCollection);
