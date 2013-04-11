@@ -140,8 +140,12 @@
   var Collection = require('happygui-collection');
   var View = require('happygui-view');
   var Templates = require('happygui-templates');
-
   var ElementFactory = require('happygui-elementfactory');
+
+  // Happygui exceptions
+  var NullElementException = require('happygui-nullelementexception');
+  var NullCollectionException = require('happygui-nullcollectionexception');
+  var NoPlatformException = require('happygui-noplatformexception');
 
 
   /* var width;
@@ -222,28 +226,6 @@
     });
   })
       //.call(this);
-      
-  function NoPlatformException (message) {
-	  this.message = message || "";
-	  this.name = "NoPlatformException";
-  }
-  NoPlatformException.prototype = new Error();
-  NoPlatformException.prototype.constructor = NoPlatformException;  
-  
-  
-  function NullElement (message) {
-	  this.message = message || "";
-	  this.name = "NullElement";
-  }
-  NullElement.prototype = new Error();
-  NullElement.prototype.constructor = NullElement;  
-  
-  function NullCollection (message) {
-	  this.message = message || "";
-	  this.name = "NullCollection";
-  }
-  NullCollection.prototype = new Error();
-  NullCollection.prototype.constructor = NullCollection;  
 
   // Singleton
   var CollectionCtrl = (function(){
@@ -254,15 +236,6 @@
       } else {
 	    throw new NoPlatformException('Cannot get');
       }
-
-      //TODO evaluate prototype towards re-creation of element
-      /* if (objects && objects.length > 0)
-      objects.forEach(function(collection) {
-        if (collection.elements.length > 0)
-        collection.elements.forEach(function(element) {
-          element = 0;
-        });
-      });*/
 
       if (objects && objects.length > 0)
       return objects.map(function(collection) {
@@ -288,7 +261,7 @@
       }
     };
 
-    var create = function (obj) {
+    var createCollection = function (obj) {
       filesCollection.push(obj);
       save();
     };
@@ -305,7 +278,7 @@
     var getCollection = function(collection) {
       console.log("getCollection returns:", filesCollection.models[collection]);
       if (filesCollection.models[collection] === undefined) {
-        throw new NullCollection ("No collection found");
+        throw new NullCollectionException ("No collection found");
       }
       return filesCollection.models[collection];
     };
@@ -313,7 +286,7 @@
     var getElement = function(element, collection) {
       var collectionModel = getCollection(collection);
       if (collectionModel.elements[element] === undefined) {
-        throw new NullElement ("No collection found");
+        throw new NullElementException ("No collection found");
       }
       return collectionModel.elements[element];
     };
@@ -358,9 +331,9 @@
         }
         if (toSave) save();
       },
-      create: function() {
+      createCollection: function() {
         var name = document.getElementById("collectionName").value;
-        create({name: name, elements: [], backgroundColor: "#fff"});
+        createCollection({name: name, elements: [], backgroundColor: "#fff"});
         document.getElementById("collectionName").value = '';
         window.location = "#editor/" + (filesCollection.length()-1);
         return this;
@@ -468,7 +441,7 @@
 
   EditorView.prototype.setCollection = function (collection) {
   	collection = parseInt(collection);
-  	if (isNaN(collection)) throw new NullCollection ("Collection id must be a number");
+  	if (isNaN(collection)) throw new NullCollectionException ("Collection id must be a number");
     this.currentCollection = collection; // TODO try&catch errors
 
     return this;
@@ -485,7 +458,7 @@
     if (type) {
       this.currentElement = id || CollectionCtrl.createElement(this.currentCollection, {type: type});
     } else {
-      throw new NullElement("type does not exist");
+      throw new NullElementException("type does not exist");
     }
 
     return this;
@@ -557,7 +530,7 @@
 			  console.log(exception, exception.message);
 		    
 		    // TODO this should not appear in history
-			  if (exception instanceof NullCollection) {
+			  if (exception instanceof NullCollectionException) {
 			  	this.currentCollection = null;
 			    window.location = "#collection";
 			    return null;
@@ -607,13 +580,13 @@
           console.log(exception, exception.message);
 
           // TODO this should not appear in history
-          if (exception instanceof NullCollection) {
+          if (exception instanceof NullCollectionException) {
             this.currentCollection = null; //TODO CHECK
             window.location = "#collection";
             return null;
           }
 
-          if (exception instanceof NullElement) {
+          if (exception instanceof NullElementException) {
             this.currentElement = null;
             window.location = "#editor/"+collection;
           }

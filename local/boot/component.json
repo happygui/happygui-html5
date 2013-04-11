@@ -11,15 +11,21 @@
         "richthegeek/raphael": "*"
     },
     "local": [
-        "happygui-element",
         "happygui-collection",
+
+        "happygui-element",
+        "happygui-elementfactory",
         "happygui-textelement",
         "happygui-shapeelement",
         "happygui-circleelement",
         "happygui-rectelement",
+
         "happygui-view",
         "happygui-templates",
-        "happygui-elementfactory"
+
+        "happygui-nullelementexception",
+        "happygui-nullcollectionexception",
+        "happygui-noplatformexception"
     ],
     "scripts": ["boot.js"],
     "main": "boot.js"
