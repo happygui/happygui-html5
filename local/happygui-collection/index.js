@@ -6,7 +6,7 @@ Collection.prototype.__iterate__ = function(){
   var self = this;
   return {
     length: function(){ return self.length() },
-    get: function(i){ return self.models[i] }
+    getCollections: function(i){ return self.models[i] }
   }
 };
 

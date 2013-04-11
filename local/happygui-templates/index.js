@@ -13,7 +13,7 @@ var Templates = (function (){
   }
 
   return {
-    get: function (template) {
+    getCollections: function (template) {
       return templates[template];
     }
   };

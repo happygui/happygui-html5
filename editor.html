@@ -230,7 +230,7 @@
   // Singleton
   var CollectionCtrl = (function(){
 
-    var get = function () {
+    var getFromStorage = function () {
       if (localStorage) {
         var objects = localStorage.getObject('happygui-collection');
       } else {
@@ -247,7 +247,7 @@
       });
     };
 
-    var save = function () {
+    var saveInStorage = function () {
       var toSave = filesCollection.models;
       for (var i = 0; i < filesCollection.models.length; i++) {
         for (var j = 0; j < filesCollection.models[i].elements.length; j++) {
@@ -261,12 +261,7 @@
       }
     };
 
-    var createCollection = function (obj) {
-      filesCollection.push(obj);
-      save();
-    };
-
-    var reset = function () {
+    var clearStorage = function () {
       filesCollection.models = [];
       if (localStorage) {
         localStorage.clear();
@@ -283,6 +278,11 @@
       return filesCollection.models[collection];
     };
 
+    var createCollection = function (obj) {
+      filesCollection.push(obj);
+      saveInStorage();
+    };
+
     var getElement = function(element, collection) {
       var collectionModel = getCollection(collection);
       if (collectionModel.elements[element] === undefined) {
@@ -292,21 +292,28 @@
     };
 
 
-    var filesCollection = new Collection(get());
+    var filesCollection = new Collection(getFromStorage());
 
 
     return {
-      get: function() {
-        return filesCollection.models;
-      },
       getCollection: function(collection) {
         return getCollection(collection);
       },
-      getElements: function(collection) {
-        return getCollection(collection).elements;
+      getCollections: function() {
+        return filesCollection.models;
+      },
+      createCollection: function() {
+        var name = document.getElementById("collectionName").value;
+        createCollection({name: name, elements: [], backgroundColor: "#fff"});
+        document.getElementById("collectionName").value = '';
+        window.location = "#editor/" + (filesCollection.length()-1);
+        return this;
       },
       getElement: function(element, collection) {
         return getElement(element, collection);
+      },
+      getElements: function(collection) {
+        return getCollection(collection).elements;
       },
       setElementAttribute: function(element, collection, key, value) {
         // Validation
@@ -319,7 +326,12 @@
       },
       delElement: function(element, collection) {
         filesCollection.models[collection].elements.splice(element, 1);
-        save();
+        saveInStorage();
+      },
+      createElement: function (collection, doc) {
+        var element = ElementFactory.create(doc);
+        var index = filesCollection.models[collection].elements.push(element) - 1;
+        return index;
       },
       update: function (toSave, doc, collection, element) {
         if (doc !== undefined && collection !== undefined && element !== undefined) {
@@ -329,23 +341,11 @@
         } else if (doc !== undefined) {
           filesCollection.models = doc;
         }
-        if (toSave) save();
-      },
-      createCollection: function() {
-        var name = document.getElementById("collectionName").value;
-        createCollection({name: name, elements: [], backgroundColor: "#fff"});
-        document.getElementById("collectionName").value = '';
-        window.location = "#editor/" + (filesCollection.length()-1);
-        return this;
-      },
-      createElement: function (collection, doc) {
-        var element = ElementFactory.create(doc);
-        var index = filesCollection.models[collection].elements.push(element) - 1;
-        return index;
+        if (toSave) saveInStorage();
       },
       reset: function() {
         if (confirm("Your data will be lost forever, are you fine with that?")) {
-          reset();
+          clearStorage();
         }
         return this;
       }
@@ -404,7 +404,7 @@
   PageView.prototype.render = function (template, data) {
 
     this
-        .el(Templates.get(template)(data))
+        .el(Templates.getCollections(template)(data))
         .show();
 
     return this;
@@ -491,10 +491,10 @@
 
     if (this.currentElement !== null) {
       data = this.elements(this.currentElement);
-      html = Templates.get("element_editor")(data);
+      html = Templates.getCollections("element_editor")(data);
     } else {
       data = this.collection();
-      html = Templates.get("editor")(data);
+      html = Templates.getCollections("editor")(data);
     }
 
     this.el(html).show();
@@ -556,9 +556,9 @@
       },
       collection: function() {
 
-        console.log("collection()", CollectionCtrl.get());
+        console.log("collection()", CollectionCtrl.getCollections());
         pageView
-            .render("collection", {collection: CollectionCtrl.get()});
+            .render("collection", {collection: CollectionCtrl.getCollections()});
 
       },
       element_editor: function(collection, type, id) {
@@ -634,7 +634,7 @@
   */
 
   var page = new PageView({container: 'page'});
-  page.bind('click #collectionSave', CollectionCtrl.create);
+  page.bind('click #collectionSave', CollectionCtrl.createCollection);
   var views = Views(editor, preview, page);
 
   // Clean before router cleans
