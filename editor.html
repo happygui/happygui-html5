@@ -74,7 +74,7 @@
 
 <script id="editor_tpl" type="text/html">
   <header>
-    <div class="colorpicker go-cpDialog cpBackground" style="background-color: {{backgroundColor}};">
+    <div id="cpBackground" class="colorpicker go-cpDialog" style="background-color: {{backgroundColor}};">
     </div>
   </header>
 
@@ -113,15 +113,15 @@
 
   <section>
     {{#hasBackgroundColor}}
-    <div class="colorpicker go-cpDialog cp_backgroundColor" style="background-color: {{backgroundColor}};">
+    <div id="cp_backgroundColor" class="colorpicker go-cpDialog" style="background-color: {{backgroundColor}};">
     </div>
     {{/hasBackgroundColor}}
     {{#hasBorderColor}}
-    <div class="colorpicker go-cpDialog cp_borderColor" style="background-color: {{borderColor}};">
+    <div id="cp_borderColor" class="colorpicker go-cpDialog" style="background-color: {{borderColor}};">
     </div>
     {{/hasBorderColor}}
     {{#hasFontColor}}
-    <div class="colorpicker go-cpDialog cp_fontColor" style="background-color: {{fontColor}};">
+    <div id="cp_fontColor" class="colorpicker go-cpDialog" style="background-color: {{fontColor}};">
     </div>
     {{/hasFontColor}}
     {{#hasBorderThickness}}
@@ -168,6 +168,7 @@
     View.call(this, options);
     options = options || {};
     this.hidden = true;
+    this.type = null;
     return this;
   }
   ColorPicker.prototype = Object.create(View.prototype);
@@ -271,13 +272,7 @@
   };
 
   EditorView.prototype.setElement = function (type, id) {
-    // ELEMENT FACTORY ERROR THROWN<z
-    if (type) {
       this.currentElement = id || StorageCtrl.createElement(this.currentCollection, {type: type});
-    } else {
-      throw new NullElementException("type does not exist");
-    }
-
     return this;
   };
 
@@ -376,6 +371,18 @@
             .render("collection", {collection: StorageCtrl.getCollections()});
 
       },
+      colorpicker: function(collection, type, id) {
+        editorView
+            .reset()
+            .select(collection, {id: id});
+
+        editorView.colorpicker.type = type;
+        editorView.colorpicker
+            .show();
+
+        previewView
+            .render(collection);
+      },
       element_editor: function(collection, type, id) {
 
         try {
@@ -435,8 +442,15 @@
     window.location = "#editor/"+this.currentCollection;
   });
   editor.bind('click #editor .go-cpDialog', function(e) {
-    this.colorpicker.show();
-    alert("hello");
+    var type = e.target.id.replace('cp_','');
+    window.location = "#colorpicker/"+this.currentCollection+"/"+type+"/"+this.currentElement;
+  });
+  editor.colorpicker.bind('click #dialog_colorpicker .colorpicker', function(e){
+    var color = window.getComputedStyle(e.target).getPropertyValue('background-color');
+    editor.setAttribute(editor.colorpicker.type, color);
+    var type = editor.element().type;
+    this.hide();
+    window.location = '#editor/'+editor.currentCollection+'/'+type+'/'+editor.currentElement;
   });
 
   var preview = new PreviewView({container: 'preview'});
@@ -464,6 +478,7 @@
       .route('#editor/:collection', views.editor)
       .route('#editor/:collection/:type', views.element_editor)
       .route('#editor/:collection/:type/:id', views.element_editor)
+      .route('#colorpicker/:collection/:type/:id', views.colorpicker)
       .history.start();
 
 
