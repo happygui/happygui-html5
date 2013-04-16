@@ -10,6 +10,23 @@
   <div id="editor" class="hidden">
     <!-- editorViews will be imported here -->
   </div>
+  <div id="dialog_colorpicker" class="hidden">
+    <div class="inner">
+      <div class="row">
+        <div class="colorpicker green_bg"></div>
+        <div class="colorpicker pink_bg"></div>
+        <div class="colorpicker yellow_bg"></div>
+        <div class="colorpicker orange_bg"></div>
+      </div>
+      <div class="row">
+        <div class="colorpicker white_bg"></div>
+        <div class="colorpicker gray_bg"></div>
+        <div class="colorpicker dgray_bg"></div>
+        <div class="colorpicker black_bg"></div>
+
+      </div>
+    </div>
+  </div>
 
   <div id="preview" class="hidden">
     <!-- elements drawn by the user -->
@@ -57,7 +74,7 @@
 
 <script id="editor_tpl" type="text/html">
   <header>
-    <div class="colorpicker cpBackground" style="background-color: {{backgroundColor}};">
+    <div class="colorpicker go-cpDialog cpBackground" style="background-color: {{backgroundColor}};">
     </div>
   </header>
 
@@ -96,15 +113,15 @@
 
   <section>
     {{#hasBackgroundColor}}
-    <div class="colorpicker cp_backgroundColor" style="background-color: {{backgroundColor}};">
+    <div class="colorpicker go-cpDialog cp_backgroundColor" style="background-color: {{backgroundColor}};">
     </div>
     {{/hasBackgroundColor}}
     {{#hasBorderColor}}
-    <div class="colorpicker cp_borderColor" style="background-color: {{borderColor}};">
+    <div class="colorpicker go-cpDialog cp_borderColor" style="background-color: {{borderColor}};">
     </div>
     {{/hasBorderColor}}
     {{#hasFontColor}}
-    <div class="colorpicker cp_fontColor" style="background-color: {{fontColor}};">
+    <div class="colorpicker go-cpDialog cp_fontColor" style="background-color: {{fontColor}};">
     </div>
     {{/hasFontColor}}
     {{#hasBorderThickness}}
@@ -134,231 +151,33 @@
   var delegate = require('component-delegate');
   var event = require('component-event');
   var Emitter = require('component-emitter');
-  var gesture = require('component-gesture');
   var Raphael = require('richthegeek-raphael');
 
   // Happygui dependencies
-  var Collection = require('happygui-collection');
   var View = require('happygui-view');
   var Templates = require('happygui-templates');
-  var ElementFactory = require('happygui-elementfactory');
 
   // Happygui exceptions
   var NullElementException = require('happygui-nullelementexception');
   var NullCollectionException = require('happygui-nullcollectionexception');
   var NoPlatformException = require('happygui-noplatformexception');
 
+  var StorageCtrl = require('happygui-storagectrl');
 
-  /* var width;
-  var height;
-  var maxWidth = 480;
-  var maxHeight = 800;
-  var widthPer;
-
-  function setSize() {
-    width = window.innerWidth * 0.7;
-    if (width > maxWidth) width = maxWidth;
-    widthPer = width / maxWidth;
-    height = widthPer * maxHeight;
+  function ColorPicker (options) {
+    View.call(this, options);
+    options = options || {};
+    this.hidden = true;
+    return this;
   }
-  var paper = Raphael(document.getElementById("preview"), 480, 800);
-  paper.setViewBox(0, 0, 480, 800, true);
-
-  window.onresize = function(event) {
-    setSize();
-    paper.setSize(width,height);
-    //redraw_element();
-  };
-  */
-
-  /* Quick quick fix */
-  Storage.prototype.setObject = function(key, value) {this.setItem(key, JSON.stringify(value));};
-  Storage.prototype.getObject = function(key) {var value = this.getItem(key); return value && JSON.parse(value);};
-
-
-  (function() {
-    var elementGesture, height, image, offset, origin, prevScale, scale, screenOrigin, translate, width, wrap;
-
-    // elementGesture = gesture(document.getElementsByClassName("element"));
-
-    image = document.getElementsByClassName("element");
-    gesture(image);
-    wrap = document.getElementById("preview");
-    width = 300;
-    height = 300;
-    offset = 100;
-    origin = {
-      x: 0,
-      y: 0
-    };
-    screenOrigin = {
-      x: 0,
-      y: 0
-    };
-    translate = {
-      x: 0,
-      y: 0
-    };
-    scale = 1;
-    prevScale = 1;
-
-    elementGesture.on('transform start', function(e) {
-      screenOrigin.x = (e.originalEvent.touches[0].clientX + e.originalEvent.touches[1].clientX) / 2;
-      return screenOrigin.y = (e.originalEvent.touches[0].clientY + e.originalEvent.touches[1].clientY) / 2;
-    });
-
-    elementGesture.on('transform', function(event) {
-      var newHeight, newWidth;
-      scale = prevScale * event.scale;
-      newWidth = 300 * scale;
-      newHeight = 300 * scale;
-      origin.x = screenOrigin.x - offset.left - translate.x;
-      origin.y = screenOrigin.y - offset.top - translate.y;
-      translate.x += -origin.x * (newWidth - width) / newWidth;
-      translate.y += -origin.y * (newHeight - height) / newHeight;
-      image.css('-webkit-transform', "scale3d(" + scale + ", " + scale + ", 1)");
-      wrap.css('-webkit-transform', "translate3d(" + translate.x + "px, " + translate.y + "px, 0)");
-      width = newWidth;
-      return height = newHeight;
-    });
-
-    elementGesture.on('transform end', function(event) {
-      return prevScale = scale;
-    });
-  })
-      //.call(this);
-
-  // Singleton
-  var CollectionCtrl = (function(){
-
-    var getFromStorage = function () {
-      if (localStorage) {
-        var objects = localStorage.getObject('happygui-collection');
-      } else {
-	    throw new NoPlatformException('Cannot get');
-      }
-
-      if (objects && objects.length > 0)
-      return objects.map(function(collection) {
-        collection.elements = collection.elements.map(function(element){
-          element.__proto__ = ElementFactory.prototype(element.type);
-          return element;
-        });
-        return collection;
-      });
-    };
-
-    var saveInStorage = function () {
-      var toSave = filesCollection.models;
-      for (var i = 0; i < filesCollection.models.length; i++) {
-        for (var j = 0; j < filesCollection.models[i].elements.length; j++) {
-          delete toSave[i].elements[j].drawing;
-        }
-      }
-      if (localStorage) {
-        localStorage.setObject('happygui-collection', toSave);
-      } else {
-	    throw new NoPlatformException('Cannot save')
-      }
-    };
-
-    var clearStorage = function () {
-      filesCollection.models = [];
-      if (localStorage) {
-        localStorage.clear();
-      } else {
-	    throw new NoPlatformException('Cannot reset');
-      }
-    };
-
-    var getCollection = function(collection) {
-      console.log("getCollection returns:", filesCollection.models[collection]);
-      if (filesCollection.models[collection] === undefined) {
-        throw new NullCollectionException ("No collection found");
-      }
-      return filesCollection.models[collection];
-    };
-
-    var createCollection = function (obj) {
-      filesCollection.push(obj);
-      saveInStorage();
-    };
-
-    var getElement = function(element, collection) {
-      var collectionModel = getCollection(collection);
-      if (collectionModel.elements[element] === undefined) {
-        throw new NullElementException ("No collection found");
-      }
-      return collectionModel.elements[element];
-    };
-
-
-    var filesCollection = new Collection(getFromStorage());
-
-
-    return {
-      getCollection: function(collection) {
-        return getCollection(collection);
-      },
-      getCollections: function() {
-        return filesCollection.models;
-      },
-      createCollection: function() {
-        var name = document.getElementById("collectionName").value;
-        createCollection({name: name, elements: [], backgroundColor: "#fff"});
-        document.getElementById("collectionName").value = '';
-        window.location = "#editor/" + (filesCollection.length()-1);
-        return this;
-      },
-      getElement: function(element, collection) {
-        return getElement(element, collection);
-      },
-      getElements: function(collection) {
-        return getCollection(collection).elements;
-      },
-      setElementAttribute: function(element, collection, key, value) {
-        // Validation
-        if (key.slice(0,3) == "has") return this;
-        var current = getElement(element, collection);
-        if (typeof current[key] === 'undefined') return this;
-
-        filesCollection.models[collection].elements[element][key] = value;
-        return this;
-      },
-      delElement: function(element, collection) {
-        filesCollection.models[collection].elements.splice(element, 1);
-        saveInStorage();
-      },
-      createElement: function (collection, doc) {
-        var element = ElementFactory.create(doc);
-        var index = filesCollection.models[collection].elements.push(element) - 1;
-        return index;
-      },
-      update: function (toSave, doc, collection, element) {
-        if (doc !== undefined && collection !== undefined && element !== undefined) {
-          filesCollection.models[collection].elements[element] = doc;
-        } else if (doc !== undefined && collection !== undefined) {
-          filesCollection.models[collection] = doc;
-        } else if (doc !== undefined) {
-          filesCollection.models = doc;
-        }
-        if (toSave) saveInStorage();
-      },
-      reset: function() {
-        if (confirm("Your data will be lost forever, are you fine with that?")) {
-          clearStorage();
-        }
-        return this;
-      }
-    }
-  })();
+  ColorPicker.prototype = Object.create(View.prototype);
+  ColorPicker.prototype.constructor = ColorPicker;
 
   function PreviewView (options) {
     View.call(this, options);
     options = options || {};
 
-    this.defaultContainer = "preview";
-    this.paper = Raphael(document.getElementById(options.container || options.defaultContainer), 480, 600);
+    this.paper = Raphael(document.getElementById(options.container), 480, 600);
 
     return this;
   }
@@ -367,7 +186,7 @@
 
   PreviewView.prototype.render = function (currentCollection) {
 
-    var collection = CollectionCtrl.getCollection(currentCollection);
+    var collection = StorageCtrl.getCollection(currentCollection);
 
     var html = "", element, i = 0;
 
@@ -376,7 +195,7 @@
     collection.elements.forEach(function(element, currentElement) {
 
       element.draw(self.paper, function() {
-        CollectionCtrl.update(false, element, currentCollection, currentElement);
+        StorageCtrl.update(false, element, currentCollection, currentElement);
         window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
       });
     });
@@ -389,8 +208,6 @@
   function PageView (options) {
     View.call(this, options);
     options = options || {};
-
-    this.defaultContainer = "page";
 
     return this;
   }
@@ -415,10 +232,10 @@
     View.call(this, options);
     options = options || {};
 
-    this.defaultContainer = "editor";
-
     this.currentCollection = options.collection;
     this.currentElement = options.element || false;
+
+    this.colorpicker = new ColorPicker({container: options.colorpicker});
 
     return this;
   }
@@ -426,15 +243,14 @@
   EditorView.prototype.constructor = EditorView;
 
   EditorView.prototype.collection = function () {
-    return CollectionCtrl.getCollection(this.currentCollection);
+    return StorageCtrl.getCollection(this.currentCollection);
   };
   EditorView.prototype.elements = function (element) {
-    console.log("elements", element);
     if (element === null) {
-      return CollectionCtrl.getElements(this.currentCollection);
+      return StorageCtrl.getElements(this.currentCollection);
     }
 
-    return CollectionCtrl.getElement(element, this.currentCollection);
+    return StorageCtrl.getElement(element, this.currentCollection);
   };
   EditorView.prototype.element = function (element) {
     return this.elements(element || this.currentElement);
@@ -449,15 +265,15 @@
   };
 
   EditorView.prototype.setAttribute = function (key, value) {
-    CollectionCtrl.setElementAttribute(this.currentElement, this.currentCollection, key, value);
+    StorageCtrl.setElementAttribute(this.currentElement, this.currentCollection, key, value);
     var attr;
     this.element().redraw();
   };
 
   EditorView.prototype.setElement = function (type, id) {
-
+    // ELEMENT FACTORY ERROR THROWN<z
     if (type) {
-      this.currentElement = id || CollectionCtrl.createElement(this.currentCollection, {type: type});
+      this.currentElement = id || StorageCtrl.createElement(this.currentCollection, {type: type});
     } else {
       throw new NullElementException("type does not exist");
     }
@@ -466,7 +282,7 @@
   };
 
   EditorView.prototype.saveElement = function (toSave, doc) {
-    CollectionCtrl.update(toSave, doc, this.currentCollection, this.currentElement);
+    StorageCtrl.update(toSave, doc, this.currentCollection, this.currentElement);
   };
 
   EditorView.prototype.select = function(collection, element) {
@@ -553,13 +369,11 @@
         pageView
             .render('help', null);
 
-        console.log("YUHU WE ARE IN help");
       },
       collection: function() {
 
-        console.log("collection()", CollectionCtrl.getCollections());
         pageView
-            .render("collection", {collection: CollectionCtrl.getCollections()});
+            .render("collection", {collection: StorageCtrl.getCollections()});
 
       },
       element_editor: function(collection, type, id) {
@@ -567,7 +381,7 @@
         try {
           editorView
               .reset()
-              .select(collection, {type: type, id: id})
+              .select(collection, {type: type, id: id});
 
           if (id) {
             editorView.render();
@@ -602,34 +416,33 @@
   };
 
   // Main
-  var editor = new EditorView({container: 'editor'});
+  var editor = new EditorView({container: 'editor', colorpicker: 'dialog_colorpicker'});
   editor.bind('click .elementNew', function(e) {
     var type = e.target.id.replace('New','');
-    var id = CollectionCtrl.createElement(this.currentCollection, {type: type});
+    var id = StorageCtrl.createElement(this.currentCollection, {type: type});
     window.location = "#editor/"+this.currentCollection+"/"+type+"/"+id;
   });
   editor.bind('keyup #editor input', function(e) {
     var key = e.target.name.replace("sm_", "");
     var value = e.target.value;
-    console.log(key, value);
     this.setAttribute(key, value);
   });
   editor.bind('click #editor .btn-delete', function(e) {
-    CollectionCtrl.delElement(this.currentElement, this.currentCollection);
+    StorageCtrl.delElement(this.currentElement, this.currentCollection);
     window.location = "#editor/"+this.currentCollection;
   });
   editor.bind('click #editor .go-editor', function(e) {
     window.location = "#editor/"+this.currentCollection;
   });
-  editor.bind('click #editor .colorpicker', function(e) {
-    // TODO use external libs
-    alert("Pick a color");
+  editor.bind('click #editor .go-cpDialog', function(e) {
+    this.colorpicker.show();
+    alert("hello");
   });
 
   var preview = new PreviewView({container: 'preview'});
 
   var page = new PageView({container: 'page'});
-  page.bind('click #collectionSave', CollectionCtrl.createCollection);
+  page.bind('click #collectionSave', StorageCtrl.createCollection);
   var views = Views(editor, preview, page);
 
   // Clean before router cleans

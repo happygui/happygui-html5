@@ -93,12 +93,19 @@
 }
 
 // Sub class objects
+.row > div {
+  &:last-child {
+    margin-right: 0 !important;
+  }
+}
 .colorpicker {
   .editorElement;
 
-  height: 4em;
+  // height: 4em;
+  height: 64px;
   border: 3px solid #fff;
   border-width: 2px 4px 6px 3px;
+  cursor:pointer;
   .border-radius(10px);
   .box-shadow(0px 2px 0px, #000);
 }
@@ -158,6 +165,9 @@ body {
 
   header {
     margin: 0 10%;
+    .colorpicker {
+      margin: 30px 0 15px !important;
+    }
   }
   section {
     margin: 0 10%;
@@ -172,11 +182,23 @@ body {
       float: right;
     }
   }
+}
 
-  .row > div {
-    &:last-child {
-      margin-right: 0;
-    }
+#dialog_colorpicker {
+  background: #76799b;
+  position: fixed;
+  width: 40%;
+  height: 100%;
+  margin-top: 119px;
+  .inner {
+    margin: 0 10%;
+  }
+  .colorpicker {
+    float: left;
+    margin-top: 5%;
+    width: 19%;
+    margin-right: 4%;
+    height: 50px;
   }
 }
 
@@ -239,6 +261,11 @@ body {
 @pink: #CE264A;
 @yellow: #d9ba00;
 @orange: #ea6e26;
+@white: #fff;
+@gray: #dfdfdf;
+@dgray: #999;
+@black: #000;
+
 
 .colour_bg(@color) {
   background-color: @color;
@@ -261,6 +288,25 @@ body {
 
 .orange_bg {
   .colour_bg(@orange);
+}
+
+.white_bg {
+  .colour_bg(@white);
+}
+.gray_bg {
+  .colour_bg(@gray);
+}
+.dgray_bg {
+  .colour_bg(@dgray);
+  &:hover {
+    border-color: lighten(@dgray, 20%);
+  }
+}
+.black_bg {
+  .colour_bg(@black);
+  &:hover {
+    border-color: lighten(@black, 20%);
+  }
 }
 
 //@media all and (orientation: portrait) {

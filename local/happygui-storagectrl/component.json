@@ -1,0 +1,16 @@
+{
+    "name": "happygui-storagectrl",
+    "description": "Storing objects",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-elementfactory": "*",
+        "happygui-noplatformexception": "*",
+        "happygui-nullelementexception": "*",
+        "happygui-nullcollectionexception": "*",
+        "happygui-collection": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

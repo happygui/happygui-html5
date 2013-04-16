@@ -197,11 +197,15 @@ select {
   border: 2px solid #000000;
   padding: 18px 38px;
 }
+.row > div:last-child {
+  margin-right: 0 !important;
+}
 .colorpicker {
   margin-top: 10%;
-  height: 4em;
+  height: 64px;
   border: 3px solid #fff;
   border-width: 2px 4px 6px 3px;
+  cursor: pointer;
   border-shadow: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -272,6 +276,9 @@ body {
 #editor header {
   margin: 0 10%;
 }
+#editor header .colorpicker {
+  margin: 30px 0 15px !important;
+}
 #editor section {
   margin: 0 10%;
 }
@@ -284,8 +291,22 @@ body {
 #editor footer .btn-editor {
   float: right;
 }
-#editor .row > div:last-child {
-  margin-right: 0;
+#dialog_colorpicker {
+  background: #76799b;
+  position: fixed;
+  width: 40%;
+  height: 100%;
+  margin-top: 119px;
+}
+#dialog_colorpicker .inner {
+  margin: 0 10%;
+}
+#dialog_colorpicker .colorpicker {
+  float: left;
+  margin-top: 5%;
+  width: 19%;
+  margin-right: 4%;
+  height: 50px;
 }
 #preview {
   margin-left: 40%;
@@ -359,6 +380,36 @@ body {
 }
 .orange_bg:hover {
   border-color: #9b420f;
+}
+.white_bg {
+  background-color: #ffffff;
+}
+.white_bg:hover {
+  border-color: #cccccc;
+}
+.gray_bg {
+  background-color: #dfdfdf;
+}
+.gray_bg:hover {
+  border-color: #acacac;
+}
+.dgray_bg {
+  background-color: #999999;
+}
+.dgray_bg:hover {
+  border-color: #666666;
+}
+.dgray_bg:hover {
+  border-color: #cccccc;
+}
+.black_bg {
+  background-color: #000000;
+}
+.black_bg:hover {
+  border-color: #000000;
+}
+.black_bg:hover {
+  border-color: #333333;
 }
 @media (max-width: 800px) {
   #editor {

@@ -1,6 +1,7 @@
 var TextElement = require('happygui-textelement');
 var CircleElement = require('happygui-circleelement');
 var RectElement = require('happygui-rectelement');
+var NullElementException = require('happygui-nullelementexception')
 
 var ElementFactory = {
   create: function (doc) {
@@ -19,8 +20,7 @@ var ElementFactory = {
         element = new TextElement(doc);
         break;
       default:
-        //TODO throw error
-        alert("type not recognised, sorry");
+        throw new NullElementException("Type not recognised");
     }
 
     return element;
@@ -40,8 +40,7 @@ var ElementFactory = {
         prototype = TextElement.prototype;
         break;
       default:
-        //TODO throw error
-        alert("type not recognised, sorry");
+        throw new NullElementException("Type not recognised");
     }
     return prototype;
   }

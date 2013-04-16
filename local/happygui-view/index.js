@@ -3,7 +3,6 @@ var delegate = require('delegate');
 function View (options) {
   options = options || {};
 
-  this.defaultContainer = "example";
   this.container = options.container;
   this.hidden = false;
 }
@@ -21,13 +20,13 @@ View.prototype.bind = function(str, method) {
    if (!meth) throw new TypeError('method "' + method + '" is not defined');
    */
   var meth = method;
-  var fn = delegate.bind(document.getElementById(this.container || this.defaultContainer), selector, event, meth.bind(this));
+  var fn = delegate.bind(document.getElementById(this.container), selector, event, meth.bind(this));
 };
 
 View.prototype.show = function() {
   if (this.hidden == true) {
     this.hidden = false;
-    document.getElementById(this.container || this.defaultContainer).className = "";
+    document.getElementById(this.container).className = "";
   }
 
   return this;
@@ -36,14 +35,14 @@ View.prototype.show = function() {
 View.prototype.hide = function() {
   if (this.hidden == false) {
     this.hidden = true;
-    document.getElementById(this.container || this.defaultContainer).className = "hidden";
+    document.getElementById(this.container).className = "hidden";
   }
 
   return this;
 };
 
 View.prototype.el = function(html) {
-  document.getElementById(this.container || this.defaultContainer).innerHTML = html;
+  document.getElementById(this.container).innerHTML = html;
 
   return this;
 };

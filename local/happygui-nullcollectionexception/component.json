@@ -1,5 +1,5 @@
 {
-    "name": "happygui-nullcollactionexception",
+    "name": "happygui-nullcollectionexception",
     "description": "Null element exception",
     "version": "0.0.1",
     "dependencies": {

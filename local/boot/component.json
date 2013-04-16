@@ -25,7 +25,9 @@
 
         "happygui-nullelementexception",
         "happygui-nullcollectionexception",
-        "happygui-noplatformexception"
+        "happygui-noplatformexception",
+
+        "happygui-storagectrl"
     ],
     "scripts": ["boot.js"],
     "main": "boot.js"

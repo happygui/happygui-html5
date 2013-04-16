@@ -1903,7 +1903,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
              | var c = paper.circle(10, 10, 10).attr({hue: .45});
              | // or even like this:
              | c.animate({hue: 1}, 1e3);
-             | 
+             |
              | // You could also create custom attribute
              | // with multiple parameters:
              | paper.customAttributes.hsb = function (h, s, b) {
@@ -2281,7 +2281,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
         }
         return value;
     };
-    
+
     /*\
      * Raphael.createUUID
      [ method ]
@@ -2376,7 +2376,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
             g /= 255;
             b /= 255;
         }
-        
+
         return [r, g, b];
     },
     packageRGB = function (r, g, b, o) {
@@ -2393,7 +2393,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
         R.is(o, "finite") && (rgb.opacity = o);
         return rgb;
     };
-    
+
     /*\
      * Raphael.color
      [ method ]
@@ -2636,7 +2636,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
         g.doc.body.appendChild(img);
         img.src = src;
     };
-    
+
     function clrToString() {
         return this.hex;
     }
@@ -2868,7 +2868,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
         if (pth.arr) {
             return pathClone(pth.arr);
         }
-        
+
         var paramCounts = {a: 7, c: 6, h: 1, l: 2, m: 2, r: 4, q: 4, s: 4, t: 2, v: 1, z: 0},
             data = [];
         if (R.is(pathString, array) && R.is(pathString[0], array)) { // rough assumption
@@ -3374,7 +3374,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
             return {x: 0, y: 0, width: 0, height: 0, x2: 0, y2: 0};
         }
         path = path2curve(path);
-        var x = 0, 
+        var x = 0,
             y = 0,
             X = [],
             Y = [],
@@ -4422,7 +4422,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
                 s.scalex = +s.scalex.toFixed(4);
                 s.scaley = +s.scaley.toFixed(4);
                 s.rotate = +s.rotate.toFixed(4);
-                return  (s.dx || s.dy ? "t" + [s.dx, s.dy] : E) + 
+                return  (s.dx || s.dy ? "t" + [s.dx, s.dy] : E) +
                         (s.scalex != 1 || s.scaley != 1 ? "s" + [s.scalex, s.scaley, 0, 0] : E) +
                         (s.rotate ? "r" + [s.rotate, 0, 0] : E);
             } else {
@@ -4450,7 +4450,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
     } else {
         paperproto.safari = fun;
     }
- 
+
     var preventDefault = function () {
         this.returnValue = false;
     },
@@ -4598,7 +4598,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - handler (function) handler for the event
      = (object) @Element
     \*/
-    
+
     /*\
      * Element.dblclick
      [ method ]
@@ -4617,7 +4617,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - handler (function) handler for the event
      = (object) @Element
     \*/
-    
+
     /*\
      * Element.mousedown
      [ method ]
@@ -4636,7 +4636,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - handler (function) handler for the event
      = (object) @Element
     \*/
-    
+
     /*\
      * Element.mousemove
      [ method ]
@@ -4655,7 +4655,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - handler (function) handler for the event
      = (object) @Element
     \*/
-    
+
     /*\
      * Element.mouseout
      [ method ]
@@ -4674,7 +4674,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - handler (function) handler for the event
      = (object) @Element
     \*/
-    
+
     /*\
      * Element.mouseover
      [ method ]
@@ -4693,7 +4693,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - handler (function) handler for the event
      = (object) @Element
     \*/
-    
+
     /*\
      * Element.mouseup
      [ method ]
@@ -4712,7 +4712,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - handler (function) handler for the event
      = (object) @Element
     \*/
-    
+
     /*\
      * Element.touchstart
      [ method ]
@@ -4731,7 +4731,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - handler (function) handler for the event
      = (object) @Element
     \*/
-    
+
     /*\
      * Element.touchmove
      [ method ]
@@ -4750,7 +4750,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - handler (function) handler for the event
      = (object) @Element
     \*/
-    
+
     /*\
      * Element.touchend
      [ method ]
@@ -4769,7 +4769,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - handler (function) handler for the event
      = (object) @Element
     \*/
-    
+
     /*\
      * Element.touchcancel
      [ method ]
@@ -4810,13 +4810,13 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
             };
         })(events[i]);
     }
-    
+
     /*\
      * Element.data
      [ method ]
      **
      * Adds or retrieves given value asociated with given key.
-     ** 
+     **
      * See also @Element.removeData
      > Parameters
      - key (string) key to store data
@@ -4919,8 +4919,8 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      - mcontext (object) #optional context for moving handler
      - scontext (object) #optional context for drag start handler
      - econtext (object) #optional context for drag end handler
-     * Additionaly following `drag` events will be triggered: `drag.start.<id>` on start, 
-     * `drag.end.<id>` on end and `drag.move.<id>` on every move. When element will be dragged over another element 
+     * Additionaly following `drag` events will be triggered: `drag.start.<id>` on start,
+     * `drag.end.<id>` on end and `drag.move.<id>` on every move. When element will be dragged over another element
      * `drag.over.<id>` will be fired as well.
      *
      * Start event and start handler will be called in specified context or in context of the element with following parameters:
@@ -5208,7 +5208,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      * Paper.setViewBox
      [ method ]
      **
-     * Sets the view box of the paper. Practically it gives you ability to zoom and pan whole paper surface by 
+     * Sets the view box of the paper. Practically it gives you ability to zoom and pan whole paper surface by
      * specifying new boundaries.
      **
      > Parameters
@@ -5929,8 +5929,8 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
             }
         }
         return element;
-        // 
-        // 
+        //
+        //
         // var a = params ? R.animation(params, ms, easing, callback) : anim,
         //     status = element.status(anim);
         // return this.animate(a).status(a, status * anim.ms / a.ms);
@@ -6040,7 +6040,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
      **
      = (object) new altered Animation object
     \*/
-    Animation.prototype.repeat = function (times) { 
+    Animation.prototype.repeat = function (times) {
         var a = new Animation(this.anim, this.ms);
         a.del = this.del;
         a.times = math.floor(mmax(times, 0)) || 1;
@@ -7024,7 +7024,7 @@ require.register("richthegeek-raphael/raphael.js", function(exports, require, mo
     })(document, "DOMContentLoaded");
 
     oldRaphael.was ? (g.win.Raphael = R) : (Raphael = R);
-    
+
     eve.on("raphael.DOMload", function () {
         loaded = true;
     });
@@ -7131,7 +7131,7 @@ window.Raphael && window.Raphael.svg && function (R) {
                 return null;
             }
             id = id.replace(/[\(\)\s,\xb0#]/g, "_");
-            
+
             if (element.gradient && id != element.gradient.id) {
                 SVG.defs.removeChild(element.gradient);
                 delete element.gradient;
@@ -7589,6 +7589,8 @@ window.Raphael && window.Raphael.svg && function (R) {
     },
     leading = 1.2,
     tuneText = function (el, params) {
+
+      console.log(el, params)
         if (el.type != "text" || !(params[has]("text") || params[has]("font") || params[has]("font-size") || params[has]("x") || params[has]("y"))) {
             return;
         }
@@ -7606,8 +7608,12 @@ window.Raphael && window.Raphael.svg && function (R) {
                 tspan;
             for (var i = 0, ii = texts.length; i < ii; i++) {
                 tspan = $("tspan");
+                console.log("t1",tspan);
+
                 i && $(tspan, {dy: fontSize * leading, x: a.x});
+                console.log(fontSize, leading, "lead");
                 tspan.appendChild(R._g.doc.createTextNode(texts[i]));
+                console.log("t2",tspan);
                 node.appendChild(tspan);
                 tspans[i] = tspan;
             }
@@ -7615,6 +7621,7 @@ window.Raphael && window.Raphael.svg && function (R) {
             tspans = node.getElementsByTagName("tspan");
             for (i = 0, ii = tspans.length; i < ii; i++) if (i) {
                 $(tspans[i], {dy: fontSize * leading, x: a.x});
+              console.log(fontSize, leading, "lead2");
             } else {
                 $(tspans[0], {dy: 0});
             }
@@ -7623,7 +7630,8 @@ window.Raphael && window.Raphael.svg && function (R) {
         el._.dirty = 1;
         var bb = el._getBBox(),
             dif = a.y - (bb.y + bb.height / 2);
-        dif && R.is(dif, "finite") && $(tspans[0], {dy: dif});
+        dif && $(tspans[0], {dy: dif});
+        console.log(dif, "lead3");
     },
     Element = function (node, svg) {
         var X = 0,
@@ -7660,7 +7668,7 @@ window.Raphael && window.Raphael.svg && function (R) {
          * Element.id
          [ property (number) ]
          **
-         * Unique id of the element. Especially usesful when you want to listen to events of the element, 
+         * Unique id of the element. Especially usesful when you want to listen to events of the element,
          * because all events are fired in format `<module>.<action>.<id>`. Also useful for @Paper.getById method.
         \*/
         this.id = R._oid++;
@@ -7865,7 +7873,7 @@ window.Raphael && window.Raphael.svg && function (R) {
         this.clip && $(this.clip, {transform: this.matrix.invert()});
         this.pattern && updatePosition(this);
         this.node && $(this.node, {transform: this.matrix});
-    
+
         if (_.sx != 1 || _.sy != 1) {
             var sw = this.attrs[has]("stroke-width") ? this.attrs["stroke-width"] : 1;
             this.attr({"stroke-width": sw});
@@ -7930,6 +7938,7 @@ window.Raphael && window.Raphael.svg && function (R) {
         var bbox = {};
         try {
             bbox = this.node.getBBox();
+            console.log("getboz2", bbox);
         } catch(e) {
             // Firefox 3.0.x plays badly here
         } finally {
@@ -8112,7 +8121,7 @@ window.Raphael && window.Raphael.svg && function (R) {
         }
         var parent = this.node.parentNode;
         if (parent.tagName.toLowerCase() == "a") {
-            parent.parentNode.insertBefore(this.node.parentNode, this.node.parentNode.parentNode.firstChild); 
+            parent.parentNode.insertBefore(this.node.parentNode, this.node.parentNode.parentNode.firstChild);
         } else if (parent.firstChild != this.node) {
             parent.insertBefore(this.node, this.node.parentNode.firstChild);
         }
@@ -8615,7 +8624,7 @@ window.Raphael && window.Raphael.vml && function (R) {
         if ("arrow-end" in params) {
             addArrow(res, params["arrow-end"], 1);
         }
-        if (params.opacity != null || 
+        if (params.opacity != null ||
             params["stroke-width"] != null ||
             params.fill != null ||
             params.src != null ||
@@ -8694,7 +8703,7 @@ window.Raphael && window.Raphael.vml && function (R) {
             params["stroke-width"] && (stroke.weight = width);
             width && width < 1 && (opacity *= width) && (stroke.weight = 1);
             stroke.opacity = opacity;
-        
+
             params["stroke-linejoin"] && (stroke.joinstyle = params["stroke-linejoin"] || "miter");
             stroke.miterlimit = params["stroke-miterlimit"] || 8;
             params["stroke-linecap"] && (stroke.endcap = params["stroke-linecap"] == "butt" ? "flat" : params["stroke-linecap"] == "square" ? "square" : "round");
@@ -8741,7 +8750,7 @@ window.Raphael && window.Raphael.vml && function (R) {
                 res._.dirty = 1;
                 break;
             }
-        
+
             // text-anchor emulation
             switch (a["text-anchor"]) {
                 case "start":
@@ -8951,7 +8960,7 @@ window.Raphael && window.Raphael.vml && function (R) {
         }
         cx = cx == null ? bbox.x + bbox.width / 2 : cx;
         cy = cy == null ? bbox.y + bbox.height / 2 : cy;
-    
+
         this.transform(this._.transform.concat([["s", sx, sy, cx, cy]]));
         this._.dirtyT = 1;
         return this;
@@ -8965,6 +8974,7 @@ window.Raphael && window.Raphael.vml && function (R) {
         return this;
     };
     elproto._getBBox = function () {
+      console.log("getboz1", this.H, this.bbx, this.W);
         if (this.removed) {
             return {};
         }
@@ -10530,6 +10540,7 @@ require.register("happygui-elementfactory/index.js", function(exports, require, 
 var TextElement = require('happygui-textelement');
 var CircleElement = require('happygui-circleelement');
 var RectElement = require('happygui-rectelement');
+var NullElementException = require('happygui-nullelementexception')
 
 var ElementFactory = {
   create: function (doc) {
@@ -10548,8 +10559,7 @@ var ElementFactory = {
         element = new TextElement(doc);
         break;
       default:
-        //TODO throw error
-        alert("type not recognised, sorry");
+        throw new NullElementException("Type not recognised");
     }
 
     return element;
@@ -10569,8 +10579,7 @@ var ElementFactory = {
         prototype = TextElement.prototype;
         break;
       default:
-        //TODO throw error
-        alert("type not recognised, sorry");
+        throw new NullElementException("Type not recognised");
     }
     return prototype;
   }
@@ -10590,6 +10599,7 @@ var TextElement = function(options) {
 
   this.fontSize = options.fontSize || 25;
   this.fontColor = options.fontColor || "#000";
+  this.y = 200;
 };
 TextElement.prototype = Object.create(Element.prototype);
 TextElement.prototype.constructor = TextElement;
@@ -10599,7 +10609,7 @@ TextElement.prototype.redraw = function () {
     fill: this.fontColor,
     font: "italic "+this.fontSize+"px Helvetica"
   });
-}
+};
 TextElement.prototype.draw = function (paper, callback) {
   var self = this;
 
@@ -10608,10 +10618,19 @@ TextElement.prototype.draw = function (paper, callback) {
     .text(self.x, self.y, "Jeaaaaaaaaaaaaaaah")
     .attr({
       fill: self.fontColor,
-      dy: 0,
-      dx: 0,
-      font: "italic "+self.fontSize+"px Helvetica"
-    })
+      //font: "italic "+self.fontSize+"px Helvetica"
+      "font-size": self.fontSize+"px"
+    });
+
+  console.log(this.drawing.getBBox(true));
+  console.log(this.drawing.getBBox(false));
+  var bb = this.drawing._getBBox(),
+    dif = self.y - (bb.y + bb.height / 2);
+
+    dif && this.drawing.node.firstChild.setAttribute("dy", String(dif));
+    console.log(dif, "leaderrrr", bb);
+
+  this.drawing
     .drag(
     function(dx, dy, x, y) {
       console.log(dx, dy, x, y);
@@ -10772,7 +10791,6 @@ var delegate = require('delegate');
 function View (options) {
   options = options || {};
 
-  this.defaultContainer = "example";
   this.container = options.container;
   this.hidden = false;
 }
@@ -10790,13 +10808,13 @@ View.prototype.bind = function(str, method) {
    if (!meth) throw new TypeError('method "' + method + '" is not defined');
    */
   var meth = method;
-  var fn = delegate.bind(document.getElementById(this.container || this.defaultContainer), selector, event, meth.bind(this));
+  var fn = delegate.bind(document.getElementById(this.container), selector, event, meth.bind(this));
 };
 
 View.prototype.show = function() {
   if (this.hidden == true) {
     this.hidden = false;
-    document.getElementById(this.container || this.defaultContainer).className = "";
+    document.getElementById(this.container).className = "";
   }
 
   return this;
@@ -10805,14 +10823,14 @@ View.prototype.show = function() {
 View.prototype.hide = function() {
   if (this.hidden == false) {
     this.hidden = true;
-    document.getElementById(this.container || this.defaultContainer).className = "hidden";
+    document.getElementById(this.container).className = "hidden";
   }
 
   return this;
 };
 
 View.prototype.el = function(html) {
-  document.getElementById(this.container || this.defaultContainer).innerHTML = html;
+  document.getElementById(this.container).innerHTML = html;
 
   return this;
 };
@@ -10875,6 +10893,148 @@ NoPlatformException.prototype = Object.create(Error.prototype);
 NoPlatformException.prototype.constructor = NoPlatformException;
 
 module.exports = NoPlatformException;
+});
+require.register("happygui-storagectrl/index.js", function(exports, require, module){
+var ElementFactory = require('happygui-elementfactory');
+var NoPlatformException = require('happygui-noplatformexception');
+var NullElementException = require('happygui-nullelementexception');
+var NullCollectionException = require('happygui-nullcollectionexception');
+var Collection = require('happygui-collection');
+
+
+Storage.prototype.setObject = function(key, value) {this.setItem(key, JSON.stringify(value));};
+Storage.prototype.getObject = function(key) {var value = this.getItem(key); return value && JSON.parse(value);};
+
+var StorageCtrl = (function(){
+
+  var getFromStorage = function () {
+    if (localStorage) {
+      var objects = localStorage.getObject('happygui-collection');
+    } else {
+      throw new NoPlatformException('Cannot get');
+    }
+
+    if (objects && objects.length > 0)
+      return objects.map(function(collection) {
+        collection.elements = collection.elements.map(function(element){
+          try {
+            element.__proto__ = ElementFactory.prototype(element.type);
+          } catch (exception) {
+            if (exception instanceof NullElementException) {
+              // TODO
+            }
+          }
+
+          return element;
+        });
+        return collection;
+      });
+  };
+
+  var saveInStorage = function () {
+    var toSave = filesCollection.models;
+    for (var i = 0; i < filesCollection.models.length; i++) {
+      for (var j = 0; j < filesCollection.models[i].elements.length; j++) {
+        delete toSave[i].elements[j].drawing;
+      }
+    }
+    if (localStorage) {
+      localStorage.setObject('happygui-collection', toSave);
+    } else {
+      throw new NoPlatformException('Cannot save')
+    }
+  };
+
+  var clearStorage = function () {
+    filesCollection.models = [];
+    if (localStorage) {
+      localStorage.clear();
+    } else {
+      throw new NoPlatformException('Cannot reset');
+    }
+  };
+
+  var getCollection = function(collection) {
+    if (filesCollection.models[collection] === undefined) {
+      throw new NullCollectionException ("No collection found");
+    }
+    return filesCollection.models[collection];
+  };
+
+  var createCollection = function (obj) {
+    filesCollection.push(obj);
+    saveInStorage();
+  };
+
+  var getElement = function(element, collection) {
+    var collectionModel = getCollection(collection);
+    if (collectionModel.elements[element] === undefined) {
+      throw new NullElementException ("No collection found");
+    }
+    return collectionModel.elements[element];
+  };
+
+
+  var filesCollection = new Collection(getFromStorage());
+
+
+  return {
+    getCollection: function(collection) {
+      return getCollection(collection);
+    },
+    getCollections: function() {
+      return filesCollection.models;
+    },
+    createCollection: function() {
+      var name = document.getElementById("collectionName").value;
+      createCollection({name: name, elements: [], backgroundColor: "#fff"});
+      document.getElementById("collectionName").value = '';
+      window.location = "#editor/" + (filesCollection.length()-1);
+      return this;
+    },
+    getElement: function(element, collection) {
+      return getElement(element, collection);
+    },
+    getElements: function(collection) {
+      return getCollection(collection).elements;
+    },
+    setElementAttribute: function(element, collection, key, value) {
+      // Validation
+      if (key.slice(0,3) == "has") return this;
+      var current = getElement(element, collection);
+      if (typeof current[key] === 'undefined') return this;
+
+      filesCollection.models[collection].elements[element][key] = value;
+      return this;
+    },
+    delElement: function(element, collection) {
+      filesCollection.models[collection].elements.splice(element, 1);
+      saveInStorage();
+    },
+    createElement: function (collection, doc) {
+      var element = ElementFactory.create(doc);
+      return filesCollection.models[collection].elements.push(element) - 1;
+    },
+    update: function (toSave, doc, collection, element) {
+      if (doc !== undefined && collection !== undefined && element !== undefined) {
+        filesCollection.models[collection].elements[element] = doc;
+      } else if (doc !== undefined && collection !== undefined) {
+        filesCollection.models[collection] = doc;
+      } else if (doc !== undefined) {
+        filesCollection.models = doc;
+      }
+      if (toSave) saveInStorage();
+    },
+    reset: function() {
+      if (confirm("Your data will be lost forever, are you fine with that?")) {
+        clearStorage();
+      }
+      return this;
+    }
+  }
+})();
+
+module.exports = StorageCtrl;
 });
 require.register("boot/boot.js", function(exports, require, module){
 
@@ -10967,6 +11127,8 @@ require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-
 require.alias("happygui-textelement/index.js", "happygui-elementfactory/deps/happygui-textelement/index.js");
 require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
 
+require.alias("happygui-nullelementexception/index.js", "happygui-elementfactory/deps/happygui-nullelementexception/index.js");
+
 require.alias("happygui-textelement/index.js", "boot/deps/happygui-textelement/index.js");
 require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
 
@@ -10991,9 +11153,32 @@ require.alias("happygui-templates/index.js", "boot/deps/happygui-templates/index
 
 require.alias("happygui-nullelementexception/index.js", "boot/deps/happygui-nullelementexception/index.js");
 
-require.alias("happygui-nullcollectionexception/index.js", "boot/deps/happygui-nullcollactionexception/index.js");
+require.alias("happygui-nullcollectionexception/index.js", "boot/deps/happygui-nullcollectionexception/index.js");
 
 require.alias("happygui-noplatformexception/index.js", "boot/deps/happygui-noplatformexception/index.js");
+
+require.alias("happygui-storagectrl/index.js", "boot/deps/happygui-storagectrl/index.js");
+require.alias("happygui-elementfactory/index.js", "happygui-storagectrl/deps/happygui-elementfactory/index.js");
+require.alias("happygui-circleelement/index.js", "happygui-elementfactory/deps/happygui-circleelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-circleelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-rectelement/index.js", "happygui-elementfactory/deps/happygui-rectelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-rectelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-textelement/index.js", "happygui-elementfactory/deps/happygui-textelement/index.js");
+require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-elementfactory/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-noplatformexception/index.js", "happygui-storagectrl/deps/happygui-noplatformexception/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-storagectrl/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-nullcollectionexception/index.js", "happygui-storagectrl/deps/happygui-nullcollectionexception/index.js");
+
+require.alias("happygui-collection/index.js", "happygui-storagectrl/deps/happygui-collection/index.js");
 
 require.alias("boot/boot.js", "boot/index.js");
 

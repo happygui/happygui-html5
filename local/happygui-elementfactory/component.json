@@ -5,7 +5,8 @@
     "dependencies": {
         "happygui-circleelement": "*",
         "happygui-rectelement": "*",
-        "happygui-textelement": "*"
+        "happygui-textelement": "*",
+        "happygui-nullelementexception": "*"
     },
     "development": {},
     "scripts": [

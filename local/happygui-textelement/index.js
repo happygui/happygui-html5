@@ -9,6 +9,7 @@ var TextElement = function(options) {
 
   this.fontSize = options.fontSize || 25;
   this.fontColor = options.fontColor || "#000";
+  this.y = 200;
 };
 TextElement.prototype = Object.create(Element.prototype);
 TextElement.prototype.constructor = TextElement;
@@ -18,7 +19,7 @@ TextElement.prototype.redraw = function () {
     fill: this.fontColor,
     font: "italic "+this.fontSize+"px Helvetica"
   });
-}
+};
 TextElement.prototype.draw = function (paper, callback) {
   var self = this;
 
@@ -27,10 +28,19 @@ TextElement.prototype.draw = function (paper, callback) {
     .text(self.x, self.y, "Jeaaaaaaaaaaaaaaah")
     .attr({
       fill: self.fontColor,
-      dy: 0,
-      dx: 0,
-      font: "italic "+self.fontSize+"px Helvetica"
-    })
+      //font: "italic "+self.fontSize+"px Helvetica"
+      "font-size": self.fontSize+"px"
+    });
+
+  console.log(this.drawing.getBBox(true));
+  console.log(this.drawing.getBBox(false));
+  var bb = this.drawing._getBBox(),
+    dif = self.y - (bb.y + bb.height / 2);
+
+    dif && this.drawing.node.firstChild.setAttribute("dy", String(dif));
+    console.log(dif, "leaderrrr", bb);
+
+  this.drawing
     .drag(
     function(dx, dy, x, y) {
       console.log(dx, dy, x, y);
