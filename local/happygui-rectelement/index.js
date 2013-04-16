@@ -11,7 +11,7 @@ RectElement.prototype.constructor = RectElement;
 RectElement.prototype.redraw = function() {
   this.drawing.attr({
     stroke: this.borderColor,
-      fill: this.backgroundColor,
+    fill: this.backgroundColor,
     "stroke-width": this.borderThickness
   });
 };
@@ -24,7 +24,7 @@ RectElement.prototype.draw = function (paper, callback) {
     .attr({
       stroke: self.borderColor,
       fill: self.backgroundColor,
-      "fill-opacity": .5,
+      "fill-opacity": .8,
       "stroke-width": self.borderThickness,
       "stroke-linecap": "round",
       "stroke-linejoin": "round"

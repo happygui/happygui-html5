@@ -462,6 +462,7 @@
   // Clean before router cleans
   window.addEventListener("hashchange", function() {
     editor.hide();
+    editor.colorpicker.hide();
     // TODO move preview paper clear from here
     // TODO dont clear/redraw when same collection
     preview.paper.clear();

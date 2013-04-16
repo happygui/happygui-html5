@@ -32,7 +32,7 @@ CircleElement.prototype.draw = function (paper, callback) {
     .attr({
       stroke: self.borderColor,
       fill: self.backgroundColor,
-      "fill-opacity": .5,
+      "fill-opacity": .8,
       "stroke-width": self.borderThickness,
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
