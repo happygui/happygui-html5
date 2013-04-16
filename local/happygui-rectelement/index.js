@@ -31,7 +31,10 @@ RectElement.prototype.draw = function (paper, callback) {
     })
     .drag(
       function(dx, dy, x, y) {
-        this.attr({x: self.x + dx, y: self.y + dy});
+        this.attr({
+          x: Math.min(Math.max(self.x + dx, self.borderThickness), 480 - (self.width + self.borderThickness)),
+          y: Math.min(Math.max(self.y + dy, self.borderThickness), 600 - (self.height + self.borderThickness))
+        });
       },
       function () {
       },
