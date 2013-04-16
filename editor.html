@@ -46,7 +46,7 @@
 
 <script id="newpage_tpl" type="text/html">
   <div class="centred" id="newpage">
-    <div><input id="collectionName" placeholder="Enter a name" value=""/></div>
+    <div><input id="collectionName" placeholder="Enter a name" value="" autofocus="autofocus"/></div>
     <div id="collectionSave" class="btn orange_bg">Save</div>
   </div>
 </script>
@@ -68,13 +68,13 @@
       </a>
     {{/collection}}
   {{else}}
-  <div class="centred">No app drawn yet, <a href="#new">create one!</a></div>
+  <div class="centred">app drawn yet, <a href="#new">create one!</a></div>
   {{/if}}
 </script>
 
 <script id="editor_tpl" type="text/html">
   <header>
-    <div id="cpBackground" class="colorpicker go-cpDialog" style="background-color: {{backgroundColor}};">
+    <div id="cp_backgroundColor" class="colorpicker go-cpDialog" style="background-color: {{backgroundColor}};">
     </div>
   </header>
 
@@ -186,12 +186,12 @@
   PreviewView.prototype.constructor = PreviewView;
 
   PreviewView.prototype.render = function (currentCollection) {
-
+    var html = "", element, i = 0;
     var collection = StorageCtrl.getCollection(currentCollection);
 
-    var html = "", element, i = 0;
-
+    document.getElementById(this.container).style.backgroundColor = collection.backgroundColor;
     var self = this;
+
     if (collection.elements.length > 0)
     collection.elements.forEach(function(element, currentElement) {
 
@@ -371,7 +371,19 @@
             .render("collection", {collection: StorageCtrl.getCollections()});
 
       },
-      colorpicker: function(collection, type, id) {
+      colorpicker: function(collection, type) {
+        editorView
+            .reset()
+            .select(collection);
+
+        editorView.colorpicker.type = type;
+        editorView.colorpicker
+            .show();
+
+        previewView
+            .render(collection);
+      },
+      element_colorpicker: function(collection, type, id) {
         editorView
             .reset()
             .select(collection, {id: id});
@@ -443,14 +455,27 @@
   });
   editor.bind('click #editor .go-cpDialog', function(e) {
     var type = e.target.id.replace('cp_','');
-    window.location = "#colorpicker/"+this.currentCollection+"/"+type+"/"+this.currentElement;
+    var element = editor.currentElement === null ? "" : "/"+editor.currentElement;
+    window.location = "#colorpicker/"+this.currentCollection+"/"+type+element;
   });
   editor.colorpicker.bind('click #dialog_colorpicker .colorpicker', function(e){
     var color = window.getComputedStyle(e.target).getPropertyValue('background-color');
-    editor.setAttribute(editor.colorpicker.type, color);
-    var type = editor.element().type;
-    this.hide();
-    window.location = '#editor/'+editor.currentCollection+'/'+type+'/'+editor.currentElement;
+    var url;
+    try {
+      editor.setAttribute(editor.colorpicker.type, color);
+      var type = editor.element().type;
+      url = '#editor/'+editor.currentCollection+'/'+type+'/'+editor.currentElement;
+    } catch (exception) {
+      if (exception instanceof NullElementException) {
+        url = '#editor/'+editor.currentCollection;
+        StorageCtrl.setCollectionAttribute(editor.currentCollection, editor.colorpicker.type, color);
+      } else {
+        console.log(exception);
+      }
+    } finally {
+      this.hide();
+      window.location = url;
+    }
   });
 
   var preview = new PreviewView({container: 'preview'});
@@ -479,7 +504,8 @@
       .route('#editor/:collection', views.editor)
       .route('#editor/:collection/:type', views.element_editor)
       .route('#editor/:collection/:type/:id', views.element_editor)
-      .route('#colorpicker/:collection/:type/:id', views.colorpicker)
+      .route('#colorpicker/:collection/:type', views.colorpicker)
+      .route('#colorpicker/:collection/:type/:id', views.element_colorpicker)
       .history.start();
 
 

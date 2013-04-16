@@ -10969,7 +10969,7 @@ var StorageCtrl = (function(){
   var getElement = function(element, collection) {
     var collectionModel = getCollection(collection);
     if (collectionModel.elements[element] === undefined) {
-      throw new NullElementException ("No collection found");
+      throw new NullElementException ("No element found");
     }
     return collectionModel.elements[element];
   };
@@ -10998,8 +10998,16 @@ var StorageCtrl = (function(){
     getElements: function(collection) {
       return getCollection(collection).elements;
     },
+    setCollectionAttribute: function(collection, key, value) {
+      var current = getCollection(collection);
+      if (typeof current[key] === 'undefined') return this;
+
+      filesCollection.models[collection][key] = value;
+
+    },
     setElementAttribute: function(element, collection, key, value) {
       // Validation
+      // TODO throw errors
       if (key.slice(0,3) == "has") return this;
       var current = getElement(element, collection);
       if (typeof current[key] === 'undefined') return this;
