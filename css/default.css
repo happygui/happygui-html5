@@ -259,6 +259,10 @@ body {
   margin: 0 auto;
   margin-top: 15%;
 }
+#page .topcentered {
+  margin: 20px auto 0;
+  width: 70%;
+}
 #editor {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -357,43 +361,43 @@ body {
   background-color: #00ff00;
 }
 .green_bg {
-  background-color: #62bb11;
+  background-color: #62bb11 !important;
 }
 .green_bg:hover {
   border-color: #315e08;
 }
 .pink_bg {
-  background-color: #ce264a;
+  background-color: #ce264a !important;
 }
 .pink_bg:hover {
   border-color: #78162b;
 }
 .yellow_bg {
-  background-color: #d9ba00;
+  background-color: #d9ba00 !important;
 }
 .yellow_bg:hover {
   border-color: #736300;
 }
 .orange_bg {
-  background-color: #ea6e26;
+  background-color: #ea6e26 !important;
 }
 .orange_bg:hover {
   border-color: #9b420f;
 }
 .white_bg {
-  background-color: #ffffff;
+  background-color: #ffffff !important;
 }
 .white_bg:hover {
   border-color: #cccccc;
 }
 .gray_bg {
-  background-color: #dfdfdf;
+  background-color: #dfdfdf !important;
 }
 .gray_bg:hover {
   border-color: #acacac;
 }
 .dgray_bg {
-  background-color: #999999;
+  background-color: #999999 !important;
 }
 .dgray_bg:hover {
   border-color: #666666;
@@ -402,7 +406,7 @@ body {
   border-color: #cccccc;
 }
 .black_bg {
-  background-color: #000000;
+  background-color: #000000 !important;
 }
 .black_bg:hover {
   border-color: #000000;

@@ -57,6 +57,7 @@
 
 <script id="collection_tpl" type="text/html">
   {{#if collection }}
+  <div class="topcentered">
     {{#collection}}
       <a href="#editor/{{@index}}">
       <div class="collection">
@@ -67,6 +68,15 @@
       </div>
       </a>
     {{/collection}}
+    <a href="#new">
+      <div class="collection">
+        <div class="preview pink_bg">
+          <!-- Image here -->
+        </div>
+        <div class="title">Create a new one!</div>
+      </div>
+    </a>
+  </div>
   {{else}}
   <div class="centred">You have no apps, <a href="#new">create one!</a></div>
   {{/if}}

@@ -155,6 +155,10 @@ body {
     margin: 0 auto;
     margin-top: 15%;
   }
+  .topcentered {
+    margin: 20px auto 0;
+    width: 70%;
+  }
 }
 #editor {
   .no_selection;
@@ -268,7 +272,7 @@ body {
 
 
 .colour_bg(@color) {
-  background-color: @color;
+  background-color: @color !important;
   &:hover {
     border-color: darken(@color, 20%);
   }
