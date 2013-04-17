@@ -11007,18 +11007,22 @@ var StorageCtrl = (function(){
       window.location = "#editor/" + (filesCollection.length()-1);
       return this;
     },
-    getElement: function(element, collection) {
-      return getElement(element, collection);
-    },
-    getElements: function(collection) {
-      return getCollection(collection).elements;
-    },
     setCollectionAttribute: function(collection, key, value) {
       var current = getCollection(collection);
       if (typeof current[key] === 'undefined') return this;
 
       filesCollection.models[collection][key] = value;
-
+      return this;
+    },
+    delCollection: function(collection) {
+      filesCollection.models.splice(collection, 1);
+      saveInStorage();
+    },
+    getElement: function(element, collection) {
+      return getElement(element, collection);
+    },
+    getElements: function(collection) {
+      return getCollection(collection).elements;
     },
     setElementAttribute: function(element, collection, key, value) {
       // Validation

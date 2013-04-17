@@ -68,7 +68,7 @@
       </a>
     {{/collection}}
   {{else}}
-  <div class="centred">app drawn yet, <a href="#new">create one!</a></div>
+  <div class="centred">You have no apps, <a href="#new">create one!</a></div>
   {{/if}}
 </script>
 
@@ -101,7 +101,8 @@
   </section>
 
   <footer>
-
+    <a class="btn-editor btn-delete">Delete</a>
+    <a class="btn-editor go-collection pink_bg">Collection</a>
   </footer>
 
 </script>
@@ -470,8 +471,13 @@
     this.setAttribute(key, value);
   });
   editor.bind('click #editor .btn-delete', function(e) {
-    StorageCtrl.delElement(this.currentElement, this.currentCollection);
-    window.location = "#editor/"+this.currentCollection;
+    if (this.currentElement) {
+      StorageCtrl.delElement(this.currentElement, this.currentCollection);
+      window.location = "#editor/"+this.currentCollection;
+    } else {
+      StorageCtrl.delCollection(this.currentCollection);
+      window.location = "#collection";
+    }
   });
   editor.bind('click #editor .go-editor', function(e) {
     window.location = "#editor/"+this.currentCollection;
