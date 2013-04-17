@@ -134,6 +134,16 @@
       <label>Size<input value="{{fontSize}}" name="sm_fontSize" /></label>
     </div>
     {{/hasFontSize}}
+    {{#hasWidth}}
+    <div class="sizemodifier sm_width">
+      <label>Width<input value="{{width}}" name="sm_width" /></label>
+    </div>
+    {{/hasWidth}}
+    {{#hasHeight}}
+    <div class="sizemodifier sm_height">
+      <label>Height<input value="{{height}}" name="sm_height" /></label>
+    </div>
+    {{/hasHeight}}
   </section>
 
   <footer>
