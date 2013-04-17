@@ -426,18 +426,17 @@
           }
 
         } catch(exception) {
-          console.log(exception, exception.message);
 
           // TODO this should not appear in history
           if (exception instanceof NullCollectionException) {
             this.currentCollection = null; //TODO CHECK
             window.location = "#collection";
             return null;
-          }
-
-          if (exception instanceof NullElementException) {
+          } else if (exception instanceof NullElementException) {
             this.currentElement = null;
             window.location = "#editor/"+collection;
+          } else {
+            console.log(exception, exception.message);
           }
 
         }
@@ -453,7 +452,16 @@
   var editor = new EditorView({container: 'editor', colorpicker: 'dialog_colorpicker'});
   editor.bind('click .elementNew', function(e) {
     var type = e.target.id.replace('New','');
-    var id = StorageCtrl.createElement(this.currentCollection, {type: type});
+    try {
+      var id = StorageCtrl.createElement(this.currentCollection, {type: type});
+    } catch(exception) {
+      if (exception instanceof NullElementException) {
+        alert("You selected an element that doesn't exist")
+        window.location = "#editor/"+this.currentCollection;
+      } else {
+        console.log(exception);
+      }
+    }
     window.location = "#editor/"+this.currentCollection+"/"+type+"/"+id;
   });
   editor.bind('keyup #editor input', function(e) {
