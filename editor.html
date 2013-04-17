@@ -102,7 +102,7 @@
 
   <footer>
     <a class="btn-editor btn-delete">Delete</a>
-    <a class="btn-editor go-collection pink_bg">Collection</a>
+    <a class="btn-editor go-collection yellow_bg">Collection</a>
   </footer>
 
 </script>
@@ -481,6 +481,9 @@
   });
   editor.bind('click #editor .go-editor', function(e) {
     window.location = "#editor/"+this.currentCollection;
+  });
+  editor.bind('click #editor .go-collection', function(e) {
+    window.location = "#collection";
   });
   editor.bind('click #editor .go-cpDialog', function(e) {
     var type = e.target.id.replace('cp_','');
