@@ -10923,7 +10923,14 @@ Storage.prototype.getObject = function(key) {var value = this.getItem(key); retu
 var StorageCtrl = (function(){
 
   var getFromStorage = function () {
-    if (localStorage) {
+    var objects;
+
+    if (typeof jsObject !== 'undefined') {
+      jsObject.getObject('happygui-collection', function(json){
+        objects = json;
+        console.log(json);
+      });
+    } else if (localStorage) {
       var objects = localStorage.getObject('happygui-collection');
     } else {
       throw new NoPlatformException('Cannot get');
@@ -10953,7 +10960,11 @@ var StorageCtrl = (function(){
         delete toSave[i].elements[j].drawing;
       }
     }
-    if (localStorage) {
+    if (typeof jsObject !== 'undefined') {
+      jsObject.setObject('happygui-collection', function(response){
+        if (!response) alert("not saved");
+      });
+    } else if (localStorage) {
       localStorage.setObject('happygui-collection', toSave);
     } else {
       throw new NoPlatformException('Cannot save')
