@@ -11082,24 +11082,20 @@ var StorageCtrl = (function(){
   var raw;
   var filesCollection;
 
-  emitter.on('raw', function(raw) {
-    console.log("on raw", raw);
-    filesCollection = new Collection(ElementFactory.decorateAll(raw));
-  });
-
-  if (typeof Windows !== 'undefined') {
-    win8_datastore = require('happygui-win8-datastore');
-    operating_system = 'windows';
-  } else if (typeof jsObject !== 'undefined') {
-    operating_system = 'android';
-  } else if (typeof localStorage !== 'undefined') {
-    operating_system = 'web';
-    emitter.emit('raw', localStorage.getObject('happygui-collection'));
-  } else {
-    throw new NoPlatformException('Operating system not supported');
+  function getRawData() {
+    if (typeof Windows !== 'undefined') {
+      win8_datastore = require('happygui-win8-datastore');
+      operating_system = 'windows';
+    } else if (typeof jsObject !== 'undefined') {
+      operating_system = 'android';
+      jsObject.getObject("happygui", "StorageCtrl.raw");
+    } else if (typeof localStorage !== 'undefined') {
+      operating_system = 'web';
+      emitter.emit('raw', localStorage.getObject('happygui-collection'));
+    } else {
+      throw new NoPlatformException('Operating system not supported');
+    }
   }
-
-  console.log("Storage started on "+operating_system);
 
   var saveInStorage = function () {
     var toSave = filesCollection.models;
@@ -11154,7 +11150,27 @@ var StorageCtrl = (function(){
     return collectionModel.elements[element];
   };
 
+  emitter.on('raw', function(raw) {
+    console.log("on raw");
+    console.log(raw);
+    filesCollection = new Collection(ElementFactory.decorateAll(raw));
+  });
+  getRawData();
+  console.log("Storage started on "+operating_system);
+
   return {
+    raw: function(raw) {
+      if (!raw) {
+        jsObject.setObject('happygui-collection', JSON.stringify([]), 'StorageCtrl.created')
+      }
+      console.log("raw");
+      console.log(raw);
+      emitter.emit("raw", raw);
+    },
+    created: function (result) {
+      console.log("result "+result);
+      filesCollection = new Collection();
+    },
     getCollection: function(collection) {
       return getCollection(collection);
     },
