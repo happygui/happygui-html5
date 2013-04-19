@@ -3,6 +3,7 @@
     "description": "Storing objects",
     "version": "0.0.1",
     "dependencies": {
+        "component-emitter": "*",
         "happygui-elementfactory": "*",
         "happygui-noplatformexception": "*",
         "happygui-nullelementexception": "*",

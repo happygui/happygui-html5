@@ -1,3 +1,5 @@
+var Emitter = require('emitter');
+
 var ElementFactory = require('happygui-elementfactory');
 var NoPlatformException = require('happygui-noplatformexception');
 var NullElementException = require('happygui-nullelementexception');
@@ -9,6 +11,7 @@ Storage.prototype.setObject = function(key, value) {this.setItem(key, JSON.strin
 Storage.prototype.getObject = function(key) {var value = this.getItem(key); return value && JSON.parse(value);};
 
 var StorageCtrl = (function(){
+  var emitter = new Emitter;
   var operating_system = false;
   var win8_datastore;
 

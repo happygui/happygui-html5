@@ -11063,6 +11063,8 @@ NoPlatformException.prototype.constructor = NoPlatformException;
 module.exports = NoPlatformException;
 });
 require.register("happygui-storagectrl/index.js", function(exports, require, module){
+var Emitter = require('emitter');
+
 var ElementFactory = require('happygui-elementfactory');
 var NoPlatformException = require('happygui-noplatformexception');
 var NullElementException = require('happygui-nullelementexception');
@@ -11074,6 +11076,7 @@ Storage.prototype.setObject = function(key, value) {this.setItem(key, JSON.strin
 Storage.prototype.getObject = function(key) {var value = this.getItem(key); return value && JSON.parse(value);};
 
 var StorageCtrl = (function(){
+  var emitter = new Emitter;
   var operating_system = false;
   var win8_datastore;
 
@@ -11369,6 +11372,9 @@ require.alias("happygui-nullcollectionexception/index.js", "boot/deps/happygui-n
 require.alias("happygui-noplatformexception/index.js", "boot/deps/happygui-noplatformexception/index.js");
 
 require.alias("happygui-storagectrl/index.js", "boot/deps/happygui-storagectrl/index.js");
+require.alias("component-emitter/index.js", "happygui-storagectrl/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
 require.alias("happygui-elementfactory/index.js", "happygui-storagectrl/deps/happygui-elementfactory/index.js");
 require.alias("happygui-circleelement/index.js", "happygui-elementfactory/deps/happygui-circleelement/index.js");
 require.alias("happygui-shapeelement/index.js", "happygui-circleelement/deps/happygui-shapeelement/index.js");
