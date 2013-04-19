@@ -86,8 +86,11 @@ var StorageCtrl = (function(){
   emitter.on('raw', function(raw) {
     console.log("on raw");
     console.log(raw);
-    filesCollection = new Collection(ElementFactory.decorateAll(raw));
+    filesCollection = new Collection(raw);
+    if (raw && raw.length > 0)
+      filesCollection.models = ElementFactory.decorateAll(raw);
   });
+
   getRawData();
   console.log("Storage started on "+operating_system);
 

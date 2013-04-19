@@ -11107,9 +11107,7 @@ var StorageCtrl = (function(){
 
     switch (operating_system) {
       case 'android':
-        jsObject.setObject('happygui-collection', JSON.stringify(toSave), function(response){
-          if (!response) alert("not saved");
-        });
+        jsObject.setObject('happygui', JSON.stringify(toSave), "StorageCtrl.saved");
         break;
       case 'windows':
         win8_datastore.save('file', 'happygui-collection.json', toSave);
@@ -11153,15 +11151,18 @@ var StorageCtrl = (function(){
   emitter.on('raw', function(raw) {
     console.log("on raw");
     console.log(raw);
-    filesCollection = new Collection(ElementFactory.decorateAll(raw));
+    filesCollection = new Collection(raw);
+    if (raw && raw.length > 0)
+      filesCollection.models = ElementFactory.decorateAll(raw);
   });
+
   getRawData();
   console.log("Storage started on "+operating_system);
 
   return {
     raw: function(raw) {
       if (!raw) {
-        jsObject.setObject('happygui-collection', JSON.stringify([]), 'StorageCtrl.created')
+        jsObject.setObject('happygui', JSON.stringify([]), 'StorageCtrl.created')
       }
       console.log("raw");
       console.log(raw);
@@ -11170,6 +11171,9 @@ var StorageCtrl = (function(){
     created: function (result) {
       console.log("result "+result);
       filesCollection = new Collection();
+    },
+    saved: function(result) {
+      console.log("saved "+result);
     },
     getCollection: function(collection) {
       return getCollection(collection);
