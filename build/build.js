@@ -10921,19 +10921,31 @@ Storage.prototype.setObject = function(key, value) {this.setItem(key, JSON.strin
 Storage.prototype.getObject = function(key) {var value = this.getItem(key); return value && JSON.parse(value);};
 
 var StorageCtrl = (function(){
+  var operating_system = false;
+
+  if (typeof jsObject !== 'undefined') {
+    operating_system = 'android';
+  } else if (typeof localStorage !== 'undefined') {
+    operating_system = 'web';
+  } else {
+    throw new NoPlatformException('Operating system not supported');
+  }
+
+  console.log("Storage started on "+operating_system);
 
   var getFromStorage = function () {
     var objects;
 
-    if (typeof jsObject !== 'undefined') {
-      jsObject.getObject('happygui-collection', function(json){
-        objects = json;
-        console.log(json);
-      });
-    } else if (localStorage) {
-      var objects = localStorage.getObject('happygui-collection');
-    } else {
-      throw new NoPlatformException('Cannot get');
+    switch (operating_system) {
+      case 'android':
+        jsObject.getObject('happygui-collection', function(json){
+          objects = json;
+          console.log(json);
+        });
+        break;
+      case 'web':
+        objects = localStorage.getObject('happygui-collection');
+        break;
     }
 
     if (objects && objects.length > 0)
@@ -10960,19 +10972,22 @@ var StorageCtrl = (function(){
         delete toSave[i].elements[j].drawing;
       }
     }
-    if (typeof jsObject !== 'undefined') {
-      jsObject.setObject('happygui-collection', function(response){
-        if (!response) alert("not saved");
-      });
-    } else if (localStorage) {
-      localStorage.setObject('happygui-collection', toSave);
-    } else {
-      throw new NoPlatformException('Cannot save')
+
+    switch (operating_system) {
+      case 'android':
+        jsObject.setObject('happygui-collection', function(response){
+          if (!response) alert("not saved");
+        });
+        break;
+      case 'web':
+        localStorage.setObject('happygui-collection', toSave);
+        break;
     }
   };
 
   var clearStorage = function () {
     filesCollection.models = [];
+    //TODO implement better
     if (localStorage) {
       localStorage.clear();
     } else {
@@ -11068,6 +11083,9 @@ var StorageCtrl = (function(){
         clearStorage();
       }
       return this;
+    },
+    operating_system: function() {
+      return operating_system;
     }
   }
 })();
