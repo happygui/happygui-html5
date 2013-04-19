@@ -14,42 +14,22 @@ var StorageCtrl = (function(){
   var emitter = new Emitter;
   var operating_system = false;
   var win8_datastore;
+  var raw;
+  var filesCollection;
 
-  if (typeof Windows !== 'undefined') {
-    win8_datastore = require('happygui-win8-datastore');
-    operating_system = 'windows';
-  } else if (typeof jsObject !== 'undefined') {
-    operating_system = 'android';
-  } else if (typeof localStorage !== 'undefined') {
-    operating_system = 'web';
-  } else {
-    throw new NoPlatformException('Operating system not supported');
-  }
-
-  console.log("Storage started on "+operating_system);
-
-  var getFromStorage = function () {
-    var objects;
-
-    switch (operating_system) {
-      case 'android':
-        jsObject.getObject('happygui-collection', function(json){
-          objects = json;
-          console.log(json);
-        });
-        break;
-      case 'windows':
-        win8_datastore.get('file', 'happygui-collection.json', function(json){
-          objects = json;
-        });
-      case 'web':
-        objects = localStorage.getObject('happygui-collection');
-        break;
+  function getRawData() {
+    if (typeof Windows !== 'undefined') {
+      win8_datastore = require('happygui-win8-datastore');
+      operating_system = 'windows';
+    } else if (typeof jsObject !== 'undefined') {
+      operating_system = 'android';
+    } else if (typeof localStorage !== 'undefined') {
+      operating_system = 'web';
+      emitter.emit('raw', localStorage.getObject('happygui-collection'));
+    } else {
+      throw new NoPlatformException('Operating system not supported');
     }
-
-    if (objects && objects.length > 0)
-      return ElementFactory.decorateAll(objects);
-  };
+  }
 
   var saveInStorage = function () {
     var toSave = filesCollection.models;
@@ -92,7 +72,7 @@ var StorageCtrl = (function(){
   };
 
   var createCollection = function (obj) {
-    filesCollection.push(obj);
+    filesCollection.models.push(obj);
     saveInStorage();
   };
 
@@ -104,11 +84,17 @@ var StorageCtrl = (function(){
     return collectionModel.elements[element];
   };
 
-
-  var filesCollection = new Collection(getFromStorage());
-
+  emitter.on('raw', function(raw) {
+    console.log("on raw", raw);
+    filesCollection = new Collection(ElementFactory.decorateAll(raw));
+  });
+  getRawData();
+  console.log("Storage started on "+operating_system);
 
   return {
+    raw: function(raw) {
+      emitter.emit("raw", raw);
+    }
     getCollection: function(collection) {
       return getCollection(collection);
     },
