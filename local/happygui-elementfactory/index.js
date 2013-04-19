@@ -43,6 +43,25 @@ var ElementFactory = {
         throw new NullElementException("Type not recognised");
     }
     return prototype;
+  },
+  decorateElement: function(element) {
+    try {
+      element.__proto__ = ElementFactory.prototype(element.type);
+    } catch (exception) {
+      if (exception instanceof NullElementException) {
+        // TODO
+      }
+      console.log(exception);
+    }
+    return element;
+  },
+  decorateCollection: function(collection) {
+    collection.elements = collection.elements.map(ElementFactory.decorateElement);
+    return collection;
+  },
+  decorateAll: function(collections) {
+    collections = collections.map(ElementFactory.decorateCollection);
+    return collections;
   }
 };
 

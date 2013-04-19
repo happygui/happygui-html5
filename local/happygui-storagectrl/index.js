@@ -45,20 +45,7 @@ var StorageCtrl = (function(){
     }
 
     if (objects && objects.length > 0)
-      return objects.map(function(collection) {
-        collection.elements = collection.elements.map(function(element){
-          try {
-            element.__proto__ = ElementFactory.prototype(element.type);
-          } catch (exception) {
-            if (exception instanceof NullElementException) {
-              // TODO
-            }
-          }
-
-          return element;
-        });
-        return collection;
-      });
+      return ElementFactory.decorateAll(objects);
   };
 
   var saveInStorage = function () {

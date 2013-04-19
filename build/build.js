@@ -9391,129 +9391,135 @@ require.register("richthegeek-raphael/raphael-min.js", function(exports, require
 });
 require.register("happygui-win8-datastore/index.js", function(exports, require, module){
 /*
-    Datastore is a simple JS library to save JS objects in Windows 8 applications.  Supports localStorage (HTML5), localSettings (WinJS), and file (WinJS).
+ Datastore is a simple JS library to save JS objects in Windows 8 applications.  Supports localStorage (HTML5), localSettings (WinJS), and file (WinJS).
 
-    Created:  Matthew Smith, 11/4/2012
-    Mantained:  Nicola Greco, 19/5/2013
+ Created:  Matthew Smith, 11/4/2012
+ Mantained:  Nicola Greco, 19/5/2013
 
-    Parameters:
-    type = 'file'                   // how you want to store the file  (localStorage, localSettings, file)
-    store = 'store-name';           // name of the datastore
-    obj = {param1: 'param1'};       // JS object to store
-*/
+ Parameters:
+ type = 'file'                   // how you want to store the file  (localStorage, localSettings, file)
+ store = 'store-name';           // name of the datastore
+ obj = {param1: 'param1'};       // JS object to store
+ max = 5;                        // max # of objects in the queue
+ */
 
-var applicationData = Windows.Storage.ApplicationData.current;
-var localSettings = applicationData.localSettings;
-var localFolder = applicationData.localFolder;
+var datastore = (function(){
 
-var datastore = {
-    save: function (type, store, obj) {
-        var objs = [];
+  var applicationData = Windows.Storage.ApplicationData.current;
+  var localSettings = applicationData.localSettings;
+  var localFolder = applicationData.localFolder;
 
-        function saveToStore(objs) {
+  return {
+    d_max: 20, // default maximum
+    save: function (type, store, obj, max) {
+      var objs = [];
+      if (!max) max = d_max;
 
-            // push new object
-            objs.push(obj);
+      function saveToStore(objs) {
 
+        // push new object
+        objs.push(obj);
 
-            if (type == 'localStorage') {
-                localStorage[store] = JSON.stringify(objs);
-            } else if (type == 'localSettings') {
-                localSettings.values[store] = JSON.stringify(objs);
-            } else if (type == 'file') {
-                var fileName = store;
-                var fileContents = JSON.stringify(objs);
-
-                localFolder.createFileAsync(fileName, Windows.Storage.CreationCollisionOption.replaceExisting)
-                    .then(function (file) {
-                        return Windows.Storage.FileIO.writeTextAsync(file, fileContents);
-                    })
-                    .done(function () {
-                    });
-            }
-        }
+        // fix queue size
+        while (objs.length > max) { objs.shift(); }
 
         if (type == 'localStorage') {
-            if (localStorage[store]) saveToStore(JSON.parse(localStorage[store]));
-            else saveToStore([]);
-        }
-        else if (type == 'localSettings') {
-            if (localSettings.values[store]) saveToStore(JSON.parse(localSettings.values[store]));
-            else saveToStore([]);
-        }
-        else if (type == 'file') {
-            var fileName = store;
+          localStorage[store] = JSON.stringify(objs);
+        } else if (type == 'localSettings') {
+          localSettings.values[store] = JSON.stringify(objs);
+        } else if (type == 'file') {
+          var fileName = store + '.txt';
+          var fileContents = JSON.stringify(objs);
 
-            localFolder.getFileAsync(fileName)
-                .then(function (file) {
-                    return Windows.Storage.FileIO.readTextAsync(file);
-                })
-                .done(function (data) { // data is contained in data
-                    saveToStore(JSON.parse(data));
-                }, function () {
-                    saveToStore([]);
-                });
+          localFolder.createFileAsync(fileName, Windows.Storage.CreationCollisionOption.replaceExisting)
+            .then(function (file) {
+              return Windows.Storage.FileIO.writeTextAsync(file, fileContents);
+            })
+            .done(function () {
+            });
         }
+      }
 
-        return;
+      if (type == 'localStorage') {
+        if (localStorage[store]) saveToStore(JSON.parse(localStorage[store]));
+        else saveToStore([]);
+      } else if (type == 'localSettings') {
+        if (localSettings.values[store]) saveToStore(JSON.parse(localSettings.values[store]));
+        else saveToStore([]);
+      } else if (type == 'file') {
+        var fileName = store + '.txt';
+
+        localFolder.getFileAsync(fileName)
+          .then(function (file) {
+            return Windows.Storage.FileIO.readTextAsync(file);
+          })
+          .done(function (data) { // data is contained in data
+            saveToStore(JSON.parse(data));
+          }, function () {
+            saveToStore([]);
+          });
+      }
+
+      return;
     },
 
     get: function (type, store, callback) {
 
-        if (type == 'localStorage') {
-            if (localStorage[store]) callback(JSON.parse(localStorage[store]));  // get & parse json
-            else return {};
-        } else if (type == 'localSettings') {
-            if (localSettings.values[store]) callback(JSON.parse(localSettings.values[store]));  // get & parse json
-            else return {};
-        } else if (type == 'file') {
-            var fileName = store;
+      if (type == 'localStorage') {
+        if (localStorage[store]) callback(JSON.parse(localStorage[store]));  // get & parse json
+        else return {};
+      } else if (type == 'localSettings') {
+        if (localSettings.values[store]) callback(JSON.parse(localSettings.values[store]));  // get & parse json
+        else return {};
+      } else if (type == 'file') {
+        var fileName = store + '.txt';
 
-            localFolder.getFileAsync(fileName)
-                .then(function (file) {
-                    return Windows.Storage.FileIO.readTextAsync(file);
-                }).done(function (data) { // data is contained in data
-                    callback(JSON.parse(data));
-                }, function () {
-                     callback([]);
-                });
-        }
+        localFolder.getFileAsync(fileName)
+          .then(function (file) {
+            return Windows.Storage.FileIO.readTextAsync(file);
+          })
+          .done(function (data) { // data is contained in data
+            callback(JSON.parse(data));
+          }, function () {
+            callback([]);
+          });
+      }
 
-        return;
+      return;
     },
 
     /*  
-        datastore.getIndex('file', 'recent', index, function (obj) {
-                var param = obj.param;
-            });
-    */
+     datastore.getIndex('file', 'recent', index, function (obj) {
+     var param = obj.param;
+     });
+     */
     getIndex: function (type, store, index, callback) {
 
-        if (type == 'localStorage') {
-            if (localStorage[store]) callback(JSON.parse(localStorage[store])[index]);  // get & parse json
-            else return {};
-        }
-        else if (type == 'localSettings') {
-            if (localSettings.values[store]) callback(JSON.parse(localSettings.values[store])[index]);  // get & parse json
-            else return {};
-        }
-        else if (type == 'file') {
-            var fileName = store;
+      if (type == 'localStorage') {
+        if (localStorage[store]) callback(JSON.parse(localStorage[store])[index]);  // get & parse json
+        else return {};
+      } else if (type == 'localSettings') {
+        if (localSettings.values[store]) callback(JSON.parse(localSettings.values[store])[index]);  // get & parse json
+        else return {};
+      } else if (type == 'file') {
+        var fileName = store + '.txt';
 
-            localFolder.getFileAsync(fileName)
-                .then(function (file) {
-                    return Windows.Storage.FileIO.readTextAsync(file);
-                }).done(function (data) { // data is contained in data
-                    callback(JSON.parse(data)[index]);
-                }, function () {
-                    callback([]);
-                });
-        }
+        localFolder.getFileAsync(fileName)
+          .then(function (file) {
+            return Windows.Storage.FileIO.readTextAsync(file);
+          })
+          .done(function (data) { // data is contained in data
+            callback(JSON.parse(data)[index]);
+          }, function () {
+            callback([]);
+          });
+      }
 
-        return;
+      return;
     }
 
-};
+  };
+});
 
 module.exports = datastore;
 });
@@ -10710,6 +10716,25 @@ var ElementFactory = {
         throw new NullElementException("Type not recognised");
     }
     return prototype;
+  },
+  decorateElement: function(element) {
+    try {
+      element.__proto__ = ElementFactory.prototype(element.type);
+    } catch (exception) {
+      if (exception instanceof NullElementException) {
+        // TODO
+      }
+      console.log(exception);
+    }
+    return element;
+  },
+  decorateCollection: function(collection) {
+    collection.elements = collection.elements.map(ElementFactory.decorateElement);
+    return collection;
+  },
+  decorateAll: function(collections) {
+    collections = collections.map(ElementFactory.decorateCollection);
+    return collections;
   }
 };
 
@@ -11085,20 +11110,7 @@ var StorageCtrl = (function(){
     }
 
     if (objects && objects.length > 0)
-      return objects.map(function(collection) {
-        collection.elements = collection.elements.map(function(element){
-          try {
-            element.__proto__ = ElementFactory.prototype(element.type);
-          } catch (exception) {
-            if (exception instanceof NullElementException) {
-              // TODO
-            }
-          }
-
-          return element;
-        });
-        return collection;
-      });
+      return ElementFactory.decorateAll(objects);
   };
 
   var saveInStorage = function () {
@@ -11111,7 +11123,7 @@ var StorageCtrl = (function(){
 
     switch (operating_system) {
       case 'android':
-        jsObject.setObject('happygui-collection', toSave, function(response){
+        jsObject.setObject('happygui-collection', JSON.stringify(toSave), function(response){
           if (!response) alert("not saved");
         });
         break;
