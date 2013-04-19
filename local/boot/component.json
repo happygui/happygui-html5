@@ -8,7 +8,8 @@
         "component/emitter": "*",
         "component/delegate": "*",
         "component/gesture": "*",
-        "richthegeek/raphael": "*"
+        "richthegeek/raphael": "*",
+        "happygui/win8-datastore": "*"
     },
     "local": [
         "happygui-collection",

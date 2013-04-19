@@ -10,8 +10,12 @@ Storage.prototype.getObject = function(key) {var value = this.getItem(key); retu
 
 var StorageCtrl = (function(){
   var operating_system = false;
+  var win8_datastore;
 
-  if (typeof jsObject !== 'undefined') {
+  if (typeof Windows !== 'undefined') {
+    win8_datastore = require('happygui-win8-datastore');
+    operating_system = 'windows';
+  } else if (typeof jsObject !== 'undefined') {
     operating_system = 'android';
   } else if (typeof localStorage !== 'undefined') {
     operating_system = 'web';
@@ -31,6 +35,10 @@ var StorageCtrl = (function(){
           console.log(json);
         });
         break;
+      case 'windows':
+        win8_datastore.get('file', 'happygui-collection.json', function(json){
+          objects = json;
+        });
       case 'web':
         objects = localStorage.getObject('happygui-collection');
         break;
@@ -63,9 +71,12 @@ var StorageCtrl = (function(){
 
     switch (operating_system) {
       case 'android':
-        jsObject.setObject('happygui-collection', function(response){
+        jsObject.setObject('happygui-collection', JSON.stringify(toSave), function(response){
           if (!response) alert("not saved");
         });
+        break;
+      case 'windows':
+        win8_datastore.save('file', 'happygui-collection.json', toSave);
         break;
       case 'web':
         localStorage.setObject('happygui-collection', toSave);
