@@ -20,6 +20,7 @@
         "happygui-shapeelement",
         "happygui-circleelement",
         "happygui-rectelement",
+        "happygui-imageelement",
 
         "happygui-view",
         "happygui-templates",

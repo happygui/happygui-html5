@@ -6,6 +6,7 @@
         "happygui-circleelement": "*",
         "happygui-rectelement": "*",
         "happygui-textelement": "*",
+        "happygui-imageelement": "*",
         "happygui-nullelementexception": "*"
     },
     "development": {},

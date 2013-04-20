@@ -1,0 +1,12 @@
+{
+    "name": "happygui-imageelement",
+    "description": "Image Element",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-element": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

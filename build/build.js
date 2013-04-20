@@ -10674,6 +10674,7 @@ require.register("happygui-elementfactory/index.js", function(exports, require, 
 var TextElement = require('happygui-textelement');
 var CircleElement = require('happygui-circleelement');
 var RectElement = require('happygui-rectelement');
+var ImageElement = require('happygui-imageelement');
 var NullElementException = require('happygui-nullelementexception')
 
 var ElementFactory = {
@@ -10681,7 +10682,14 @@ var ElementFactory = {
     var element;
 
     switch (doc.type) {
+      case "camera":
+        element = new ImageElement(doc);
+        break;
       case "image":
+        if (typeof jsObject === 'undefined') {
+          doc.url = "https://www.google.co.uk/images/srpr/logo4w.png";
+        }
+        element = new ImageElement(doc);
         break;
       case "circle":
         element = new CircleElement(doc);
@@ -10701,7 +10709,11 @@ var ElementFactory = {
   prototype: function (type) {
     var prototype;
     switch (type) {
+      case "camera":
+        prototype = ImageElement.prototype;
+        break;
       case "image":
+        prototype = ImageElement.prototype;
         break;
       case "circle":
         prototype = CircleElement.prototype;
@@ -10952,6 +10964,58 @@ RectElement.prototype.draw = function (paper, callback) {
 };
 
 module.exports = RectElement;
+});
+require.register("happygui-imageelement/index.js", function(exports, require, module){
+var Element = require('happygui-element');
+
+var ImageElement = function(options) {
+  Element.call(this, options); // Super
+  options = options || {};
+
+  this.hasWidth = true;
+  this.hasHeight = true;
+
+  this.url = options.url;
+};
+ImageElement.prototype = Object.create(Element.prototype);
+ImageElement.prototype.constructor = ImageElement;
+
+ImageElement.prototype.redraw = function() {
+  this.drawing.attr({
+    width: this.width,
+    height: this.height
+  })
+};
+
+ImageElement.prototype.draw = function (paper, callback) {
+  var self = this;
+
+  this.drawing = paper
+    .image(self.url, self.x, self.y, self.width, self.height)
+    .drag(
+    function(dx, dy, x, y) {
+      self.width = parseInt(self.width);
+      self.height = parseInt(self.height);
+
+      console.log(self.x + dx, self.borderThickness, 480 - self.width);
+      this.attr({
+        x: Math.min(Math.max(self.x + dx, 0), 480 - self.width),
+        y: Math.min(Math.max(self.y + dy, 0), 600 - self.height)
+      });
+    },
+    function () {
+    },
+    function () {
+      self.x = this.attr("x");
+      self.y = this.attr("y");
+      callback(self.x, self.y);
+    }
+  );
+
+  return this.drawing;
+};
+
+module.exports = ImageElement;
 });
 require.register("happygui-view/index.js", function(exports, require, module){
 var delegate = require('delegate');
@@ -11344,6 +11408,9 @@ require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-
 require.alias("happygui-textelement/index.js", "happygui-elementfactory/deps/happygui-textelement/index.js");
 require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
 
+require.alias("happygui-imageelement/index.js", "happygui-elementfactory/deps/happygui-imageelement/index.js");
+require.alias("happygui-element/index.js", "happygui-imageelement/deps/happygui-element/index.js");
+
 require.alias("happygui-nullelementexception/index.js", "happygui-elementfactory/deps/happygui-nullelementexception/index.js");
 
 require.alias("happygui-textelement/index.js", "boot/deps/happygui-textelement/index.js");
@@ -11359,6 +11426,9 @@ require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-
 require.alias("happygui-rectelement/index.js", "boot/deps/happygui-rectelement/index.js");
 require.alias("happygui-shapeelement/index.js", "happygui-rectelement/deps/happygui-shapeelement/index.js");
 require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-imageelement/index.js", "boot/deps/happygui-imageelement/index.js");
+require.alias("happygui-element/index.js", "happygui-imageelement/deps/happygui-element/index.js");
 
 require.alias("happygui-view/index.js", "boot/deps/happygui-view/index.js");
 require.alias("component-delegate/index.js", "happygui-view/deps/delegate/index.js");
@@ -11389,6 +11459,9 @@ require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-
 
 require.alias("happygui-textelement/index.js", "happygui-elementfactory/deps/happygui-textelement/index.js");
 require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
+
+require.alias("happygui-imageelement/index.js", "happygui-elementfactory/deps/happygui-imageelement/index.js");
+require.alias("happygui-element/index.js", "happygui-imageelement/deps/happygui-element/index.js");
 
 require.alias("happygui-nullelementexception/index.js", "happygui-elementfactory/deps/happygui-nullelementexception/index.js");
 

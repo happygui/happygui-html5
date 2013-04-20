@@ -1,6 +1,7 @@
 var TextElement = require('happygui-textelement');
 var CircleElement = require('happygui-circleelement');
 var RectElement = require('happygui-rectelement');
+var ImageElement = require('happygui-imageelement');
 var NullElementException = require('happygui-nullelementexception')
 
 var ElementFactory = {
@@ -8,7 +9,14 @@ var ElementFactory = {
     var element;
 
     switch (doc.type) {
+      case "camera":
+        element = new ImageElement(doc);
+        break;
       case "image":
+        if (typeof jsObject === 'undefined') {
+          doc.url = "https://www.google.co.uk/images/srpr/logo4w.png";
+        }
+        element = new ImageElement(doc);
         break;
       case "circle":
         element = new CircleElement(doc);
@@ -28,7 +36,11 @@ var ElementFactory = {
   prototype: function (type) {
     var prototype;
     switch (type) {
+      case "camera":
+        prototype = ImageElement.prototype;
+        break;
       case "image":
+        prototype = ImageElement.prototype;
         break;
       case "circle":
         prototype = CircleElement.prototype;
