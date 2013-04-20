@@ -23,7 +23,7 @@ var StorageCtrl = (function(){
       operating_system = 'windows';
     } else if (typeof jsObject !== 'undefined') {
       operating_system = 'android';
-      jsObject.getObject("happygui", "StorageCtrl.raw");
+      jsObject.getObject("happy", "StorageCtrl.raw");
     } else if (typeof localStorage !== 'undefined') {
       operating_system = 'web';
       emitter.emit('raw', localStorage.getObject('happygui-collection'));
@@ -42,7 +42,7 @@ var StorageCtrl = (function(){
 
     switch (operating_system) {
       case 'android':
-        jsObject.setObject('happygui', JSON.stringify(toSave), "StorageCtrl.saved");
+        jsObject.setObject('happy', JSON.stringify(toSave), "StorageCtrl.saved");
         break;
       case 'windows':
         win8_datastore.save('file', 'happygui-collection.json', toSave);
@@ -86,6 +86,8 @@ var StorageCtrl = (function(){
   emitter.on('raw', function(raw) {
     console.log("on raw");
     console.log(raw);
+    console.log(typeof raw);
+    if (typeof raw === 'string') raw = JSON.parse(raw);
     filesCollection = new Collection(raw);
     if (raw && raw.length > 0)
       filesCollection.models = ElementFactory.decorateAll(raw);
@@ -97,7 +99,7 @@ var StorageCtrl = (function(){
   return {
     raw: function(raw) {
       if (!raw) {
-        jsObject.setObject('happygui', JSON.stringify([]), 'StorageCtrl.created')
+        jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created')
       }
       console.log("raw");
       console.log(raw);
