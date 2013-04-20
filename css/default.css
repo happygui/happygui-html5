@@ -172,6 +172,7 @@ select {
 .collection {
   float: left;
   margin: 0px 30px 10px 0px;
+  text-align: center;
 }
 .collection .preview {
   width: 160px;
@@ -180,6 +181,9 @@ select {
 }
 .collection .title {
   text-transform: uppercase;
+  text-shadow: 0px 1px 1px #ffffff, 0px 1px 1px #666666;
+  margin-top: 10px;
+  color: #484a63;
 }
 .editorElement {
   margin-top: 10%;
@@ -261,7 +265,7 @@ body {
 }
 #page .topcentered {
   margin: 20px auto 0;
-  width: 70%;
+  width: 90%;
 }
 #editor {
   -webkit-touch-callout: none;
