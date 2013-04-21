@@ -11211,6 +11211,11 @@ var ColorPicker = require('happygui-colorpicker');
 var NullElementException = require('happygui-nullelementexception');
 var NullCollectionException = require('happygui-nullcollectionexception')
 
+/**
+ * It handles the left right side of the paga aka editor
+ *
+ * @class EditorView
+ */
 function EditorView (options) {
   View.call(this, options);
   options = options || {};
@@ -11228,6 +11233,12 @@ function EditorView (options) {
 EditorView.prototype = Object.create(View.prototype);
 EditorView.prototype.constructor = EditorView;
 
+/**
+ * Binds DOM events to this.events functions
+ *
+ * @method bindAll
+ * @return {Object} Return "this" for chaining
+ */
 EditorView.prototype.bindAll = function() {
   this.bind('click #'+this.container+' .elementNew', this.events.click_elementNew);
   this.bind('keyup #'+this.container+' input', this.events.keyup_input);
@@ -11236,8 +11247,15 @@ EditorView.prototype.bindAll = function() {
   this.bind('click #'+this.container+' .go-collection', this.events.click_goCollection);
   this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
   this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
+  return this;
 };
 
+/**
+ * Events that bindAll will bind
+ *
+ * @property events
+ * @type {Object}
+ */
 EditorView.prototype.events = {
   click_elementNew: function (e) {
     var type = e.target.id.replace('New','');
@@ -11299,9 +11317,21 @@ EditorView.prototype.events = {
   }
 };
 
+/**
+ * The current collection is returned in an array
+ *
+ * @method collection
+ * @return {Array} Returns the current collection
+ */
 EditorView.prototype.collection = function () {
   return StorageCtrl.getCollection(this.currentCollection);
 };
+/**
+ * The current collection is returned in an array
+ *
+ * @method elements
+ * @return {Array} Returns the current collection
+ */
 EditorView.prototype.elements = function (element) {
   if (element === null) {
     return StorageCtrl.getElements(this.currentCollection);
