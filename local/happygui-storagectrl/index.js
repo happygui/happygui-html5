@@ -10,6 +10,7 @@ var Collection = require('happygui-collection');
 Storage.prototype.setObject = function(key, value) {this.setItem(key, JSON.stringify(value));};
 Storage.prototype.getObject = function(key) {var value = this.getItem(key); return value && JSON.parse(value);};
 
+
 var StorageCtrl = (function(){
   var emitter = new Emitter;
   var operating_system = false;
@@ -17,7 +18,7 @@ var StorageCtrl = (function(){
   var raw;
   var filesCollection;
 
-  function getRawData() {
+  var getRawData = function () {
     if (typeof Windows !== 'undefined') {
       win8_datastore = require('happygui-win8-datastore');
       operating_system = 'windows';
@@ -30,7 +31,7 @@ var StorageCtrl = (function(){
     } else {
       throw new NoPlatformException('Operating system not supported');
     }
-  }
+  };
 
   var saveInStorage = function () {
     var toSave = filesCollection.models;
@@ -84,40 +85,22 @@ var StorageCtrl = (function(){
   };
 
   emitter.on('raw', function(raw) {
-    console.log("on raw");
-    console.log(raw);
-    console.log(typeof raw);
     if (typeof raw === 'string') raw = JSON.parse(raw);
     filesCollection = new Collection(raw);
-    if (raw && raw.length > 0)
-      filesCollection.models = ElementFactory.decorateAll(raw);
+    if (raw && raw.length > 0) filesCollection.models = ElementFactory.decorateAll(raw);
   });
 
   getRawData();
-  console.log("Storage started on "+operating_system);
 
   return {
     raw: function(raw) {
-      if (!raw) {
-        jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created')
-      }
-      console.log("raw");
-      console.log(raw);
+      if (!raw) jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created')
       emitter.emit("raw", raw);
     },
-    created: function (result) {
-      console.log("result "+result);
-      filesCollection = new Collection();
-    },
-    saved: function(result) {
-      console.log("saved "+result);
-    },
-    getCollection: function(collection) {
-      return getCollection(collection);
-    },
-    getCollections: function() {
-      return filesCollection.models;
-    },
+    created: function (result) { filesCollection = new Collection(); },
+    saved: function(result) { console.log("saved "+result); },
+    getCollection: function(collection) { return getCollection(collection); },
+    getCollections: function() { return filesCollection.models; },
     createCollection: function() {
       var name = document.getElementById("collectionName").value;
       createCollection({name: name, elements: [], backgroundColor: "#fff"});
@@ -136,12 +119,8 @@ var StorageCtrl = (function(){
       filesCollection.models.splice(collection, 1);
       saveInStorage();
     },
-    getElement: function(element, collection) {
-      return getElement(element, collection);
-    },
-    getElements: function(collection) {
-      return getCollection(collection).elements;
-    },
+    getElement: function(element, collection) { return getElement(element, collection); },
+    getElements: function(collection) { return getCollection(collection).elements; },
     setElementAttribute: function(element, collection, key, value) {
       // Validation
       // TODO throw errors
@@ -176,9 +155,7 @@ var StorageCtrl = (function(){
       }
       return this;
     },
-    operating_system: function() {
-      return operating_system;
-    }
+    operating_system: function() { return operating_system; }
   }
 })();
 
