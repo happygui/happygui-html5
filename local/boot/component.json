@@ -23,6 +23,7 @@
         "happygui-imageelement",
 
         "happygui-view",
+        "happygui-activityfactory",
         "happygui-previewview",
         "happygui-pageview",
         "happygui-editorview",

@@ -1,0 +1,14 @@
+{
+    "name": "happygui-activityfactory",
+    "description": "Activity factory",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-storagectrl": "*",
+        "happygui-nullelementexception": "*",
+        "happygui-nullcollectionexception": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

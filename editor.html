@@ -181,6 +181,7 @@
 
   // Happygui dependencies
   var View = require('happygui-view');
+  var ActivityFactory = require('happygui-activityfactory');
   var EditorView = require('happygui-editorview');
   var PreviewView = require('happygui-previewview');
   var PageView = require('happygui-pageview');
@@ -192,131 +193,11 @@
 
   var StorageCtrl = require('happygui-storagectrl');
 
-  // Views service
-  var Views = function(editorView, previewView, pageView) {
-    return {
-      homepage: function() {
-
-        pageView
-            .render('homepage', null)
-
-      },
-      newpage: function() {
-
-        pageView
-            .render('newpage', null);
-
-      },
-      editor: function(collection) {
-
-		    try {
-
-		        editorView
-		            .reset()
-		            .select(collection)
-		            .render();
-	
-		    } catch(exception) {
-			  console.log(exception, exception.message);
-		    
-		    // TODO this should not appear in history
-			  if (exception instanceof NullCollectionException) {
-			  	this.currentCollection = null;
-			    window.location = "#collection";
-			    return null;
-			  }
-/*
-		      if (exception instanceof NullElement) {
-			  	this.currentElement = null;
-			  }
-*/
-
-			}
-			
-			previewView
-				.render(collection);
-
-      },
-      help: function() {
-
-        pageView
-            .render('help', null);
-
-      },
-      collection: function() {
-
-        pageView
-            .render("collection", {collection: StorageCtrl.getCollections()});
-
-      },
-      colorpicker: function(collection, type) {
-        editorView
-            .reset()
-            .select(collection);
-
-        editorView.colorpicker.type = type;
-        editorView.colorpicker
-            .show();
-
-        previewView
-            .render(collection);
-      },
-      element_colorpicker: function(collection, type, id) {
-        editorView
-            .reset()
-            .select(collection, {id: id});
-
-        editorView.colorpicker.type = type;
-        editorView.colorpicker
-            .show();
-
-        previewView
-            .render(collection);
-      },
-      element_editor: function(collection, type, id) {
-
-        try {
-          editorView
-              .reset()
-              .select(collection, {type: type, id: id});
-
-          if (id) {
-            editorView.render();
-          } else {
-            window.location = "#editor/"+collection+"/"+type+"/"+editorView.currentElement;
-            // delete history
-            return this;
-          }
-
-        } catch(exception) {
-
-          // TODO this should not appear in history
-          if (exception instanceof NullCollectionException) {
-            this.currentCollection = null; //TODO CHECK
-            window.location = "#collection";
-            return null;
-          } else if (exception instanceof NullElementException) {
-            this.currentElement = null;
-            window.location = "#editor/"+collection;
-          } else {
-            console.log(exception, exception.message);
-          }
-
-        }
-
-        previewView
-            .render(collection);
-
-      }
-    }
-  };
-
   // Main
   var editor = new EditorView({container: 'editor', colorpicker: 'dialog_colorpicker'});
   var preview = new PreviewView({container: 'preview'});
-
   var page = new PageView({container: 'page'});
-  var views = Views(editor, preview, page);
+  var activities = ActivityFactory(editor, preview, page);
 
   // Clean before router cleans
   window.addEventListener("hashchange", function() {
@@ -331,15 +212,15 @@
 
   var router = new Router();
   router
-      .route('#homepage', views.homepage)
-      .route('#new', views.newpage)
-      .route("#help", views.help)
-      .route("#collection", views.collection)
-      .route('#editor/:collection', views.editor)
-      .route('#editor/:collection/:type', views.element_editor)
-      .route('#editor/:collection/:type/:id', views.element_editor)
-      .route('#colorpicker/:collection/:type', views.colorpicker)
-      .route('#colorpicker/:collection/:type/:id', views.element_colorpicker)
+      .route('#homepage', activities.homepage)
+      .route('#new', activities.newpage)
+      .route("#help", activities.help)
+      .route("#collection", activities.collection)
+      .route('#editor/:collection', activities.editor)
+      .route('#editor/:collection/:type', activities.element_editor)
+      .route('#editor/:collection/:type/:id', activities.element_editor)
+      .route('#colorpicker/:collection/:type', activities.colorpicker)
+      .route('#colorpicker/:collection/:type/:id', activities.element_colorpicker)
       .history.start();
 
 

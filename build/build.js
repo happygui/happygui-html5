@@ -11052,6 +11052,83 @@ View.prototype.el = function(html) {
 
 module.exports = View;
 });
+require.register("happygui-activityfactory/index.js", function(exports, require, module){
+var NullCollectionException = require('happygui-nullcollectionexception');
+var NullElementException = require('happygui-nullelementexception');
+var StorageCtrl = require('happygui-storagectrl');
+
+var ActivityFactory = function(editorView, previewView, pageView) {
+  return {
+    homepage: function() { pageView.render('homepage', null) },
+    newpage: function() { pageView.render('newpage', null); },
+    help: function() { pageView.render('help', null); },
+    collection: function() { pageView.render("collection", {collection: StorageCtrl.getCollections()}); },
+    editor: function(collection) {
+      try { editorView.reset().select(collection).render(); }
+      catch(exception) {
+        // TODO this should not appear in history
+        if (exception instanceof NullCollectionException) {
+          this.currentCollection = null;
+          window.location = "#collection";
+        } else {
+          console.log(exception);
+        }
+      }
+      previewView.render(collection);
+    },
+    colorpicker: function(collection, type) {
+      editorView.reset().select(collection);
+
+      editorView.colorpicker.type = type;
+      editorView.colorpicker.show();
+
+      previewView.render(collection);
+    },
+    element_colorpicker: function(collection, type, id) {
+      editorView.reset().select(collection, {id: id});
+
+      editorView.colorpicker.type = type;
+      editorView.colorpicker.show();
+
+      previewView.render(collection);
+    },
+    element_editor: function(collection, type, id) {
+
+      try {
+
+        editorView.reset().select(collection, {type: type, id: id});
+
+        if (id) {
+          editorView.render();
+        } else {
+          window.location = "#editor/"+collection+"/"+type+"/"+editorView.currentElement;
+          // delete history
+          return this;
+        }
+
+      } catch(exception) {
+
+        // TODO this should not appear in history
+        if (exception instanceof NullCollectionException) {
+          this.currentCollection = null; //TODO CHECK
+          window.location = "#collection";
+        } else if (exception instanceof NullElementException) {
+          this.currentElement = null;
+          window.location = "#editor/"+collection;
+        } else {
+          console.log(exception, exception.message);
+        }
+
+      }
+
+      previewView.render(collection);
+
+    }
+  }
+};
+
+module.exports = ActivityFactory;
+});
 require.register("happygui-previewview/index.js", function(exports, require, module){
 var View = require('happygui-view');
 var StorageCtrl = require('happygui-storagectrl');
@@ -11650,6 +11727,40 @@ require.alias("component-delegate/index.js", "happygui-view/deps/delegate/index.
 require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
 
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
+
+require.alias("happygui-activityfactory/index.js", "boot/deps/happygui-activityfactory/index.js");
+require.alias("happygui-storagectrl/index.js", "happygui-activityfactory/deps/happygui-storagectrl/index.js");
+require.alias("component-emitter/index.js", "happygui-storagectrl/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
+require.alias("happygui-elementfactory/index.js", "happygui-storagectrl/deps/happygui-elementfactory/index.js");
+require.alias("happygui-circleelement/index.js", "happygui-elementfactory/deps/happygui-circleelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-circleelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-rectelement/index.js", "happygui-elementfactory/deps/happygui-rectelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-rectelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-textelement/index.js", "happygui-elementfactory/deps/happygui-textelement/index.js");
+require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
+
+require.alias("happygui-imageelement/index.js", "happygui-elementfactory/deps/happygui-imageelement/index.js");
+require.alias("happygui-element/index.js", "happygui-imageelement/deps/happygui-element/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-elementfactory/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-noplatformexception/index.js", "happygui-storagectrl/deps/happygui-noplatformexception/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-storagectrl/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-nullcollectionexception/index.js", "happygui-storagectrl/deps/happygui-nullcollectionexception/index.js");
+
+require.alias("happygui-collection/index.js", "happygui-storagectrl/deps/happygui-collection/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-activityfactory/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-nullcollectionexception/index.js", "happygui-activityfactory/deps/happygui-nullcollectionexception/index.js");
 
 require.alias("happygui-previewview/index.js", "boot/deps/happygui-previewview/index.js");
 require.alias("happygui-storagectrl/index.js", "happygui-previewview/deps/happygui-storagectrl/index.js");
