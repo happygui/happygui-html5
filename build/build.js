@@ -11327,9 +11327,11 @@ EditorView.prototype.collection = function () {
   return StorageCtrl.getCollection(this.currentCollection);
 };
 /**
- * The current collection is returned in an array
+ * Retrieves the elements or a precise one in the current
+ * collection
  *
  * @method elements
+ * @params {Integer} optional
  * @return {Array} Returns the current collection
  */
 EditorView.prototype.elements = function (element) {
@@ -11339,10 +11341,26 @@ EditorView.prototype.elements = function (element) {
 
   return StorageCtrl.getElement(element, this.currentCollection);
 };
+
+/**
+ * Retrieves the current element or a given element
+ * in the collection
+ *
+ * @method element
+ * @params {Integer} optional
+ * @return {Array} Returns the current collection
+ */
 EditorView.prototype.element = function (element) {
   return this.elements(element || this.currentElement);
 };
 
+/**
+ * Sets the current collection
+ *
+ * @method setCollection
+ * @params {Integer} Id of the collection
+ * @return {Object} Return "this" for chaining
+ */
 EditorView.prototype.setCollection = function (collection) {
   collection = parseInt(collection);
   if (isNaN(collection)) throw new NullCollectionException ("Collection id must be a number");
@@ -11351,39 +11369,86 @@ EditorView.prototype.setCollection = function (collection) {
   return this;
 };
 
+/**
+ * Sets the current element in the currentCollection
+ * if it doesnt exists it creates a new one of the same "type"
+ *
+ * @method setElement
+ * @params {String} Type of the element
+ * @params {Integer} Id of the element (optional)
+ * @return {Object} Return "this" for chaining
+ */
+EditorView.prototype.setElement = function (type, id) {
+  this.currentElement = id || StorageCtrl.createElement(this.currentCollection, {type: type});
+  return this;
+};
+
+/**
+ * Saves the current element. If toSave is speciefied,
+ * it will be saved in the localStorage/jsObject
+ *
+ * @method saveElement
+ * @params {Boolean} [toSave=false] will not save in database
+ * @params {Element} object to be saved
+ * @return {Object} Return "this" for chaining
+ */
+EditorView.prototype.saveElement = function (toSave, doc) {
+  StorageCtrl.update(toSave, doc, this.currentCollection, this.currentElement);
+  return this;
+};
+
+
+
+/**
+ * Sets the collection or the current element (if given)
+ * as current
+ *
+ * @method select
+ * @params {Integer} id of collection
+ * @params {Integer} id of element (optional)
+ * @return {Object} Return "this" for chaining
+ */
+
+EditorView.prototype.select = function(collection, element) {
+  this.setCollection(collection);
+  if (element !== undefined ) this.setElement(element.type, element.id);
+
+  return this;
+};
+
+/**
+ * Set an attribute to the current element in the current collection
+ * and redraw the object on the canvas
+ *
+ * @method setAttribute
+ * @params {String} Key of the attribute
+ * @params {String} Value of the attribute
+ * @return {Object} Return "this" for chaining
+ */
 EditorView.prototype.setAttribute = function (key, value) {
   StorageCtrl.setElementAttribute(this.currentElement, this.currentCollection, key, value);
   var attr;
   this.element().redraw();
 };
 
-EditorView.prototype.setElement = function (type, id) {
-  this.currentElement = id || StorageCtrl.createElement(this.currentCollection, {type: type});
-  return this;
-};
-
-EditorView.prototype.saveElement = function (toSave, doc) {
-  StorageCtrl.update(toSave, doc, this.currentCollection, this.currentElement);
-};
-
-EditorView.prototype.select = function(collection, element) {
-
-
-  this.setCollection(collection);
-
-  if (element !== undefined ) {
-    this.setElement(element.type, element.id);
-  }
-
-  return this;
-};
-
+/**
+ * Current Collection and current element are set to null
+ *
+ * @method reset
+ * @return {Object} Return "this" for chaining
+ */
 EditorView.prototype.reset = function () {
   this.currentCollection = null;
   this.currentElement = null;
   return this;
 };
 
+/**
+ * Renders the HTML for the editor into this.container
+ *
+ * @method render
+ * @return {Object} Return "this" for chaining
+ */
 EditorView.prototype.render = function () {
   var html, data;
 
