@@ -54,7 +54,14 @@ EditorView.prototype.events = {
   click_elementNew: function (e) {
     var type = e.target.id.replace('New','');
     try {
-      var id = StorageCtrl.createElement(this.currentCollection, {type: type});
+      if (typeof jsObject !== 'undefined' && type === 'image') {
+        jsObject.getGalleryImage('editor.gotPhoto');
+
+      } else if (typeof jsObject !== 'undefined' && type === 'camera') {
+        jsObject.getPhoto('editor.gotPhoto');
+      } else {
+        var id = StorageCtrl.createElement(this.currentCollection, {type: type});
+      }
     } catch(exception) {
       if (exception instanceof NullElementException) {
         alert("You selected an element that doesn't exist");
@@ -257,6 +264,14 @@ EditorView.prototype.render = function () {
   this.el(html).show();
 
   return this;
+};
+
+EditorView.prototype.gotPhoto = function(url) {
+  if (!url) {
+    window.location = "#editor/"+this.currentCollection;
+  }
+  var id = StorageCtrl.createElement(this.currentCollection, {type: "image", url: url});
+  window.location = "#editor/"+this.currentCollection+"/image/"+id;
 };
 
 module.exports = EditorView;

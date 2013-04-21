@@ -99,6 +99,7 @@ var StorageCtrl = (function(){
     },
     created: function (result) { filesCollection = new Collection(); },
     saved: function(result) { console.log("saved "+result); },
+
     getCollection: function(collection) { return getCollection(collection); },
     getCollections: function() { return filesCollection.models; },
     createCollection: function() {
