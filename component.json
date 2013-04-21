@@ -9,8 +9,6 @@
   "dependencies": {
     "component/emitter": "*",
     "component/delegate": "*",
-    "component/gesture": "*",
-    "richthegeek/raphael": "*",
-    "happygui/win8-datastore": "*"
+    "richthegeek/raphael": "*"
   }
 }

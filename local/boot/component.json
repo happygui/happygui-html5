@@ -4,12 +4,9 @@
     "dependencies": {
         "apily/router": "*",
         "apily/history": "*",
-        "apily/view": "*",
         "component/emitter": "*",
         "component/delegate": "*",
-        "component/gesture": "*",
-        "richthegeek/raphael": "*",
-        "happygui/win8-datastore": "*"
+        "richthegeek/raphael": "*"
     },
     "local": [
         "happygui-collection",
