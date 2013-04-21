@@ -266,6 +266,14 @@ EditorView.prototype.render = function () {
   return this;
 };
 
+/**
+ * This is triggered when a photo is take by a device,
+ * a new element is then created.
+ *
+ * @method gotPhoto
+ * @params {String} url of image
+ * @return {Object} Return "this" for chaining
+ */
 EditorView.prototype.gotPhoto = function(url) {
   if (!url) {
     window.location = "#editor/"+this.currentCollection;

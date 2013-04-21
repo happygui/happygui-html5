@@ -147,6 +147,9 @@ input,
 select {
   vertical-align: middle;
 }
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 .hidden {
   display: none;
 }
@@ -162,7 +165,8 @@ select {
   width: 100%;
   margin: 0 auto;
   text-align: center;
-  top: 40%;
+  top: 20%;
+  left: 0;
   position: absolute;
 }
 .wrapper {
@@ -209,7 +213,9 @@ select {
   margin-top: 10%;
   height: 64px;
   border: 3px solid #fff;
-  border-width: 2px 4px 6px 3px;
+  /* border-width: 2px 4px 6px 3px; */
+
+  border-width: 6px;
   cursor: pointer;
   border-shadow: 10px;
   -webkit-border-radius: 10px;
@@ -305,6 +311,8 @@ body {
   position: fixed;
   width: 40%;
   height: 100%;
+  top: 0;
+  left: 0;
 }
 #dialog_colorpicker .inner {
   margin: 0 10%;
@@ -312,7 +320,7 @@ body {
 #dialog_colorpicker .colorpicker {
   float: left;
   margin-top: 5%;
-  width: 19%;
+  width: 18%;
   margin-right: 4%;
   height: 50px;
 }
@@ -419,7 +427,8 @@ body {
 .black_bg:hover {
   border-color: #333333;
 }
-@media (max-width: 800px) {
+/*
+@media (max-width : 800px) {
   #editor {
     display: none;
   }
@@ -427,3 +436,4 @@ body {
     margin-left: 0;
   }
 }
+*/
