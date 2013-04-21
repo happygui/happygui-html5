@@ -11002,6 +11002,7 @@ module.exports = ImageElement;
 });
 require.register("happygui-view/index.js", function(exports, require, module){
 var delegate = require('delegate');
+var Emitter = require('emitter');
 
 function View (options) {
   options = options || {};
@@ -11728,6 +11729,9 @@ require.alias("component-matches-selector/index.js", "component-delegate/deps/ma
 
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
 
+require.alias("component-emitter/index.js", "happygui-view/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
 require.alias("happygui-activityfactory/index.js", "boot/deps/happygui-activityfactory/index.js");
 require.alias("happygui-storagectrl/index.js", "happygui-activityfactory/deps/happygui-storagectrl/index.js");
 require.alias("component-emitter/index.js", "happygui-storagectrl/deps/emitter/index.js");
@@ -11798,6 +11802,9 @@ require.alias("component-matches-selector/index.js", "component-delegate/deps/ma
 
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
 
+require.alias("component-emitter/index.js", "happygui-view/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
 require.alias("richthegeek-raphael/raphael.js", "happygui-previewview/deps/raphael/raphael.js");
 require.alias("richthegeek-raphael/raphael.js", "happygui-previewview/deps/raphael/index.js");
 require.alias("adobe-webplatform-eve/eve.js", "richthegeek-raphael/deps/eve/eve.js");
@@ -11842,6 +11849,9 @@ require.alias("component-matches-selector/index.js", "component-delegate/deps/ma
 
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
 
+require.alias("component-emitter/index.js", "happygui-view/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
 require.alias("happygui-templates/index.js", "happygui-pageview/deps/happygui-templates/index.js");
 
 require.alias("happygui-editorview/index.js", "boot/deps/happygui-editorview/index.js");
@@ -11882,12 +11892,18 @@ require.alias("component-matches-selector/index.js", "component-delegate/deps/ma
 
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
 
+require.alias("component-emitter/index.js", "happygui-view/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
 require.alias("happygui-colorpicker/index.js", "happygui-editorview/deps/happygui-colorpicker/index.js");
 require.alias("happygui-view/index.js", "happygui-colorpicker/deps/happygui-view/index.js");
 require.alias("component-delegate/index.js", "happygui-view/deps/delegate/index.js");
 require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
 
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
+
+require.alias("component-emitter/index.js", "happygui-view/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
 
 require.alias("happygui-nullelementexception/index.js", "happygui-editorview/deps/happygui-nullelementexception/index.js");
 
@@ -11899,6 +11915,9 @@ require.alias("component-delegate/index.js", "happygui-view/deps/delegate/index.
 require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
 
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
+
+require.alias("component-emitter/index.js", "happygui-view/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
 
 require.alias("happygui-templates/index.js", "boot/deps/happygui-templates/index.js");
 

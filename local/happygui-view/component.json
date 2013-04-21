@@ -3,7 +3,8 @@
     "description": "View",
     "version": "0.0.1",
     "dependencies": {
-        "component/delegate": "*"
+        "component/delegate": "*",
+        "component/emitter": "*"
     },
     "development": {},
     "scripts": [

@@ -174,26 +174,13 @@
 <script type="text/javascript">
   // Dependencies
   var Router = require('apily-router');
-  var delegate = require('component-delegate');
-  var event = require('component-event');
-  var Emitter = require('component-emitter');
-  var Raphael = require('richthegeek-raphael');
-
-  // Happygui dependencies
-  var View = require('happygui-view');
-  var ActivityFactory = require('happygui-activityfactory');
   var EditorView = require('happygui-editorview');
   var PreviewView = require('happygui-previewview');
   var PageView = require('happygui-pageview');
-
-  // Happygui exceptions
-  var NullElementException = require('happygui-nullelementexception');
-  var NullCollectionException = require('happygui-nullcollectionexception');
-  var NoPlatformException = require('happygui-noplatformexception');
-
-  var StorageCtrl = require('happygui-storagectrl');
+  var ActivityFactory = require('happygui-activityfactory');
 
   // Main
+  var router = new Router();
   var editor = new EditorView({container: 'editor', colorpicker: 'dialog_colorpicker'});
   var preview = new PreviewView({container: 'preview'});
   var page = new PageView({container: 'page'});
@@ -210,7 +197,6 @@
     page.hide();
   }, true);
 
-  var router = new Router();
   router
       .route('#homepage', activities.homepage)
       .route('#new', activities.newpage)
@@ -230,7 +216,6 @@
   } else {
     //TODO load view
   }
-
 
 </script>
 

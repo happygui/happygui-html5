@@ -1,4 +1,5 @@
 var delegate = require('delegate');
+var Emitter = require('emitter');
 
 function View (options) {
   options = options || {};
