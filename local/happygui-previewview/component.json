@@ -1,0 +1,14 @@
+{
+    "name": "happygui-previewview",
+    "description": "Editor view",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-storagectrl": "*",
+        "happygui-view": "*",
+        "richthegeek/raphael": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

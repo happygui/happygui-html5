@@ -23,12 +23,14 @@
         "happygui-imageelement",
 
         "happygui-view",
+        "happygui-previewview",
+        "happygui-editorview",
+        "happygui-colorpicker",
         "happygui-templates",
 
         "happygui-nullelementexception",
         "happygui-nullcollectionexception",
         "happygui-noplatformexception",
-
         "happygui-storagectrl"
     ],
     "scripts": ["boot.js"],

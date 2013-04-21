@@ -1,0 +1,12 @@
+{
+    "name": "happygui-colorpicker",
+    "description": "Colorpicker view",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-view": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

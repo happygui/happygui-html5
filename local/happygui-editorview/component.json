@@ -1,0 +1,17 @@
+{
+    "name": "happygui-editorview",
+    "description": "Editor view",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-storagectrl": "*",
+        "happygui-templates": "*",
+        "happygui-view": "*",
+        "happygui-colorpicker": "*",
+        "happygui-nullelementexception": "*",
+        "happygui-nullcollectionexception": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}
