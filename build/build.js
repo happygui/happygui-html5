@@ -11091,6 +11091,40 @@ PreviewView.prototype.render = function (currentCollection) {
 
 module.exports = PreviewView;
 });
+require.register("happygui-pageview/index.js", function(exports, require, module){
+var View = require('happygui-view');
+var Templates = require('happygui-templates');
+var StorageCtrl = require('happygui-storagectrl');
+
+function PageView (options) {
+  View.call(this, options);
+  options = options || {};
+
+  this.bindAll();
+  return this;
+}
+PageView.prototype = Object.create(View.prototype);
+PageView.prototype.constructor = PageView;
+
+PageView.prototype.clear = function() {
+  this.el('');
+  return this;
+};
+
+PageView.prototype.bindAll = function () {
+  this.bind('click #collectionSave', StorageCtrl.createCollection);
+};
+
+PageView.prototype.render = function (template, data) {
+
+  this
+    .el(Templates.getCollections(template)(data))
+    .show();
+
+  return this;
+};
+module.exports = PageView;
+});
 require.register("happygui-editorview/index.js", function(exports, require, module){
 var StorageCtrl = require('happygui-storagectrl');
 var Templates = require('happygui-templates');
@@ -11660,6 +11694,44 @@ require.alias("adobe-webplatform-eve/eve.js", "richthegeek-raphael/deps/eve/inde
 require.alias("adobe-webplatform-eve/eve.js", "adobe-webplatform-eve/index.js");
 
 require.alias("richthegeek-raphael/raphael.js", "richthegeek-raphael/index.js");
+
+require.alias("happygui-pageview/index.js", "boot/deps/happygui-pageview/index.js");
+require.alias("happygui-storagectrl/index.js", "happygui-pageview/deps/happygui-storagectrl/index.js");
+require.alias("component-emitter/index.js", "happygui-storagectrl/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
+require.alias("happygui-elementfactory/index.js", "happygui-storagectrl/deps/happygui-elementfactory/index.js");
+require.alias("happygui-circleelement/index.js", "happygui-elementfactory/deps/happygui-circleelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-circleelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-rectelement/index.js", "happygui-elementfactory/deps/happygui-rectelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-rectelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-textelement/index.js", "happygui-elementfactory/deps/happygui-textelement/index.js");
+require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
+
+require.alias("happygui-imageelement/index.js", "happygui-elementfactory/deps/happygui-imageelement/index.js");
+require.alias("happygui-element/index.js", "happygui-imageelement/deps/happygui-element/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-elementfactory/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-noplatformexception/index.js", "happygui-storagectrl/deps/happygui-noplatformexception/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-storagectrl/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-nullcollectionexception/index.js", "happygui-storagectrl/deps/happygui-nullcollectionexception/index.js");
+
+require.alias("happygui-collection/index.js", "happygui-storagectrl/deps/happygui-collection/index.js");
+
+require.alias("happygui-view/index.js", "happygui-pageview/deps/happygui-view/index.js");
+require.alias("component-delegate/index.js", "happygui-view/deps/delegate/index.js");
+require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
+
+require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
+
+require.alias("happygui-templates/index.js", "happygui-pageview/deps/happygui-templates/index.js");
 
 require.alias("happygui-editorview/index.js", "boot/deps/happygui-editorview/index.js");
 require.alias("happygui-storagectrl/index.js", "happygui-editorview/deps/happygui-storagectrl/index.js");

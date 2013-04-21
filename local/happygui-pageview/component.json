@@ -1,0 +1,14 @@
+{
+    "name": "happygui-pageview",
+    "description": "Page view",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-storagectrl": "*",
+        "happygui-view": "*",
+        "happygui-templates": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}

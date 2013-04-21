@@ -183,7 +183,7 @@
   var View = require('happygui-view');
   var EditorView = require('happygui-editorview');
   var PreviewView = require('happygui-previewview');
-  var Templates = require('happygui-templates');
+  var PageView = require('happygui-pageview');
 
   // Happygui exceptions
   var NullElementException = require('happygui-nullelementexception');
@@ -191,34 +191,6 @@
   var NoPlatformException = require('happygui-noplatformexception');
 
   var StorageCtrl = require('happygui-storagectrl');
-
-  function PageView (options) {
-    View.call(this, options);
-    options = options || {};
-
-    this.bindAll();
-    return this;
-  }
-  PageView.prototype = Object.create(View.prototype);
-  PageView.prototype.constructor = PageView;
-
-  PageView.prototype.clear = function() {
-    this.el('');
-    return this;
-  };
-
-  PageView.prototype.bindAll = function () {
-    this.bind('click #collectionSave', StorageCtrl.createCollection);
-  };
-
-  PageView.prototype.render = function (template, data) {
-
-    this
-        .el(Templates.getCollections(template)(data))
-        .show();
-
-    return this;
-  };
 
   // Views service
   var Views = function(editorView, previewView, pageView) {
