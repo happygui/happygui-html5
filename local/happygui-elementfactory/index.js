@@ -2,7 +2,7 @@ var TextElement = require('happygui-textelement');
 var CircleElement = require('happygui-circleelement');
 var RectElement = require('happygui-rectelement');
 var ImageElement = require('happygui-imageelement');
-var NullElementException = require('happygui-nullelementexception')
+var NullElementException = require('happygui-nullelementexception');
 
 var ElementFactory = (function() {
 

@@ -16,21 +16,33 @@
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
   var Raphael = require('richthegeek-raphael');
+  var ElementFactory = require('happygui-elementfactory');
   var paper = Raphael(document.getElementById('preview'), 480, 600);
   var socket = io.connect();
   var collection = {};
   socket.on('gotCollection', function(data) {
     collection = JSON.parse(data);
 
-  });
-  socket.on('updatedElement', function(data) {
+    collection = ElementFactory.decorateCollection(collection);
 
+    if (collection.elements.length > 0)
+      collection.elements.forEach(function(element, i) {
+        // TODO write something here
+        collection.elements[i].drawing = element.draw(true, paper);
+      });
+
+  });
+  socket.on('updatedElement', function(i, data) {
+    collection.elements[i] = data;
+    collection.elements[i].redraw();
   });
   socket.on('createdElement', function(data) {
-
+    var element = ElementFactory.create(data);
+    element.draw(true, paper);
+    collection.elements.push(element);
   });
   socket.on('deletedElement', function(data) {
-
+    collection.elements.splice(data, 1);
   });
 
 </script>
