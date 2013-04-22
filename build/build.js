@@ -9074,7 +9074,7 @@ TextElement.prototype.redraw = function () {
     font: "italic "+this.fontSize+"px Helvetica"
   });
 };
-TextElement.prototype.draw = function (paper, callback) {
+TextElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 
 
@@ -9094,25 +9094,26 @@ TextElement.prototype.draw = function (paper, callback) {
     dif && this.drawing.node.firstChild.setAttribute("dy", String(dif));
     console.log(dif, "leaderrrr", bb);
 
-  this.drawing
-    .drag(
-    function(dx, dy, x, y) {
-      console.log(dx, dy, x, y);
-      this.attr({x: self.x + dx, y: self.y + dy, dy:0, dx:0});
-      console.log("one", this.attr("x")+dx, this.attr("y")+dy);
-    },
-    function () {
-      console.log("two", this.attr("x"),this.attr("y"));
-      this.attr({x: self.x, y: self.y, dy:0, dx:0});
-      console.log("two", this.attr("x"),this.attr("y"));
-    },
-    function () {
-      self.x = this.attr("x");
-      self.y = this.attr("y");
-      console.log("three", this.attr("x"), this.attr("y"));
-      callback(self.x, self.y);
-    }
-  );
+  if (draggable)
+    this.drawing
+      .drag(
+      function(dx, dy, x, y) {
+        console.log(dx, dy, x, y);
+        this.attr({x: self.x + dx, y: self.y + dy, dy:0, dx:0});
+        console.log("one", this.attr("x")+dx, this.attr("y")+dy);
+      },
+      function () {
+        console.log("two", this.attr("x"),this.attr("y"));
+        this.attr({x: self.x, y: self.y, dy:0, dx:0});
+        console.log("two", this.attr("x"),this.attr("y"));
+      },
+      function () {
+        self.x = this.attr("x");
+        self.y = this.attr("y");
+        console.log("three", this.attr("x"), this.attr("y"));
+        callback(self.x, self.y);
+      }
+    );
 
   return this.drawing;
 };
@@ -9165,7 +9166,7 @@ CircleElement.prototype.redraw = function () {
 
   return this;
 };
-CircleElement.prototype.draw = function (paper, callback) {
+CircleElement.prototype.draw = function (draggable, paper, callback) {
 
   var self = this;
 
@@ -9178,8 +9179,10 @@ CircleElement.prototype.draw = function (paper, callback) {
       "stroke-width": self.borderThickness,
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
-    })
-    .drag(
+    });
+
+  if (draggable)
+    this.drawing.drag(
       function (dx, dy) {
         self.borderThickness = parseInt(self.borderThickness);
         self.r = parseInt(self.r);
@@ -9225,7 +9228,7 @@ RectElement.prototype.redraw = function() {
   })
 };
 
-RectElement.prototype.draw = function (paper, callback) {
+RectElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 
   this.drawing = paper
@@ -9237,8 +9240,10 @@ RectElement.prototype.draw = function (paper, callback) {
       "stroke-width": self.borderThickness,
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
-    })
-    .drag(
+    });
+
+  if (draggable)
+    this.drawing.drag(
       function(dx, dy, x, y) {
         self.borderThickness = parseInt(self.borderThickness);
         self.width = parseInt(self.width);
@@ -9286,30 +9291,33 @@ ImageElement.prototype.redraw = function() {
   })
 };
 
-ImageElement.prototype.draw = function (paper, callback) {
+ImageElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 
   this.drawing = paper
-    .image(self.url, self.x, self.y, self.width, self.height)
-    .drag(
-    function(dx, dy, x, y) {
-      self.width = parseInt(self.width);
-      self.height = parseInt(self.height);
+    .image(self.url, self.x, self.y, self.width, self.height);
 
-      console.log(self.x + dx, self.borderThickness, 480 - self.width);
-      this.attr({
-        x: Math.min(Math.max(self.x + dx, 0), 480 - self.width),
-        y: Math.min(Math.max(self.y + dy, 0), 600 - self.height)
-      });
-    },
-    function () {
-    },
-    function () {
-      self.x = this.attr("x");
-      self.y = this.attr("y");
-      callback(self.x, self.y);
-    }
-  );
+
+  if (draggable)
+    this.drawing.drag(
+      function(dx, dy, x, y) {
+        self.width = parseInt(self.width);
+        self.height = parseInt(self.height);
+
+        console.log(self.x + dx, self.borderThickness, 480 - self.width);
+        this.attr({
+          x: Math.min(Math.max(self.x + dx, 0), 480 - self.width),
+          y: Math.min(Math.max(self.y + dy, 0), 600 - self.height)
+        });
+      },
+      function () {
+      },
+      function () {
+        self.x = this.attr("x");
+        self.y = this.attr("y");
+        callback(self.x, self.y);
+      }
+    );
 
   return this.drawing;
 };
@@ -9472,7 +9480,7 @@ PreviewView.prototype.render = function (currentCollection) {
   if (collection.elements.length > 0)
     collection.elements.forEach(function(element, currentElement) {
 
-      element.draw(self.paper, function() {
+      element.draw(true, self.paper, function() {
         StorageCtrl.update(false, element, currentCollection, currentElement);
         window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
       });
@@ -9788,6 +9796,14 @@ EditorView.prototype.render = function () {
   return this;
 };
 
+/**
+ * This is triggered when a photo is take by a device,
+ * a new element is then created.
+ *
+ * @method gotPhoto
+ * @params {String} url of image
+ * @return {Object} Return "this" for chaining
+ */
 EditorView.prototype.gotPhoto = function(url) {
   if (!url) {
     window.location = "#editor/"+this.currentCollection;
