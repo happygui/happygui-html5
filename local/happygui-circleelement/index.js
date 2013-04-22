@@ -24,7 +24,7 @@ CircleElement.prototype.redraw = function () {
 
   return this;
 };
-CircleElement.prototype.draw = function (paper, callback) {
+CircleElement.prototype.draw = function (draggable, paper, callback) {
 
   var self = this;
 
@@ -37,8 +37,10 @@ CircleElement.prototype.draw = function (paper, callback) {
       "stroke-width": self.borderThickness,
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
-    })
-    .drag(
+    });
+
+  if (draggable)
+    this.drawing.drag(
       function (dx, dy) {
         self.borderThickness = parseInt(self.borderThickness);
         self.r = parseInt(self.r);

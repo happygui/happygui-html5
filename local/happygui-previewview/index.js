@@ -23,7 +23,7 @@ PreviewView.prototype.render = function (currentCollection) {
   if (collection.elements.length > 0)
     collection.elements.forEach(function(element, currentElement) {
 
-      element.draw(self.paper, function() {
+      element.draw(true, self.paper, function() {
         StorageCtrl.update(false, element, currentCollection, currentElement);
         window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
       });

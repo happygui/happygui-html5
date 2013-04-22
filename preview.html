@@ -12,16 +12,24 @@
   </div>
 </div>
 
+<script type="text/javascript" src="/build/build.js"></script>
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
+  var Raphael = require('richthegeek-raphael');
+  var paper = Raphael(document.getElementById('preview'), 480, 600);
   var socket = io.connect();
-  socket.on('update', function(data) {
+  var collection = {};
+  socket.on('gotCollection', function(data) {
+    collection = JSON.parse(data);
 
   });
-  socket.on('new', function(data) {
+  socket.on('updatedElement', function(data) {
 
   });
-  socket.on('delete', function(data) {
+  socket.on('createdElement', function(data) {
+
+  });
+  socket.on('deletedElement', function(data) {
 
   });
 

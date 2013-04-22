@@ -20,7 +20,7 @@ RectElement.prototype.redraw = function() {
   })
 };
 
-RectElement.prototype.draw = function (paper, callback) {
+RectElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 
   this.drawing = paper
@@ -32,8 +32,10 @@ RectElement.prototype.draw = function (paper, callback) {
       "stroke-width": self.borderThickness,
       "stroke-linecap": "round",
       "stroke-linejoin": "round"
-    })
-    .drag(
+    });
+
+  if (draggable)
+    this.drawing.drag(
       function(dx, dy, x, y) {
         self.borderThickness = parseInt(self.borderThickness);
         self.width = parseInt(self.width);

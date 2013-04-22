@@ -19,30 +19,33 @@ ImageElement.prototype.redraw = function() {
   })
 };
 
-ImageElement.prototype.draw = function (paper, callback) {
+ImageElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 
   this.drawing = paper
-    .image(self.url, self.x, self.y, self.width, self.height)
-    .drag(
-    function(dx, dy, x, y) {
-      self.width = parseInt(self.width);
-      self.height = parseInt(self.height);
+    .image(self.url, self.x, self.y, self.width, self.height);
 
-      console.log(self.x + dx, self.borderThickness, 480 - self.width);
-      this.attr({
-        x: Math.min(Math.max(self.x + dx, 0), 480 - self.width),
-        y: Math.min(Math.max(self.y + dy, 0), 600 - self.height)
-      });
-    },
-    function () {
-    },
-    function () {
-      self.x = this.attr("x");
-      self.y = this.attr("y");
-      callback(self.x, self.y);
-    }
-  );
+
+  if (draggable)
+    this.drawing.drag(
+      function(dx, dy, x, y) {
+        self.width = parseInt(self.width);
+        self.height = parseInt(self.height);
+
+        console.log(self.x + dx, self.borderThickness, 480 - self.width);
+        this.attr({
+          x: Math.min(Math.max(self.x + dx, 0), 480 - self.width),
+          y: Math.min(Math.max(self.y + dy, 0), 600 - self.height)
+        });
+      },
+      function () {
+      },
+      function () {
+        self.x = this.attr("x");
+        self.y = this.attr("y");
+        callback(self.x, self.y);
+      }
+    );
 
   return this.drawing;
 };
