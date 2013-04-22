@@ -94,7 +94,7 @@ var StorageCtrl = (function(){
 
   return {
     raw: function(raw) {
-      if (!raw) jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created')
+      if (!raw) jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created');
       emitter.emit("raw", raw);
     },
     created: function (result) { filesCollection = new Collection(); },
