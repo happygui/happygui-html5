@@ -9062,7 +9062,7 @@ var TextElement = function(options) {
   this.hasFontColor = true;
 
   this.fontSize = options.fontSize || 25;
-  this.fontColor = options.fontColor || "#000";
+  this.fontColor = options.fontColor || "rgb(0,0,0)";
   this.y = 200;
 };
 TextElement.prototype = Object.create(Element.prototype);
@@ -9130,9 +9130,9 @@ var ShapeElement = function(options) {
   this.hasBorderThickness = true;
   this.hasBackgroundColor = true;
 
-  this.borderColor = options.borderColor || "#cc0000";
+  this.borderColor = options.borderColor || "rgb(255,0,0)";
   this.borderThickness = options.borderThickness || 5;
-  this.backgroundColor = options.backgroundColor || "#00cc00";
+  this.backgroundColor = options.backgroundColor || "rgb(0,255,0)";
 };
 ShapeElement.prototype = Object.create(Element.prototype);
 ShapeElement.prototype.constructor = ShapeElement;
@@ -9983,7 +9983,7 @@ var StorageCtrl = (function(){
 
   return {
     raw: function(raw) {
-      if (!raw) jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created')
+      if (!raw) jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created');
       emitter.emit("raw", raw);
     },
     created: function (result) { filesCollection = new Collection(); },
@@ -9993,7 +9993,7 @@ var StorageCtrl = (function(){
     getCollections: function() { return filesCollection.models; },
     createCollection: function() {
       var name = document.getElementById("collectionName").value;
-      createCollection({name: name, elements: [], backgroundColor: "#fff"});
+      createCollection({name: name, elements: [], backgroundColor: "rgb(255,255,255)"});
       document.getElementById("collectionName").value = '';
       window.location = "#editor/" + (filesCollection.length()-1);
       return this;

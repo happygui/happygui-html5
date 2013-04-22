@@ -8,7 +8,7 @@ var TextElement = function(options) {
   this.hasFontColor = true;
 
   this.fontSize = options.fontSize || 25;
-  this.fontColor = options.fontColor || "#000";
+  this.fontColor = options.fontColor || "rgb(0,0,0)";
   this.y = 200;
 };
 TextElement.prototype = Object.create(Element.prototype);

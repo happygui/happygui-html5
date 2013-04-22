@@ -7,9 +7,9 @@ var ShapeElement = function(options) {
   this.hasBorderThickness = true;
   this.hasBackgroundColor = true;
 
-  this.borderColor = options.borderColor || "#cc0000";
+  this.borderColor = options.borderColor || "rgb(255,0,0)";
   this.borderThickness = options.borderThickness || 5;
-  this.backgroundColor = options.backgroundColor || "#00cc00";
+  this.backgroundColor = options.backgroundColor || "rgb(0,255,0)";
 };
 ShapeElement.prototype = Object.create(Element.prototype);
 ShapeElement.prototype.constructor = ShapeElement;

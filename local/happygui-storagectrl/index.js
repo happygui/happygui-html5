@@ -94,7 +94,7 @@ var StorageCtrl = (function(){
 
   return {
     raw: function(raw) {
-      if (!raw) jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created')
+      if (!raw) jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created');
       emitter.emit("raw", raw);
     },
     created: function (result) { filesCollection = new Collection(); },
@@ -104,7 +104,7 @@ var StorageCtrl = (function(){
     getCollections: function() { return filesCollection.models; },
     createCollection: function() {
       var name = document.getElementById("collectionName").value;
-      createCollection({name: name, elements: [], backgroundColor: "#fff"});
+      createCollection({name: name, elements: [], backgroundColor: "rgb(255,255,255)"});
       document.getElementById("collectionName").value = '';
       window.location = "#editor/" + (filesCollection.length()-1);
       return this;
