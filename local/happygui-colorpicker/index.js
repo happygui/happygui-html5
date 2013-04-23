@@ -1,5 +1,10 @@
 var View = require('happygui-view');
 
+/** 
+* Handles the colour picker which allows the user to change colour of different aspects of the elements
+*
+* @class ColorPicker
+*/
 function ColorPicker (options) {
   View.call(this, options);
   options = options || {};

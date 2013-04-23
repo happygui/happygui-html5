@@ -1,3 +1,9 @@
+/**
+* NullCollectionException is an error which is thrown if no collection is found
+*
+* @class NullCollectionException
+* @param message {String} The message which will be displayed if the error is caught
+*/
 function NullCollectionException (message) {
   Error.call(message);
   this.message = message || "";

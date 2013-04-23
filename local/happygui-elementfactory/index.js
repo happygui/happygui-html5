@@ -4,6 +4,11 @@ var RectElement = require('happygui-rectelement');
 var ImageElement = require('happygui-imageelement');
 var NullElementException = require('happygui-nullelementexception');
 
+/**
+*
+*
+* @class Element Factory
+*/
 var ElementFactory = (function() {
 
   return {

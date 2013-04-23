@@ -1,6 +1,11 @@
 var delegate = require('delegate');
 var Emitter = require('emitter');
 
+/**
+* This is the superclass of all the different views the user could see
+*
+* @class View
+*/
 function View (options) {
   options = options || {};
 
@@ -9,9 +14,24 @@ function View (options) {
 }
 View.prototype = Object.create(Emitter.prototype);
 
+/**
+* Listen for an event
+*
+* @method broadcast
+* @param emitter
+* @param event
+* @param method
+*/
 View.prototype.broadcast = function(emitter, event, method) {
 };
 
+/**
+* Bind the event to the method
+* 
+* @method bind
+* @param str {String} this is the event that needs to be bound to the method
+* @param method {String} this is the method which should be called when the event occurs
+*/
 View.prototype.bind = function(str, method) {
   // From component/view
   var parts = str.split(' ');
@@ -24,6 +44,12 @@ View.prototype.bind = function(str, method) {
   var fn = delegate.bind(document.getElementById(this.container), selector, event, meth.bind(this));
 };
 
+/**
+* This will show the view
+*
+* @method show
+* @return {Object} Return 'this' for chaining
+*/
 View.prototype.show = function() {
   if (this.hidden == true) {
     this.hidden = false;
@@ -33,6 +59,12 @@ View.prototype.show = function() {
   return this;
 };
 
+/**
+* This will hide the view
+*
+* @method hide
+* @return {Object} Return 'this' for chaining
+*/
 View.prototype.hide = function() {
   if (this.hidden == false) {
     this.hidden = true;

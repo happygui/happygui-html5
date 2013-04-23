@@ -1,5 +1,20 @@
 var ShapeElement = require('happygui-shapeelement');
 
+/**
+* Handles the rectangle element
+*
+* @class RectElement
+* @param isDeletable {Boolean} if the rectangle can be deleted
+* @param x {Integer} x position of the rectangle
+* @param y {Integer} x position of the rectangle
+* @param height {Integer} height of the rectangle
+* @param width {Integer} width of the rectangle
+* @param drawing {Boolean} if the rectangle can be drawn
+* @param borderColor {Hexadecimal} Colour of the border
+* @param borderThickness {Integer} Thickness of border in pixels
+* @oaram backgroundColor {Hexadecimal} Fill colour of the rectangle
+*/
+
 var RectElement = function(options) {
   ShapeElement.call(this, options); // Super
   options = options || {};
@@ -10,6 +25,12 @@ var RectElement = function(options) {
 RectElement.prototype = Object.create(ShapeElement.prototype);
 RectElement.prototype.constructor = RectElement;
 
+/**
+* Redraw the element if the attributes have been changed
+*
+* @method redraw
+* @return {Object} Return 'this' for chaining
+*/
 RectElement.prototype.redraw = function() {
   this.drawing.attr({
     stroke: this.borderColor,
@@ -20,6 +41,14 @@ RectElement.prototype.redraw = function() {
   })
 };
 
+/**
+* Draw the element on the page
+*
+* @method draw
+* @param draggable {Boolean} If the element can be moved around
+* @param paper {} Canvas on which the element will be drawn
+* @param callback {}
+*/
 RectElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 

@@ -1,5 +1,16 @@
 var Element = require('happygui-element');
 
+/**
+* Handles the image element
+*
+* @class ImageElement
+* @param isDeletable {Boolean} if the image can be deleted
+* @param x {Integer} x position of the image
+* @param y {Integer} x position of the image
+* @param height {Integer} height of the image
+* @param width {Integer} width of the image
+* @param drawing {Boolean} if the image can be drawn
+*/
 var ImageElement = function(options) {
   Element.call(this, options); // Super
   options = options || {};
@@ -12,6 +23,12 @@ var ImageElement = function(options) {
 ImageElement.prototype = Object.create(Element.prototype);
 ImageElement.prototype.constructor = ImageElement;
 
+/**
+* Redraw the element if the attributes have been changed
+*
+* @method redraw
+* @return {Object} Return 'this' for chaining
+*/
 ImageElement.prototype.redraw = function() {
   this.drawing.attr({
     width: this.width,
@@ -19,6 +36,14 @@ ImageElement.prototype.redraw = function() {
   })
 };
 
+/**
+* Draw the element on the page
+*
+* @method draw
+* @param draggable {Boolean} If the element can be moved around
+* @param paper {} Canvas on which the element will be drawn
+* @param callback {}
+*/
 ImageElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 

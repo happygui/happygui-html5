@@ -1,5 +1,18 @@
 var Element = require('happygui-element');
 
+/**
+* Handles the text element element
+*
+* @class TextElement
+* @param isDeletable {Boolean} if the text can be deleted
+* @param x {Integer} x position of the text
+* @param y {Integer} x position of the text
+* @param height {Integer} height of the text
+* @param width {Integer} width of the text
+* @param drawing {Boolean} if the text can be drawn
+* @param fontSize {Integer} Size of the font of the text
+* @param fontColor {Hexadecimal} Color of the font 
+*/
 var TextElement = function(options) {
   Element.call(this, options); // Super
   options = options || {};
@@ -14,12 +27,27 @@ var TextElement = function(options) {
 TextElement.prototype = Object.create(Element.prototype);
 TextElement.prototype.constructor = TextElement;
 
+/**
+* Redraw the element if the attributes have been changed
+*
+* @method redraw
+* @return {Object} Return 'this' for chaining
+*/
 TextElement.prototype.redraw = function () {
   this.drawing.attr({
     fill: this.fontColor,
     font: "italic "+this.fontSize+"px Helvetica"
   });
 };
+
+/**
+* Draw the element on the page
+*
+* @method draw
+* @param draggable {Boolean} If the element can be moved around
+* @param paper {} Canvas on which the element will be drawn
+* @param callback {}
+*/
 TextElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 
