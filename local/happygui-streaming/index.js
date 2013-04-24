@@ -23,8 +23,8 @@ Streaming.prototype.deleteElement = function(i) {
   return this;
 };
 
-Streaming.prototype.updateElement = function(i, data) {
-  if (this.streaming) this.socket.emit('updateElement', i, data);
+Streaming.prototype.updateElement = function(element, key, value) {
+  if (this.streaming) this.socket.emit('updateElement', element, key, value);
   return this;
 };
 

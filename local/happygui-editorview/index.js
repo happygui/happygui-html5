@@ -1,4 +1,5 @@
 var StorageCtrl = require('happygui-storagectrl');
+var Streaming = require('happygui-streaming');
 var Templates = require('happygui-templates');
 var View = require('happygui-view');
 var ColorPicker = require('happygui-colorpicker');
@@ -40,10 +41,14 @@ EditorView.prototype.bindAll = function() {
   this.bind('click #'+this.container+' .go-editor', this.events.click_goEditor);
   this.bind('click #'+this.container+' .go-collection', this.events.click_goCollection);
   this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
-  this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
   this.bind('click #'+this.container+' .sm_plus', this.events.click_smPlus);
   this.bind('click #'+this.container+' .sm_minus', this.events.click_smMinus);
+  this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
   return this;
+};
+
+EditorView.prototype.stream = function () {
+  Streaming.putCollection(this.collection());
 };
 
 /**

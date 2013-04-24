@@ -8,6 +8,7 @@
         "happygui-view": "*",
         "happygui-colorpicker": "*",
         "happygui-nullelementexception": "*",
+        "happygui-streaming": "*",
         "happygui-nullcollectionexception": "*"
     },
     "development": {},
