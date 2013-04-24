@@ -49,7 +49,13 @@ EditorView.prototype.bindAll = function() {
 };
 
 EditorView.prototype.stream = function () {
-  Streaming.putCollection(this.collection());
+  var toSave = this.collection();
+  for (var j = 0; j < toSave.elements.length; j++) {
+    toSave.elements[j].drawing = null;
+    delete toSave.elements[j].drawing;
+  }
+  console.log(toSave);
+  Streaming.putCollection(toSave);
 };
 
 /**
