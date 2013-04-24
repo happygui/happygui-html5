@@ -30,7 +30,9 @@
         "happygui-nullelementexception",
         "happygui-nullcollectionexception",
         "happygui-noplatformexception",
-        "happygui-storagectrl"
+        "happygui-storagectrl",
+
+        "happygui-streaming"
     ],
     "scripts": ["boot.js"],
     "main": "boot.js"

@@ -1,4 +1,5 @@
 var Emitter = require('emitter');
+var Streaming = require('happygui-streaming');
 
 var ElementFactory = require('happygui-elementfactory');
 var NoPlatformException = require('happygui-noplatformexception');
@@ -139,6 +140,9 @@ var StorageCtrl = (function(){
       if (!raw && typeof jsObject !== 'undefined') jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created');
       emitter.emit("raw", raw);
     },
+    streaming: function() {
+      return Streaming;
+    },
     created: function (result) { filesCollection = new Collection(); },
     saved: function(result) { console.log("saved "+result); },
 
@@ -170,8 +174,8 @@ var StorageCtrl = (function(){
       if (key.slice(0,3) == "has") return this;
       var current = getElement(element, collection);
       if (typeof current[key] === 'undefined') return this;
-
       filesCollection.models[collection].elements[element][key] = value;
+      if (Streaming.active()) { Streaming.updateElement(element, key, value); }
       return this;
     },
     delElement: function(element, collection) {
@@ -182,11 +186,14 @@ var StorageCtrl = (function(){
         }
       }
       filesCollection.models[collection].elements.splice(element, 1);
+      if (Streaming.active()) { Streaming.deleteElement(element); }
       saveInStorage();
     },
     createElement: function (collection, doc) {
       var element = ElementFactory.create(doc);
-      return filesCollection.models[collection].elements.push(element) - 1;
+      var id = filesCollection.models[collection].elements.push(element) - 1;
+      if (Streaming.active()) { Streaming.createElement(element); }
+      return id;
     },
     update: function (toSave, doc, collection, element) {
       if (doc !== undefined && collection !== undefined && element !== undefined) {
