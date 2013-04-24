@@ -6,7 +6,7 @@ var NullElementException = require('happygui-nullelementexception');
 var NullCollectionException = require('happygui-nullcollectionexception')
 
 /**
- * It handles the left right side of the paga aka editor
+ * It handles the left side of the paga aka editor
  *
  * @class EditorView
  */
@@ -41,6 +41,8 @@ EditorView.prototype.bindAll = function() {
   this.bind('click #'+this.container+' .go-collection', this.events.click_goCollection);
   this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
   this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
+  this.bind('click #'+this.container+' .sm_plus', this.events.click_smPlus);
+  this.bind('click #'+this.container+' .sm_minus', this.events.click_smMinus);
   return this;
 };
 
@@ -115,6 +117,29 @@ EditorView.prototype.events = {
       this.hide();
       window.location = url;
     }
+  },
+  click_smPlus: function (e) {
+    var key = e.target.parentNode.parentNode.className.replace("sizemodifier sm_", '');
+    var element = this.element();
+    var value = parseInt(element[key]) + 3;
+    this.setAttribute(key, value);
+  },
+  click_smMinus: function (e) {
+    var key = e.target.parentNode.parentNode.className.replace("sizemodifier sm_", '');
+    var element = this.element();
+    var value = parseInt(element[key]) - 3;
+    if (value <= 0) 
+      {
+        if (key === "borderThickness")
+        {
+          value = 0;
+        }
+        else
+        {
+        value = 1;
+        }
+      }
+    this.setAttribute(key, value);
   }
 };
 
