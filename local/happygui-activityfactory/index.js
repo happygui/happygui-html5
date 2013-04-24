@@ -2,6 +2,14 @@ var NullCollectionException = require('happygui-nullcollectionexception');
 var NullElementException = require('happygui-nullelementexception');
 var StorageCtrl = require('happygui-storagectrl');
 
+/**
+* Controls what the user can see on the page
+* 
+* @class ActivityFactory
+* @param editorView {} The left side of the screen
+* @param previewView {} The right side of the screen
+* @param pageView {} The other screens that may need to be displayed
+*/
 var ActivityFactory = function(editorView, previewView, pageView) {
   return {
     homepage: function() { pageView.render('homepage', null) },

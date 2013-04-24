@@ -1,3 +1,14 @@
+/** 
+* This is the superclass of all elements
+*
+* @class Element
+* @param isDeletable {Boolean} if the circle can be deleted
+* @param x {Integer} x position of the circle
+* @param y {Integer} x position of the circle
+* @param height {Integer} height of the circle
+* @param width {Integer} width of the circle
+* @param drawing {Boolean} if the circle can be drawn
+*/
 function Element(options) {
   options = options || {};
   this.type = options.type;

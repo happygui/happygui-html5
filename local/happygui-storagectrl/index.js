@@ -10,7 +10,11 @@ var Collection = require('happygui-collection');
 Storage.prototype.setObject = function(key, value) {this.setItem(key, JSON.stringify(value));};
 Storage.prototype.getObject = function(key) {var value = this.getItem(key); return value && JSON.parse(value);};
 
-
+/**
+* Handles all of the data handling
+*
+* @class StorageCtrl
+*/
 var StorageCtrl = (function(){
   var emitter = new Emitter;
   var operating_system = false;
@@ -18,6 +22,12 @@ var StorageCtrl = (function(){
   var raw;
   var filesCollection;
 
+/**
+* Retrieve the data stored on device by detecting the operating system
+*
+* @method getRawData
+* @throws {NoPlatformException} If operating system is not one which is supported by the application, this error will be thrown
+*/
   var getRawData = function () {
     if (typeof Windows !== 'undefined') {
       win8_datastore = require('happygui-win8-datastore');
@@ -33,6 +43,11 @@ var StorageCtrl = (function(){
     }
   };
 
+/**
+* Saves the collections into storage
+*
+* @method saveInStorage
+*/
   var saveInStorage = function () {
     var toSave = filesCollection.models;
     for (var i = 0; i < filesCollection.models.length; i++) {
@@ -54,6 +69,12 @@ var StorageCtrl = (function(){
     }
   };
 
+  /**
+  * Empties the local storage
+  *
+  * @method clearStorage
+  * @throws {NoPlatformException} If no local storage is detected then the storage cannot be cleared
+  */
   var clearStorage = function () {
     filesCollection.models = [];
     //TODO implement better
@@ -64,6 +85,13 @@ var StorageCtrl = (function(){
     }
   };
 
+/** 
+* Retrieve the collection stored
+*
+* @method getCollection
+* @param collection ID {Integer} The ID of the required collection
+* @return {Array} Returns the array of the required collection 
+*/
   var getCollection = function(collection) {
     if (filesCollection.models[collection] === undefined) {
       throw new NullCollectionException ("No collection found");
@@ -71,11 +99,25 @@ var StorageCtrl = (function(){
     return filesCollection.models[collection];
   };
 
+/** 
+* Create a new collection
+*
+* @method createCollection
+* @param collection {} This is the information required to add a new collection to the array
+*/
   var createCollection = function (obj) {
     filesCollection.models.push(obj);
     saveInStorage();
   };
 
+/** 
+* Retrieve the element required
+*
+* @method getElement
+* @param collection ID {Integer} The ID of the required collection
+*
+* @return {Array} Returns the array of the required collection 
+*/
   var getElement = function(element, collection) {
     var collectionModel = getCollection(collection);
     if (collectionModel.elements[element] === undefined) {

@@ -1,3 +1,9 @@
+/**
+*
+*
+* @class Templates
+*/
+
 var Templates = (function (){
   var templates = {};
   var allScripts = document.getElementsByTagName('script');
