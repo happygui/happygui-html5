@@ -2,7 +2,7 @@
 * This handles the collections which contain the elements
 *
 * @class Collection
-* @param models {}
+* @param models {Object}
 */
 function Collection(models) {
   this.models = models || [];
@@ -31,7 +31,7 @@ Collection.prototype.length = function(){
 * Adds an element to the collection
 *
 * @method push
-* @param model {} The information of the element which needs to be added into the collection
+* @param model {Object} The information of the element which needs to be added into the collection
 * @return {Collection} Returns an updated array which is the up to date collection
 */
 Collection.prototype.push = function(model){

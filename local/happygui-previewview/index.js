@@ -6,6 +6,7 @@ var Raphael = require('raphael');
 * This handles the left side of the page which displays the elements
 *
 * @class PreviewView
+* @param {Object}
 */
 function PreviewView (options) {
   View.call(this, options);

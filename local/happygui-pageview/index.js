@@ -6,7 +6,7 @@ var StorageCtrl = require('happygui-storagectrl');
 * Handles all the different page views which the user could see
 *
 * @class PageView
-* @param Options {}
+* @param options {Object}
 * @return {Object} Return 'this' for chaining
 */
 function PageView (options) {
@@ -31,7 +31,7 @@ PageView.prototype.clear = function() {
 };
 
 /** 
-* Bind event to method
+* Bind all the DOM events to their relative methods
 *
 * @method bindAll
 */

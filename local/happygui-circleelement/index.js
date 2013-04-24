@@ -4,16 +4,15 @@ var ShapeElement = require('happygui-shapeelement');
 * Handles the circle element
 *
 * @class CircleElement
-* @param isDeletable {Boolean} if the circle can be deleted
-* @param x {Integer} x position of the circle
-* @param y {Integer} x position of the circle
-* @param height {Integer} height of the circle
-* @param width {Integer} width of the circle
-* @param drawing {Boolean} if the circle can be drawn
-* @param borderColor {Hexadecimal} Colour of the border
-* @param borderThickness {Integer} Thickness of border in pixels
-* @oaram backgroundColor {Hexadecimal} Fill colour of the circle
-* @param radius {Integer} The radius of the circle
+* @param options {Object}
+*  isDeletable {Boolean} if the circle can be deleted
+*  x {Integer} x position of the circle (center)
+*  y {Integer} x position of the circle (center)
+*  drawing {Raphael} Reference to the Raphael drawing object
+*  borderColor {String} Colour of the border
+*  borderThickness {Integer} Thickness of border in pixels
+*  backgroundColor {String} Fill colour of the circle
+*  radius {Integer} The radius of the circle
 */
 var CircleElement = function(options) {
   ShapeElement.call(this, options); // Super

@@ -4,15 +4,16 @@ var ShapeElement = require('happygui-shapeelement');
 * Handles the rectangle element
 *
 * @class RectElement
-* @param isDeletable {Boolean} if the rectangle can be deleted
-* @param x {Integer} x position of the rectangle
-* @param y {Integer} x position of the rectangle
-* @param height {Integer} height of the rectangle
-* @param width {Integer} width of the rectangle
-* @param drawing {Boolean} if the rectangle can be drawn
-* @param borderColor {Hexadecimal} Colour of the border
-* @param borderThickness {Integer} Thickness of border in pixels
-* @oaram backgroundColor {Hexadecimal} Fill colour of the rectangle
+* @param {Object}
+*  drawing {Raphael} Reference to the Raphael drawing object
+*  isDeletable {Boolean} if the rectangle can be deleted
+*  x {Integer} x position of the rectangle
+*  y {Integer} x position of the rectangle
+*  height {Integer} height of the rectangle
+*  width {Integer} width of the rectangle
+*  borderColor {String} Colour of the border
+*  borderThickness {Integer} Thickness of border in pixels
+*  backgroundColor {String} Fill colour of the rectangle
 */
 
 var RectElement = function(options) {

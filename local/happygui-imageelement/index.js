@@ -4,12 +4,13 @@ var Element = require('happygui-element');
 * Handles the image element
 *
 * @class ImageElement
-* @param isDeletable {Boolean} if the image can be deleted
-* @param x {Integer} x position of the image
-* @param y {Integer} x position of the image
-* @param height {Integer} height of the image
-* @param width {Integer} width of the image
-* @param drawing {Boolean} if the image can be drawn
+* @param {Object} options
+*  isDeletable {Boolean} if the image can be deleted
+*  x {Integer} x position of the image
+*  y {Integer} x position of the image
+*  height {Integer} height of the image
+*  width {Integer} width of the image
+*  drawing {Raphael} Reference to the Raphael drawing object
 */
 var ImageElement = function(options) {
   Element.call(this, options); // Super
@@ -24,7 +25,7 @@ ImageElement.prototype = Object.create(Element.prototype);
 ImageElement.prototype.constructor = ImageElement;
 
 /**
-* Redraw the element if the attributes have been changed
+* Redraw the element (called when the attributes have been changed)
 *
 * @method redraw
 * @return {Object} Return 'this' for chaining
@@ -41,8 +42,8 @@ ImageElement.prototype.redraw = function() {
 *
 * @method draw
 * @param draggable {Boolean} If the element can be moved around
-* @param paper {} Canvas on which the element will be drawn
-* @param callback {}
+* @param paper {Raphael} Canvas on which the element will be drawn
+* @param callback {Function}
 */
 ImageElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;

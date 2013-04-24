@@ -8930,6 +8930,12 @@ History.prototype.stop = function () {
 
 });
 require.register("happygui-collection/index.js", function(exports, require, module){
+/**
+* This handles the collections which contain the elements
+*
+* @class Collection
+* @param models {Object}
+*/
 function Collection(models) {
   this.models = models || [];
 }
@@ -8942,10 +8948,24 @@ Collection.prototype.__iterate__ = function(){
   }
 };
 
+
+/**
+* Finds how many elements there are in a collection
+*
+* @method length
+* @return {Integer} Returns the length of the array
+*/
 Collection.prototype.length = function(){
   return this.models.length;
 };
 
+/**
+* Adds an element to the collection
+*
+* @method push
+* @param model {Object} The information of the element which needs to be added into the collection
+* @return {Collection} Returns an updated array which is the up to date collection
+*/
 Collection.prototype.push = function(model){
   return this.models.push(model);
 };
@@ -8953,6 +8973,19 @@ Collection.prototype.push = function(model){
 module.exports = Collection;
 });
 require.register("happygui-element/index.js", function(exports, require, module){
+/** 
+* This is the superclass of all elements
+*
+* @class Element
+* @param {Object} options
+*  isDeletable {Boolean} if the circle can be deleted
+*  x {Integer} x position of the circle
+*  y {Integer} x position of the circle
+*  height {Integer} height of the circle
+*  width {Integer} width of the circle
+*  drawing {Raphael} Reference to the Raphael drawing object
+
+*/
 function Element(options) {
   options = options || {};
   this.type = options.type;
@@ -8971,8 +9004,13 @@ var TextElement = require('happygui-textelement');
 var CircleElement = require('happygui-circleelement');
 var RectElement = require('happygui-rectelement');
 var ImageElement = require('happygui-imageelement');
-var NullElementException = require('happygui-nullelementexception')
+var NullElementException = require('happygui-nullelementexception');
 
+/**
+*
+*
+* @class Element Factory
+*/
 var ElementFactory = (function() {
 
   return {
@@ -9054,6 +9092,20 @@ module.exports = ElementFactory;
 require.register("happygui-textelement/index.js", function(exports, require, module){
 var Element = require('happygui-element');
 
+/**
+* Handles the text element element
+*
+* @class TextElement
+* @param {Object}
+*  isDeletable {Boolean} if the text can be deleted
+*  x {Integer} x position of the text
+*  y {Integer} x position of the text
+*  height {String} height of the text
+*  width {String} width of the text
+*  drawing {Raphael} Reference to the Raphael drawing object
+*  fontSize {Integer} Size of the font of the text
+*  fontColor {String} Color of the font
+*/
 var TextElement = function(options) {
   Element.call(this, options); // Super
   options = options || {};
@@ -9068,12 +9120,27 @@ var TextElement = function(options) {
 TextElement.prototype = Object.create(Element.prototype);
 TextElement.prototype.constructor = TextElement;
 
+/**
+* Redraw the element if the attributes have been changed
+*
+* @method redraw
+* @return {Object} Return 'this' for chaining
+*/
 TextElement.prototype.redraw = function () {
   this.drawing.attr({
     fill: this.fontColor,
     font: "italic "+this.fontSize+"px Helvetica"
   });
 };
+
+/**
+* Draw the element on the page
+*
+* @method draw
+* @param draggable {Boolean} If the element can be moved around
+* @param paper {} Canvas on which the element will be drawn
+* @param callback {}
+*/
 TextElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 
@@ -9123,6 +9190,20 @@ module.exports = TextElement;
 require.register("happygui-shapeelement/index.js", function(exports, require, module){
 var Element = require('happygui-element');
 
+/**
+* This is a superclass of all the shape elements
+*
+* @class ShapeElement
+* @param {Object}
+*  isDeletable {Boolean} if the circle can be deleted
+*  x {Integer} x position of the circle
+*  y {Integer} x position of the circle
+*  height {Integer} height of the circle
+*  width {Integer} width of the circle
+*  drawing {Raphael} Reference to the Raphael drawing object*  borderColor {Hexadecimal} Colour of the border
+*  borderThickness {Integer} Thickness of border in pixels
+*  backgroundColor {String} Fill colour of the circle
+*/
 var ShapeElement = function(options) {
   Element.call(this, options); // Super
 
@@ -9142,6 +9223,20 @@ module.exports = ShapeElement;
 require.register("happygui-circleelement/index.js", function(exports, require, module){
 var ShapeElement = require('happygui-shapeelement');
 
+/**
+* Handles the circle element
+*
+* @class CircleElement
+* @param options {Object}
+*  isDeletable {Boolean} if the circle can be deleted
+*  x {Integer} x position of the circle (center)
+*  y {Integer} x position of the circle (center)
+*  drawing {Raphael} Reference to the Raphael drawing object
+*  borderColor {String} Colour of the border
+*  borderThickness {Integer} Thickness of border in pixels
+*  backgroundColor {String} Fill colour of the circle
+*  radius {Integer} The radius of the circle
+*/
 var CircleElement = function(options) {
   ShapeElement.call(this, options); // Super
   options = options || {};
@@ -9151,11 +9246,26 @@ var CircleElement = function(options) {
 };
 CircleElement.prototype = Object.create(ShapeElement.prototype);
 CircleElement.prototype.constructor = CircleElement;
+
+/**
+* Set the position of the circle
+*
+* @method setPos
+* @param x {Integer} Set the x position of the circle
+* @param y {Integer} Set the y position of the circle
+*/
 CircleElement.prototype.setPos = function (x,y) {
   this.x = x;
   this.y = y;
   console.log(x,y, this.x, this.y);
 };
+
+/**
+* Redraw the circle if the attributes have been changed
+*
+* @method redraw
+* @return {Object} Return 'this' for chaining
+*/
 CircleElement.prototype.redraw = function () {
   this.drawing.attr({
     stroke: this.borderColor,
@@ -9166,6 +9276,15 @@ CircleElement.prototype.redraw = function () {
 
   return this;
 };
+
+/**
+* Draw the element on the page
+*
+* @method draw
+* @param draggable {Boolean} If the element can be moved around
+* @param paper {} Canvas on which the element will be drawn
+* @param callback {}
+*/
 CircleElement.prototype.draw = function (draggable, paper, callback) {
 
   var self = this;
@@ -9208,6 +9327,22 @@ module.exports = CircleElement;
 require.register("happygui-rectelement/index.js", function(exports, require, module){
 var ShapeElement = require('happygui-shapeelement');
 
+/**
+* Handles the rectangle element
+*
+* @class RectElement
+* @param {Object}
+*  drawing {Raphael} Reference to the Raphael drawing object
+*  isDeletable {Boolean} if the rectangle can be deleted
+*  x {Integer} x position of the rectangle
+*  y {Integer} x position of the rectangle
+*  height {Integer} height of the rectangle
+*  width {Integer} width of the rectangle
+*  borderColor {String} Colour of the border
+*  borderThickness {Integer} Thickness of border in pixels
+*  backgroundColor {String} Fill colour of the rectangle
+*/
+
 var RectElement = function(options) {
   ShapeElement.call(this, options); // Super
   options = options || {};
@@ -9218,6 +9353,12 @@ var RectElement = function(options) {
 RectElement.prototype = Object.create(ShapeElement.prototype);
 RectElement.prototype.constructor = RectElement;
 
+/**
+* Redraw the element if the attributes have been changed
+*
+* @method redraw
+* @return {Object} Return 'this' for chaining
+*/
 RectElement.prototype.redraw = function() {
   this.drawing.attr({
     stroke: this.borderColor,
@@ -9228,6 +9369,14 @@ RectElement.prototype.redraw = function() {
   })
 };
 
+/**
+* Draw the element on the page
+*
+* @method draw
+* @param draggable {Boolean} If the element can be moved around
+* @param paper {} Canvas on which the element will be drawn
+* @param callback {}
+*/
 RectElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 
@@ -9272,6 +9421,18 @@ module.exports = RectElement;
 require.register("happygui-imageelement/index.js", function(exports, require, module){
 var Element = require('happygui-element');
 
+/**
+* Handles the image element
+*
+* @class ImageElement
+* @param {Object} options
+*  isDeletable {Boolean} if the image can be deleted
+*  x {Integer} x position of the image
+*  y {Integer} x position of the image
+*  height {Integer} height of the image
+*  width {Integer} width of the image
+*  drawing {Raphael} Reference to the Raphael drawing object
+*/
 var ImageElement = function(options) {
   Element.call(this, options); // Super
   options = options || {};
@@ -9284,6 +9445,12 @@ var ImageElement = function(options) {
 ImageElement.prototype = Object.create(Element.prototype);
 ImageElement.prototype.constructor = ImageElement;
 
+/**
+* Redraw the element (called when the attributes have been changed)
+*
+* @method redraw
+* @return {Object} Return 'this' for chaining
+*/
 ImageElement.prototype.redraw = function() {
   this.drawing.attr({
     width: this.width,
@@ -9291,6 +9458,14 @@ ImageElement.prototype.redraw = function() {
   })
 };
 
+/**
+* Draw the element on the page
+*
+* @method draw
+* @param draggable {Boolean} If the element can be moved around
+* @param paper {Raphael} Canvas on which the element will be drawn
+* @param callback {Function}
+*/
 ImageElement.prototype.draw = function (draggable, paper, callback) {
   var self = this;
 
@@ -9328,6 +9503,11 @@ require.register("happygui-view/index.js", function(exports, require, module){
 var delegate = require('delegate');
 var Emitter = require('emitter');
 
+/**
+* This is the superclass of all the different views the user could see
+*
+* @class View
+*/
 function View (options) {
   options = options || {};
 
@@ -9336,9 +9516,13 @@ function View (options) {
 }
 View.prototype = Object.create(Emitter.prototype);
 
-View.prototype.broadcast = function(emitter, event, method) {
-};
-
+/**
+* Bind the event to the method
+* 
+* @method bind
+* @param str {String} this is the event that needs to be bound to the method
+* @param method {String} this is the method which should be called when the event occurs
+*/
 View.prototype.bind = function(str, method) {
   // From component/view
   var parts = str.split(' ');
@@ -9351,6 +9535,12 @@ View.prototype.bind = function(str, method) {
   var fn = delegate.bind(document.getElementById(this.container), selector, event, meth.bind(this));
 };
 
+/**
+* This will show the view
+*
+* @method show
+* @return {Object} Return 'this' for chaining
+*/
 View.prototype.show = function() {
   if (this.hidden == true) {
     this.hidden = false;
@@ -9360,6 +9550,12 @@ View.prototype.show = function() {
   return this;
 };
 
+/**
+* This will hide the view
+*
+* @method hide
+* @return {Object} Return 'this' for chaining
+*/
 View.prototype.hide = function() {
   if (this.hidden == false) {
     this.hidden = true;
@@ -9382,6 +9578,14 @@ var NullCollectionException = require('happygui-nullcollectionexception');
 var NullElementException = require('happygui-nullelementexception');
 var StorageCtrl = require('happygui-storagectrl');
 
+/**
+* Controls what the user can see on the page
+* 
+* @class ActivityFactory
+* @param editorView {EditorView} The left side of the screen
+* @param previewView {PreviewView} The right side of the screen
+* @param pageView {PageView} The other screens that may need to be displayed
+*/
 var ActivityFactory = function(editorView, previewView, pageView) {
   return {
     homepage: function() { pageView.render('homepage', null) },
@@ -9459,6 +9663,12 @@ var View = require('happygui-view');
 var StorageCtrl = require('happygui-storagectrl');
 var Raphael = require('raphael');
 
+/**
+* This handles the left side of the page which displays the elements
+*
+* @class PreviewView
+* @param {Object}
+*/
 function PreviewView (options) {
   View.call(this, options);
   options = options || {};
@@ -9470,6 +9680,13 @@ function PreviewView (options) {
 PreviewView.prototype = Object.create(View.prototype);
 PreviewView.prototype.constructor = PreviewView;
 
+/**
+ * Renders the HTML for the preview 
+ *
+ * @method render
+ * @param currentCollection {Integer} this is the ID of the collection which should be displayed in the preview
+ * @return {Object} Return 'this' for chaining
+ */
 PreviewView.prototype.render = function (currentCollection) {
   var html = "", element, i = 0;
   var collection = StorageCtrl.getCollection(currentCollection);
@@ -9498,6 +9715,13 @@ var View = require('happygui-view');
 var Templates = require('happygui-templates');
 var StorageCtrl = require('happygui-storagectrl');
 
+/** 
+* Handles all the different page views which the user could see
+*
+* @class PageView
+* @param options {Object}
+* @return {Object} Return 'this' for chaining
+*/
 function PageView (options) {
   View.call(this, options);
   options = options || {};
@@ -9508,15 +9732,32 @@ function PageView (options) {
 PageView.prototype = Object.create(View.prototype);
 PageView.prototype.constructor = PageView;
 
+/** 
+* Clear the page
+*
+* @method clear
+* @return {Object} Return 'this' for chaining
+*/
 PageView.prototype.clear = function() {
   this.el('');
   return this;
 };
 
+/** 
+* Bind all the DOM events to their relative methods
+*
+* @method bindAll
+*/
 PageView.prototype.bindAll = function () {
   this.bind('click #collectionSave', StorageCtrl.createCollection);
 };
 
+/**
+ * Renders the HTML for the this page 
+ *
+ * @method render
+ * @return {Object} Return 'this' for chaining
+ */
 PageView.prototype.render = function (template, data) {
 
   this
@@ -9817,6 +10058,11 @@ module.exports = EditorView;
 require.register("happygui-colorpicker/index.js", function(exports, require, module){
 var View = require('happygui-view');
 
+/** 
+* Handles the colour picker which allows the user to change colour of different aspects of the elements
+*
+* @class ColorPicker
+*/
 function ColorPicker (options) {
   View.call(this, options);
   options = options || {};
@@ -9830,6 +10076,12 @@ ColorPicker.prototype.constructor = ColorPicker;
 module.exports = ColorPicker;
 });
 require.register("happygui-templates/index.js", function(exports, require, module){
+/**
+*
+*
+* @class Templates
+*/
+
 var Templates = (function (){
   var templates = {};
   var allScripts = document.getElementsByTagName('script');
@@ -9838,6 +10090,8 @@ var Templates = (function (){
     return Handlebars.compile(doc.innerHTML);
   }
 
+  // Checks all templates <script id="*_tpl></script>
+  // and compiles the template with Handlebars.js
   for (var i=0; i<allScripts.length; i++) {
     if (allScripts[i].getAttribute('type') === 'text/html') {
       templates[allScripts[i].getAttribute('id').replace("_tpl",'')] = compile(allScripts[i]);
@@ -9854,6 +10108,12 @@ var Templates = (function (){
 module.exports = Templates;
 });
 require.register("happygui-nullelementexception/index.js", function(exports, require, module){
+/**
+* NullElementException is an error which is thrown if no element is found
+*
+* @class NullElementException
+* @param message {String} The message which will be displayed if the error is caught
+*/
 function NullElementException (message) {
   Error.call(message);
   this.message = message || "";
@@ -9865,6 +10125,12 @@ NullElementException.prototype.constructor = NullElementException;
 module.exports = NullElementException;
 });
 require.register("happygui-nullcollectionexception/index.js", function(exports, require, module){
+/**
+* NullCollectionException is an error which is thrown if no collection is found
+*
+* @class NullCollectionException
+* @param message {String} The message which will be displayed if the error is caught
+*/
 function NullCollectionException (message) {
   Error.call(message);
   this.message = message || "";
@@ -9876,6 +10142,12 @@ NullCollectionException.prototype.constructor = NullCollectionException;
 module.exports = NullCollectionException;
 });
 require.register("happygui-noplatformexception/index.js", function(exports, require, module){
+/**
+* NoPlatformException is an error which is thrown if no platform is detected
+*
+* @class NoPlatformException
+* @param message {String} The message which will be displayed if the error is caught
+*/
 function NoPlatformException (message) {
   Error.call(message);
   this.message = message || "";
@@ -9899,7 +10171,11 @@ var Collection = require('happygui-collection');
 Storage.prototype.setObject = function(key, value) {this.setItem(key, JSON.stringify(value));};
 Storage.prototype.getObject = function(key) {var value = this.getItem(key); return value && JSON.parse(value);};
 
-
+/**
+* Handles all of the data handling
+*
+* @class StorageCtrl
+*/
 var StorageCtrl = (function(){
   var emitter = new Emitter;
   var operating_system = false;
@@ -9907,6 +10183,12 @@ var StorageCtrl = (function(){
   var raw;
   var filesCollection;
 
+/**
+* Retrieve the data stored on device by detecting the operating system
+*
+* @method getRawData
+* @throws {NoPlatformException} If operating system is not one which is supported by the application, this error will be thrown
+*/
   var getRawData = function () {
     if (typeof Windows !== 'undefined') {
       win8_datastore = require('happygui-win8-datastore');
@@ -9922,6 +10204,11 @@ var StorageCtrl = (function(){
     }
   };
 
+/**
+* Saves the collections into storage
+*
+* @method saveInStorage
+*/
   var saveInStorage = function () {
     var toSave = filesCollection.models;
     for (var i = 0; i < filesCollection.models.length; i++) {
@@ -9943,6 +10230,12 @@ var StorageCtrl = (function(){
     }
   };
 
+  /**
+  * Empties the local storage
+  *
+  * @method clearStorage
+  * @throws {NoPlatformException} If no local storage is detected then the storage cannot be cleared
+  */
   var clearStorage = function () {
     filesCollection.models = [];
     //TODO implement better
@@ -9953,6 +10246,13 @@ var StorageCtrl = (function(){
     }
   };
 
+/** 
+* Retrieve the collection stored
+*
+* @method getCollection
+* @param collection ID {Integer} The ID of the required collection
+* @return {Array} Returns the array of the required collection 
+*/
   var getCollection = function(collection) {
     if (filesCollection.models[collection] === undefined) {
       throw new NullCollectionException ("No collection found");
@@ -9960,11 +10260,25 @@ var StorageCtrl = (function(){
     return filesCollection.models[collection];
   };
 
+/** 
+* Create a new collection
+*
+* @method createCollection
+* @param collection {} This is the information required to add a new collection to the array
+*/
   var createCollection = function (obj) {
     filesCollection.models.push(obj);
     saveInStorage();
   };
 
+/** 
+* Retrieve the element required
+*
+* @method getElement
+* @param collection ID {Integer} The ID of the required collection
+*
+* @return {Array} Returns the array of the required collection 
+*/
   var getElement = function(element, collection) {
     var collectionModel = getCollection(collection);
     if (collectionModel.elements[element] === undefined) {

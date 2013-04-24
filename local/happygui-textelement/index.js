@@ -4,14 +4,15 @@ var Element = require('happygui-element');
 * Handles the text element element
 *
 * @class TextElement
-* @param isDeletable {Boolean} if the text can be deleted
-* @param x {Integer} x position of the text
-* @param y {Integer} x position of the text
-* @param height {Integer} height of the text
-* @param width {Integer} width of the text
-* @param drawing {Boolean} if the text can be drawn
-* @param fontSize {Integer} Size of the font of the text
-* @param fontColor {Hexadecimal} Color of the font 
+* @param {Object}
+*  isDeletable {Boolean} if the text can be deleted
+*  x {Integer} x position of the text
+*  y {Integer} x position of the text
+*  height {String} height of the text
+*  width {String} width of the text
+*  drawing {Raphael} Reference to the Raphael drawing object
+*  fontSize {Integer} Size of the font of the text
+*  fontColor {String} Color of the font
 */
 var TextElement = function(options) {
   Element.call(this, options); // Super

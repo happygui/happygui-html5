@@ -15,17 +15,6 @@ function View (options) {
 View.prototype = Object.create(Emitter.prototype);
 
 /**
-* Listen for an event
-*
-* @method broadcast
-* @param emitter
-* @param event
-* @param method
-*/
-View.prototype.broadcast = function(emitter, event, method) {
-};
-
-/**
 * Bind the event to the method
 * 
 * @method bind

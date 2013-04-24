@@ -2,12 +2,14 @@
 * This is the superclass of all elements
 *
 * @class Element
-* @param isDeletable {Boolean} if the circle can be deleted
-* @param x {Integer} x position of the circle
-* @param y {Integer} x position of the circle
-* @param height {Integer} height of the circle
-* @param width {Integer} width of the circle
-* @param drawing {Boolean} if the circle can be drawn
+* @param {Object} options
+*  isDeletable {Boolean} if the circle can be deleted
+*  x {Integer} x position of the circle
+*  y {Integer} x position of the circle
+*  height {Integer} height of the circle
+*  width {Integer} width of the circle
+*  drawing {Raphael} Reference to the Raphael drawing object
+
 */
 function Element(options) {
   options = options || {};

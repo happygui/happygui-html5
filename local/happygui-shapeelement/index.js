@@ -4,15 +4,15 @@ var Element = require('happygui-element');
 * This is a superclass of all the shape elements
 *
 * @class ShapeElement
-* @param isDeletable {Boolean} if the circle can be deleted
-* @param x {Integer} x position of the circle
-* @param y {Integer} x position of the circle
-* @param height {Integer} height of the circle
-* @param width {Integer} width of the circle
-* @param drawing {Boolean} if the circle can be drawn
-* @param borderColor {Hexadecimal} Colour of the border
-* @param borderThickness {Integer} Thickness of border in pixels
-* @oaram backgroundColor {Hexadecimal} Fill colour of the circle
+* @param {Object}
+*  isDeletable {Boolean} if the circle can be deleted
+*  x {Integer} x position of the circle
+*  y {Integer} x position of the circle
+*  height {Integer} height of the circle
+*  width {Integer} width of the circle
+*  drawing {Raphael} Reference to the Raphael drawing object*  borderColor {Hexadecimal} Colour of the border
+*  borderThickness {Integer} Thickness of border in pixels
+*  backgroundColor {String} Fill colour of the circle
 */
 var ShapeElement = function(options) {
   Element.call(this, options); // Super
