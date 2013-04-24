@@ -140,40 +140,45 @@
     {{#hasBorderThickness}}
     <div class="sizemodifier sm_borderThickness">
       <label>Border
-       <div class="sm_plus">+</div>
-       <div class = "sm_minus">-</div>
+        <input value="{{borderThickness}}" id="sm_borderThickness" name="sm_borderThickness" />
+       <div class="sm_button sm_plus">+</div>
+       <div class="sm_button sm_minus">-</div>
       </label>
     </div>
     {{/hasBorderThickness}}
     {{#hasFontSize}}
     <div class="sizemodifier sm_fontSize">
       <label>Size
-       <div class="sm_plus">+</div>
-       <div class = "sm_minus">-</div>
+        <input value="{{fontSize}}" id="sm_fontSize" name="sm_fontSize" />
+        <div class="sm_button sm_plus">+</div>
+        <div class="sm_button sm_minus">-</div>
       </label>
     </div>
     {{/hasFontSize}}
     {{#hasWidth}}
     <div class="sizemodifier sm_width">
       <label>Width
-       <div class="sm_plus">+</div>
-       <div class = "sm_minus">-</div>
+        <input value="{{width}}" id="sm_width" name="sm_width" />
+        <div class="sm_button sm_plus">+</div>
+        <div class="sm_button sm_minus">-</div>
       </label>
     </div>
     {{/hasWidth}}
     {{#hasHeight}}
     <div class="sizemodifier sm_height">
       <label>Height
-       <div class="sm_plus">+</div>
-       <div class = "sm_minus">-</div>
+        <input value="{{height}}" id="sm_height" name="sm_height" />
+        <div class="sm_button sm_plus">+</div>
+        <div class="sm_button sm_minus">-</div>
       </label>
     </div>
     {{/hasHeight}}
     {{#hasRadius}}
     <div class="sizemodifier sm_r">
       <label>Radius
-       <div class="sm_plus">+</div>
-       <div class = "sm_minus">-</div>
+        <input value="{{r}}" name="sm_r" />
+        <div class="sm_button sm_plus">+</div>
+        <div class="sm_button sm_minus">-</div>
       </label>
     </div>
     {{/hasRadius}}

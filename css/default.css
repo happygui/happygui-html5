@@ -153,6 +153,9 @@ select {
 .hidden {
   display: none;
 }
+.sm_button {
+  float: left;
+}
 .no_selection {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
