@@ -3,7 +3,7 @@ var Templates = require('happygui-templates');
 var View = require('happygui-view');
 var ColorPicker = require('happygui-colorpicker');
 var NullElementException = require('happygui-nullelementexception');
-var NullCollectionException = require('happygui-nullcollectionexception')
+var NullCollectionException = require('happygui-nullcollectionexception');
 
 /**
  * It handles the left right side of the paga aka editor
