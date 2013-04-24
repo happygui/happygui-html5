@@ -155,6 +155,17 @@ select {
 }
 .sm_button {
   float: left;
+  min-width: 40px;
+  min-height: 40px;
+  background: #76799b;
+  border-shadow: 600px;
+  -webkit-border-radius: 600px;
+  -moz-border-radius: 600px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 35px;
+  margin-right: 10px;
+  margin-top: -3px;
 }
 .no_selection {
   -webkit-touch-callout: none;
@@ -229,6 +240,7 @@ select {
 }
 .sizemodifier {
   margin-top: 10%;
+  clear: both;
 }
 .sizemodifier label {
   color: white;

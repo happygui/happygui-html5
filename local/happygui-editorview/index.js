@@ -130,17 +130,15 @@ EditorView.prototype.events = {
     var key = e.target.parentNode.parentNode.className.replace("sizemodifier sm_", '');
     var element = this.element();
     var value = parseInt(element[key]) - 3;
-    if (value <= 0) 
-      {
-        if (key === "borderThickness")
-        {
-          value = 0;
-        }
-        else
-        {
+    if (value <= 0) {
+      if (key === "borderThickness") {
+        value = 0;
+      } else {
         value = 1;
-        }
       }
+    }
+    var input = document.getElementById('sm_'+key);
+    input.value = value;
     this.setAttribute(key, value);
   }
 };
