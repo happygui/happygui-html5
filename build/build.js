@@ -9777,7 +9777,7 @@ var Templates = require('happygui-templates');
 var View = require('happygui-view');
 var ColorPicker = require('happygui-colorpicker');
 var NullElementException = require('happygui-nullelementexception');
-var NullCollectionException = require('happygui-nullcollectionexception')
+var NullCollectionException = require('happygui-nullcollectionexception');
 
 /**
  * It handles the left side of the paga aka editor
@@ -10325,7 +10325,7 @@ var StorageCtrl = (function(){
 
   return {
     raw: function(raw) {
-      if (!raw) jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created');
+      if (!raw && typeof jsObject !== 'undefined') jsObject.setObject('happy', JSON.stringify([]), 'StorageCtrl.created');
       emitter.emit("raw", raw);
     },
     created: function (result) { filesCollection = new Collection(); },
@@ -10364,6 +10364,12 @@ var StorageCtrl = (function(){
       return this;
     },
     delElement: function(element, collection) {
+      if (typeof jsObject !== 'undefined') {
+        var el = getCollection(collection).elements[element];
+        if (el.type === 'image') {
+          jsObject.delImage(el.url);
+        }
+      }
       filesCollection.models[collection].elements.splice(element, 1);
       saveInStorage();
     },
