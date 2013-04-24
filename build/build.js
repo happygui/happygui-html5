@@ -9770,6 +9770,7 @@ module.exports = PageView;
 });
 require.register("happygui-editorview/index.js", function(exports, require, module){
 var StorageCtrl = require('happygui-storagectrl');
+var Streaming = require('happygui-streaming');
 var Templates = require('happygui-templates');
 var View = require('happygui-view');
 var ColorPicker = require('happygui-colorpicker');
@@ -9811,10 +9812,15 @@ EditorView.prototype.bindAll = function() {
   this.bind('click #'+this.container+' .go-editor', this.events.click_goEditor);
   this.bind('click #'+this.container+' .go-collection', this.events.click_goCollection);
   this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
-  this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
   this.bind('click #'+this.container+' .sm_plus', this.events.click_smPlus);
   this.bind('click #'+this.container+' .sm_minus', this.events.click_smMinus);
+  this.bind('click #'+this.container+' .stream', this.events.click_stream);
+  this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
   return this;
+};
+
+EditorView.prototype.stream = function () {
+  Streaming.putCollection(this.collection());
 };
 
 /**
@@ -9824,6 +9830,9 @@ EditorView.prototype.bindAll = function() {
  * @type {Object}
  */
 EditorView.prototype.events = {
+  click_stream: function(e) {
+    this.stream();
+  },
   click_elementNew: function (e) {
     var type = e.target.id.replace('New','');
     try {
@@ -10429,8 +10438,8 @@ Streaming.prototype.deleteElement = function(i) {
   return this;
 };
 
-Streaming.prototype.updateElement = function(i, data) {
-  if (this.streaming) this.socket.emit('updateElement', i, data);
+Streaming.prototype.updateElement = function(element, key, value) {
+  if (this.streaming) this.socket.emit('updateElement', element, key, value);
   return this;
 };
 
@@ -10737,6 +10746,8 @@ require.alias("component-emitter/index.js", "happygui-view/deps/emitter/index.js
 require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
 
 require.alias("happygui-nullelementexception/index.js", "happygui-editorview/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-streaming/index.js", "happygui-editorview/deps/happygui-streaming/index.js");
 
 require.alias("happygui-nullcollectionexception/index.js", "happygui-editorview/deps/happygui-nullcollectionexception/index.js");
 

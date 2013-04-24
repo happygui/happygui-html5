@@ -394,6 +394,12 @@ body {
 .green_bg:hover {
   border-color: #315e08;
 }
+.blue_bg {
+  background-color: #3498db !important;
+}
+.blue_bg:hover {
+  border-color: #196090;
+}
 .pink_bg {
   background-color: #ce264a !important;
 }

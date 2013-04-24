@@ -43,6 +43,7 @@ EditorView.prototype.bindAll = function() {
   this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
   this.bind('click #'+this.container+' .sm_plus', this.events.click_smPlus);
   this.bind('click #'+this.container+' .sm_minus', this.events.click_smMinus);
+  this.bind('click #'+this.container+' .stream', this.events.click_stream);
   this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
   return this;
 };
@@ -58,6 +59,9 @@ EditorView.prototype.stream = function () {
  * @type {Object}
  */
 EditorView.prototype.events = {
+  click_stream: function(e) {
+    this.stream();
+  },
   click_elementNew: function (e) {
     var type = e.target.id.replace('New','');
     try {
