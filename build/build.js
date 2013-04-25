@@ -9112,10 +9112,12 @@ var TextElement = function(options) {
 
   this.hasFontSize = true;
   this.hasFontColor = true;
+  this.hasText = true;
 
   this.fontSize = options.fontSize || 25;
   this.fontColor = options.fontColor || "rgb(0,0,0)";
   this.y = 200;
+  this.text = "JeeeeeaaaAAaaaHHhHh"
 };
 TextElement.prototype = Object.create(Element.prototype);
 TextElement.prototype.constructor = TextElement;
@@ -9129,7 +9131,8 @@ TextElement.prototype.constructor = TextElement;
 TextElement.prototype.redraw = function (coords) {
   var toDraw = {
     fill: this.fontColor,
-    font: "italic "+this.fontSize+"px Helvetica"
+    font: "italic "+this.fontSize+"px Helvetica",
+    text: this.text
   };
   if (coords) {
     toDraw.x = this.x;
@@ -9152,7 +9155,7 @@ TextElement.prototype.draw = function (draggable, paper, oncomplete, onmove) {
 
 
   this.drawing = paper
-    .text(self.x, self.y, "Jeaaaaaaaaaaaaaaah")
+    .text(self.x, self.y, this.text)
     .attr({
       fill: self.fontColor,
       //font: "italic "+self.fontSize+"px Helvetica"

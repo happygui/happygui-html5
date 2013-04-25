@@ -138,6 +138,13 @@
     <div id="cp_fontColor" class="colorpicker go-cpDialog" style="background-color: {{fontColor}};">
     </div>
     {{/hasFontColor}}
+    {{#hasText}}
+    <div class="sizemodifier sm_text">
+      <label>
+        <input value="{{text}}" id="sm_text" name="sm_text" />
+      </label>
+    </div>
+    {{/hasText}}
     {{#hasBorderThickness}}
     <div class="sizemodifier sm_borderThickness">
       <label>Border
