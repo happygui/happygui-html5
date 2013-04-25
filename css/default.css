@@ -214,11 +214,11 @@ select {
   color: #fff;
   text-decoration: none;
   cursor: pointer;
-  padding: 20px 40px;
+  padding: 20px 20px;
 }
 .btn:hover {
   border: 2px solid #000000;
-  padding: 18px 38px;
+  padding: 18px 18px;
 }
 .row > div:last-child {
   margin-right: 0 !important;
@@ -269,13 +269,13 @@ select {
   color: #fff;
   text-decoration: none;
   cursor: pointer;
+  padding: 20px 20px;
   margin-top: 10%;
-  padding: 20px 40px;
   background: #ffff99;
 }
 .btn-editor:hover {
   border: 2px solid #000000;
-  padding: 18px 38px;
+  padding: 18px 18px;
 }
 .btn-editor.btn-delete {
   background-color: #cc0000;
@@ -288,6 +288,19 @@ body {
   width: 405px;
   margin: 0 auto;
   margin-top: 15%;
+}
+#page .btn-block .btn {
+  display: inline-block;
+  border: 0;
+  background-color: #efefef;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 20px 40px;
+}
+#page .btn-block .btn:hover {
+  border: 2px solid #000000;
+  padding: 18px 38px;
 }
 #page .topcentered {
   margin: 20px auto 0;

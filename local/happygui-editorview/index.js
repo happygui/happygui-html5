@@ -35,15 +35,20 @@ EditorView.prototype.constructor = EditorView;
  * @return {Object} Return "this" for chaining
  */
 EditorView.prototype.bindAll = function() {
+  // element manipulation
   this.bind('click #'+this.container+' .elementNew', this.events.click_elementNew);
   this.bind('keyup #'+this.container+' input', this.events.keyup_input);
   this.bind('click #'+this.container+' .btn-delete', this.events.click_btnDelete);
-  this.bind('click #'+this.container+' .go-editor', this.events.click_goEditor);
-  this.bind('click #'+this.container+' .go-collection', this.events.click_goCollection);
-  this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
   this.bind('click #'+this.container+' .sm_plus', this.events.click_smPlus);
   this.bind('click #'+this.container+' .sm_minus', this.events.click_smMinus);
+  // streaming activator
   this.bind('click #'+this.container+' #stream', this.events.click_stream);
+  // links
+  this.bind('click #'+this.container+' .go-editor', this.events.click_goEditor);
+  this.bind('click #'+this.container+' .go-code', this.events.click_goCode);
+  this.bind('click #'+this.container+' .go-collection', this.events.click_goCollection);
+  this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
+  // color picker
   this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
   return this;
 };
@@ -102,6 +107,9 @@ EditorView.prototype.events = {
       StorageCtrl.delCollection(this.currentCollection);
       window.location = "#collection";
     }
+  },
+  click_goCode: function(e) {
+    window.location = "#code/"+this.currentCollection;
   },
   click_goEditor: function (e) {
     window.location = "#editor/"+this.currentCollection;
