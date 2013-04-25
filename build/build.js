@@ -9709,7 +9709,7 @@ PreviewView.prototype.render = function (currentCollection) {
           window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
         },
         function(x, y) {
-          Streaming.updatePosElement(element, x, y);
+          Streaming.updatePosElement(currentElement, x, y);
         }
       );
     });
@@ -10458,7 +10458,7 @@ Streaming.prototype.deleteElement = function(i) {
 };
 
 Streaming.prototype.updatePosElement = function(element, x, y) {
-  if (this.streaming) this.socket.emit('updateElement', element, x, y);
+  if (this.streaming) this.socket.emit('updatePosElement', element, x, y);
   return this;
 };
 

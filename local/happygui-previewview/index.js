@@ -44,7 +44,7 @@ PreviewView.prototype.render = function (currentCollection) {
           window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
         },
         function(x, y) {
-          Streaming.updatePosElement(element, x, y);
+          Streaming.updatePosElement(currentElement, x, y);
         }
       );
     });
