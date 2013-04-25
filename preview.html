@@ -33,20 +33,24 @@
 
   });
   socket.on('updatedPosElement', function(element, x, y) {
+    console.log("Receiving", element, x, y);
     collection.elements[element].x = x;
     collection.elements[element].y = y;
     collection.elements[element].redraw();
   });
   socket.on('updatedElement', function(element, key, value) {
+    console.log("Receiving", element, key, value);
     collection.elements[element][key] = value;
     collection.elements[element].redraw();
   });
   socket.on('createdElement', function(data) {
+    console.log("Receiving", data);
     var element = ElementFactory.create(data);
     element.draw(true, paper);
     collection.elements.push(element);
   });
   socket.on('deletedElement', function(data) {
+    console.log("Receiving", data);
     collection.elements.splice(data, 1);
   });
 
