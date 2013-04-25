@@ -299,6 +299,7 @@ EditorView.prototype.render = function () {
     html = Templates.getCollections("element_editor")(data);
   } else {
     data = this.collection();
+    data.stream = Streaming.active();
     html = Templates.getCollections("editor")(data);
   }
 

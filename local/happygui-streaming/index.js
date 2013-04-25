@@ -34,12 +34,10 @@ Streaming.prototype.active = function () {
 Streaming.prototype.on = function() {
   // Showing streaming button
   console.log("connected to Azure");
-  document.getElementById("stream").className = "btn-editor blue_bg";
   this.streaming = true;
 };
 
 Streaming.prototype.off = function() {
-  document.getElementById("stream").className = "btn-editor blue_bg hidden";
   this.streaming = false;
 };
 

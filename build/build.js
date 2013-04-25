@@ -10070,6 +10070,7 @@ EditorView.prototype.render = function () {
     html = Templates.getCollections("element_editor")(data);
   } else {
     data = this.collection();
+    data.stream = Streaming.active();
     html = Templates.getCollections("editor")(data);
   }
 
@@ -10456,12 +10457,10 @@ Streaming.prototype.active = function () {
 Streaming.prototype.on = function() {
   // Showing streaming button
   console.log("connected to Azure");
-  document.getElementById("stream").className = "btn-editor blue_bg";
   this.streaming = true;
 };
 
 Streaming.prototype.off = function() {
-  document.getElementById("stream").className = "btn-editor blue_bg hidden";
   this.streaming = false;
 };
 
