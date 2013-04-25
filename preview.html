@@ -21,6 +21,7 @@
   var collection = {};
   socket.on('gotCollection', function(data) {
     collection = data;
+    console.log("Receiving", data);
 
     collection = ElementFactory.decorateCollection(collection);
 
