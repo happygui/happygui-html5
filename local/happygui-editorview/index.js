@@ -3,6 +3,7 @@ var Streaming = require('happygui-streaming');
 var Templates = require('happygui-templates');
 var View = require('happygui-view');
 var ColorPicker = require('happygui-colorpicker');
+var CodeView = require('happygui-codeview');
 var NullElementException = require('happygui-nullelementexception');
 var NullCollectionException = require('happygui-nullcollectionexception');
 
@@ -19,6 +20,7 @@ function EditorView (options) {
   this.currentElement = options.element || false;
 
   this.colorpicker = new ColorPicker({container: options.colorpicker});
+  this.code = new CodeView({container: options.code});
 
   this.bindAll();
 

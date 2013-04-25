@@ -11,6 +11,8 @@
   <div id="editor" class="hidden">
     <!-- editorViews will be imported here -->
   </div>
+  <div id="dialog_code" class="hidden">
+  </div>
   <div id="dialog_colorpicker" class="hidden">
     <div class="inner">
       <div class="row">
@@ -214,7 +216,7 @@
 
   // Main
   var router = new Router();
-  var editor = new EditorView({container: 'editor', colorpicker: 'dialog_colorpicker'});
+  var editor = new EditorView({container: 'editor', colorpicker: 'dialog_colorpicker', code: 'dialog_code'});
   var preview = new PreviewView({container: 'preview'});
   var page = new PageView({container: 'page'});
   var activities = ActivityFactory(editor, preview, page);
@@ -223,6 +225,7 @@
   window.addEventListener("hashchange", function() {
     editor.hide();
     editor.colorpicker.hide();
+    editor.code.hide();
     // TODO move preview paper clear from here
     // TODO dont clear/redraw when same collection
     preview.paper.clear();
@@ -236,6 +239,7 @@
       .route("#help", activities.help)
       .route("#collection", activities.collection)
       .route('#editor/:collection', activities.editor)
+      .route('#code/:collection', activities.code)
       .route('#editor/:collection/:type', activities.element_editor)
       .route('#editor/:collection/:type/:id', activities.element_editor)
       .route('#colorpicker/:collection/:type', activities.colorpicker)

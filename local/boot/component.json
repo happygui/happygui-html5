@@ -24,6 +24,7 @@
         "happygui-previewview",
         "happygui-pageview",
         "happygui-editorview",
+        "happygui-codeview",
         "happygui-colorpicker",
         "happygui-templates",
 

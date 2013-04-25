@@ -16,6 +16,13 @@ var ActivityFactory = function(editorView, previewView, pageView) {
     newpage: function() { pageView.render('newpage', null); },
     help: function() { pageView.render('help', null); },
     collection: function() { pageView.render("collection", {collection: StorageCtrl.getCollections()}); },
+    code: function(collection) {
+      editorView.reset().select(collection);
+
+      editorView.code.show().getCode(collection);
+
+      previewView.render(collection);
+    },
     editor: function(collection) {
       try { editorView.reset().select(collection).render(); }
       catch(exception) {

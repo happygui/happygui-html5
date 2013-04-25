@@ -9624,6 +9624,13 @@ var ActivityFactory = function(editorView, previewView, pageView) {
     newpage: function() { pageView.render('newpage', null); },
     help: function() { pageView.render('help', null); },
     collection: function() { pageView.render("collection", {collection: StorageCtrl.getCollections()}); },
+    code: function(collection) {
+      editorView.reset().select(collection);
+
+      editorView.code.show().getCode(collection);
+
+      previewView.render(collection);
+    },
     editor: function(collection) {
       try { editorView.reset().select(collection).render(); }
       catch(exception) {
@@ -9813,6 +9820,7 @@ var Streaming = require('happygui-streaming');
 var Templates = require('happygui-templates');
 var View = require('happygui-view');
 var ColorPicker = require('happygui-colorpicker');
+var CodeView = require('happygui-codeview');
 var NullElementException = require('happygui-nullelementexception');
 var NullCollectionException = require('happygui-nullcollectionexception');
 
@@ -9829,6 +9837,7 @@ function EditorView (options) {
   this.currentElement = options.element || false;
 
   this.colorpicker = new ColorPicker({container: options.colorpicker});
+  this.code = new CodeView({container: options.code});
 
   this.bindAll();
 
@@ -9845,15 +9854,20 @@ EditorView.prototype.constructor = EditorView;
  * @return {Object} Return "this" for chaining
  */
 EditorView.prototype.bindAll = function() {
+  // element manipulation
   this.bind('click #'+this.container+' .elementNew', this.events.click_elementNew);
   this.bind('keyup #'+this.container+' input', this.events.keyup_input);
   this.bind('click #'+this.container+' .btn-delete', this.events.click_btnDelete);
-  this.bind('click #'+this.container+' .go-editor', this.events.click_goEditor);
-  this.bind('click #'+this.container+' .go-collection', this.events.click_goCollection);
-  this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
   this.bind('click #'+this.container+' .sm_plus', this.events.click_smPlus);
   this.bind('click #'+this.container+' .sm_minus', this.events.click_smMinus);
+  // streaming activator
   this.bind('click #'+this.container+' #stream', this.events.click_stream);
+  // links
+  this.bind('click #'+this.container+' .go-editor', this.events.click_goEditor);
+  this.bind('click #'+this.container+' .go-code', this.events.click_goCode);
+  this.bind('click #'+this.container+' .go-collection', this.events.click_goCollection);
+  this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
+  // color picker
   this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
   return this;
 };
@@ -9912,6 +9926,9 @@ EditorView.prototype.events = {
       StorageCtrl.delCollection(this.currentCollection);
       window.location = "#collection";
     }
+  },
+  click_goCode: function(e) {
+    window.location = "#code/"+this.currentCollection;
   },
   click_goEditor: function (e) {
     window.location = "#editor/"+this.currentCollection;
@@ -10135,6 +10152,37 @@ EditorView.prototype.gotPhoto = function(url) {
 };
 
 module.exports = EditorView;
+});
+require.register("happygui-codeview/index.js", function(exports, require, module){
+var View = require('happygui-view');
+
+/**
+ * Handles the colour picker which allows the user to change colour of different aspects of the elements
+ *
+ * @class ColorPicker
+ */
+function CodeView (options) {
+  View.call(this, options);
+  options = options || {};
+  this.hidden = true;
+  this.type = null;
+  return this;
+}
+CodeView.prototype = Object.create(View.prototype);
+CodeView.prototype.constructor = CodeView;
+
+CodeView.prototype.getCode = function(collection) {
+  if (typeof jsObject !== 'undefined') {
+    jsObject.getTouchDevelop(collection, 'editor.code.gotCode');
+  }
+  return this;
+};
+
+CodeView.prototype.gotCode = function(data) {
+  document.getElementById(this.container).innerHTML = data;
+};
+
+module.exports = CodeView;
 });
 require.register("happygui-colorpicker/index.js", function(exports, require, module){
 var View = require('happygui-view');
@@ -10798,11 +10846,93 @@ require.alias("component-event/index.js", "component-delegate/deps/event/index.j
 require.alias("component-emitter/index.js", "happygui-view/deps/emitter/index.js");
 require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
 
+require.alias("happygui-codeview/index.js", "happygui-editorview/deps/happygui-codeview/index.js");
+require.alias("happygui-storagectrl/index.js", "happygui-codeview/deps/happygui-storagectrl/index.js");
+require.alias("component-emitter/index.js", "happygui-storagectrl/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
+require.alias("happygui-streaming/index.js", "happygui-storagectrl/deps/happygui-streaming/index.js");
+
+require.alias("happygui-elementfactory/index.js", "happygui-storagectrl/deps/happygui-elementfactory/index.js");
+require.alias("happygui-circleelement/index.js", "happygui-elementfactory/deps/happygui-circleelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-circleelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-rectelement/index.js", "happygui-elementfactory/deps/happygui-rectelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-rectelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-textelement/index.js", "happygui-elementfactory/deps/happygui-textelement/index.js");
+require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
+
+require.alias("happygui-imageelement/index.js", "happygui-elementfactory/deps/happygui-imageelement/index.js");
+require.alias("happygui-element/index.js", "happygui-imageelement/deps/happygui-element/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-elementfactory/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-noplatformexception/index.js", "happygui-storagectrl/deps/happygui-noplatformexception/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-storagectrl/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-nullcollectionexception/index.js", "happygui-storagectrl/deps/happygui-nullcollectionexception/index.js");
+
+require.alias("happygui-collection/index.js", "happygui-storagectrl/deps/happygui-collection/index.js");
+
+require.alias("happygui-view/index.js", "happygui-codeview/deps/happygui-view/index.js");
+require.alias("component-delegate/index.js", "happygui-view/deps/delegate/index.js");
+require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
+
+require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
+
+require.alias("component-emitter/index.js", "happygui-view/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
 require.alias("happygui-nullelementexception/index.js", "happygui-editorview/deps/happygui-nullelementexception/index.js");
 
 require.alias("happygui-streaming/index.js", "happygui-editorview/deps/happygui-streaming/index.js");
 
 require.alias("happygui-nullcollectionexception/index.js", "happygui-editorview/deps/happygui-nullcollectionexception/index.js");
+
+require.alias("happygui-codeview/index.js", "boot/deps/happygui-codeview/index.js");
+require.alias("happygui-storagectrl/index.js", "happygui-codeview/deps/happygui-storagectrl/index.js");
+require.alias("component-emitter/index.js", "happygui-storagectrl/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
+
+require.alias("happygui-streaming/index.js", "happygui-storagectrl/deps/happygui-streaming/index.js");
+
+require.alias("happygui-elementfactory/index.js", "happygui-storagectrl/deps/happygui-elementfactory/index.js");
+require.alias("happygui-circleelement/index.js", "happygui-elementfactory/deps/happygui-circleelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-circleelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-rectelement/index.js", "happygui-elementfactory/deps/happygui-rectelement/index.js");
+require.alias("happygui-shapeelement/index.js", "happygui-rectelement/deps/happygui-shapeelement/index.js");
+require.alias("happygui-element/index.js", "happygui-shapeelement/deps/happygui-element/index.js");
+
+require.alias("happygui-textelement/index.js", "happygui-elementfactory/deps/happygui-textelement/index.js");
+require.alias("happygui-element/index.js", "happygui-textelement/deps/happygui-element/index.js");
+
+require.alias("happygui-imageelement/index.js", "happygui-elementfactory/deps/happygui-imageelement/index.js");
+require.alias("happygui-element/index.js", "happygui-imageelement/deps/happygui-element/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-elementfactory/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-noplatformexception/index.js", "happygui-storagectrl/deps/happygui-noplatformexception/index.js");
+
+require.alias("happygui-nullelementexception/index.js", "happygui-storagectrl/deps/happygui-nullelementexception/index.js");
+
+require.alias("happygui-nullcollectionexception/index.js", "happygui-storagectrl/deps/happygui-nullcollectionexception/index.js");
+
+require.alias("happygui-collection/index.js", "happygui-storagectrl/deps/happygui-collection/index.js");
+
+require.alias("happygui-view/index.js", "happygui-codeview/deps/happygui-view/index.js");
+require.alias("component-delegate/index.js", "happygui-view/deps/delegate/index.js");
+require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
+
+require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
+
+require.alias("component-emitter/index.js", "happygui-view/deps/emitter/index.js");
+require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
 
 require.alias("happygui-colorpicker/index.js", "boot/deps/happygui-colorpicker/index.js");
 require.alias("happygui-view/index.js", "happygui-colorpicker/deps/happygui-view/index.js");

@@ -1,0 +1,13 @@
+{
+    "name": "happygui-codeview",
+    "description": "Code view",
+    "version": "0.0.1",
+    "dependencies": {
+        "happygui-storagectrl": "*",
+        "happygui-view": "*"
+    },
+    "development": {},
+    "scripts": [
+        "index.js"
+    ]
+}
