@@ -23,6 +23,7 @@ CodeView.prototype.getCode = function(collection) {
 };
 
 CodeView.prototype.gotCode = function(data) {
+  console.log(data);
   document.getElementById(this.container).innerHTML = data;
 };
 

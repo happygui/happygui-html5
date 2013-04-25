@@ -9627,7 +9627,8 @@ var ActivityFactory = function(editorView, previewView, pageView) {
     code: function(collection) {
       editorView.reset().select(collection);
 
-      editorView.code.show().getCode(collection);
+      editorView.code.show();
+      editorView.code.getCode(collection);
 
       previewView.render(collection);
     },
@@ -10179,6 +10180,7 @@ CodeView.prototype.getCode = function(collection) {
 };
 
 CodeView.prototype.gotCode = function(data) {
+  console.log(data);
   document.getElementById(this.container).innerHTML = data;
 };
 
