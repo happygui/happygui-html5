@@ -43,13 +43,21 @@ CircleElement.prototype.setPos = function (x,y) {
 * @method redraw
 * @return {Object} Return 'this' for chaining
 */
-CircleElement.prototype.redraw = function () {
-  this.drawing.attr({
+CircleElement.prototype.redraw = function (coords) {
+
+  var toDraw = {
     stroke: this.borderColor,
     fill: this.backgroundColor,
     "stroke-width": this.borderThickness,
     r: this.r
-  });
+  };
+
+  if (coords) {
+    toDraw.cx = this.x;
+    toDraw.cy = this.y;
+  }
+
+  this.drawing.attr(toDraw);
 
   return this;
 };

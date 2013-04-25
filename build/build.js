@@ -9126,11 +9126,17 @@ TextElement.prototype.constructor = TextElement;
 * @method redraw
 * @return {Object} Return 'this' for chaining
 */
-TextElement.prototype.redraw = function () {
-  this.drawing.attr({
+TextElement.prototype.redraw = function (coords) {
+  var toDraw = {
     fill: this.fontColor,
     font: "italic "+this.fontSize+"px Helvetica"
-  });
+  };
+  if (coords) {
+    toDraw.x = this.x;
+    toDraw.y = this.y;
+  }
+
+  this.drawing.attr(toDraw);
 };
 
 /**
@@ -9267,13 +9273,21 @@ CircleElement.prototype.setPos = function (x,y) {
 * @method redraw
 * @return {Object} Return 'this' for chaining
 */
-CircleElement.prototype.redraw = function () {
-  this.drawing.attr({
+CircleElement.prototype.redraw = function (coords) {
+
+  var toDraw = {
     stroke: this.borderColor,
     fill: this.backgroundColor,
     "stroke-width": this.borderThickness,
     r: this.r
-  });
+  };
+
+  if (coords) {
+    toDraw.cx = this.x;
+    toDraw.cy = this.y;
+  }
+
+  this.drawing.attr(toDraw);
 
   return this;
 };
@@ -9361,14 +9375,20 @@ RectElement.prototype.constructor = RectElement;
 * @method redraw
 * @return {Object} Return 'this' for chaining
 */
-RectElement.prototype.redraw = function() {
-  this.drawing.attr({
+RectElement.prototype.redraw = function(coords) {
+  var toDraw = {
     stroke: this.borderColor,
     fill: this.backgroundColor,
     "stroke-width": this.borderThickness,
     width: this.width,
     height: this.height
-  })
+  };
+  if (coords) {
+    toDraw.x = this.x;
+    toDraw.y = this.y;
+  }
+
+  this.drawing.attr(toDraw)
 };
 
 /**
@@ -9454,11 +9474,16 @@ ImageElement.prototype.constructor = ImageElement;
 * @method redraw
 * @return {Object} Return 'this' for chaining
 */
-ImageElement.prototype.redraw = function() {
-  this.drawing.attr({
+ImageElement.prototype.redraw = function(coords) {
+  var toDraw = {
     width: this.width,
     height: this.height
-  })
+  };
+  if (coords) {
+    toDraw.x = this.x;
+    toDraw.y = this.y;
+  }
+  this.drawing.attr(toDraw);
 };
 
 /**

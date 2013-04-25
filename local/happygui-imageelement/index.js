@@ -30,11 +30,16 @@ ImageElement.prototype.constructor = ImageElement;
 * @method redraw
 * @return {Object} Return 'this' for chaining
 */
-ImageElement.prototype.redraw = function() {
-  this.drawing.attr({
+ImageElement.prototype.redraw = function(coords) {
+  var toDraw = {
     width: this.width,
     height: this.height
-  })
+  };
+  if (coords) {
+    toDraw.x = this.x;
+    toDraw.y = this.y;
+  }
+  this.drawing.attr(toDraw);
 };
 
 /**

@@ -32,14 +32,20 @@ RectElement.prototype.constructor = RectElement;
 * @method redraw
 * @return {Object} Return 'this' for chaining
 */
-RectElement.prototype.redraw = function() {
-  this.drawing.attr({
+RectElement.prototype.redraw = function(coords) {
+  var toDraw = {
     stroke: this.borderColor,
     fill: this.backgroundColor,
     "stroke-width": this.borderThickness,
     width: this.width,
     height: this.height
-  })
+  };
+  if (coords) {
+    toDraw.x = this.x;
+    toDraw.y = this.y;
+  }
+
+  this.drawing.attr(toDraw)
 };
 
 /**

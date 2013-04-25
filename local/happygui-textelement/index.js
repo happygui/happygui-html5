@@ -34,11 +34,17 @@ TextElement.prototype.constructor = TextElement;
 * @method redraw
 * @return {Object} Return 'this' for chaining
 */
-TextElement.prototype.redraw = function () {
-  this.drawing.attr({
+TextElement.prototype.redraw = function (coords) {
+  var toDraw = {
     fill: this.fontColor,
     font: "italic "+this.fontSize+"px Helvetica"
-  });
+  };
+  if (coords) {
+    toDraw.x = this.x;
+    toDraw.y = this.y;
+  }
+
+  this.drawing.attr(toDraw);
 };
 
 /**

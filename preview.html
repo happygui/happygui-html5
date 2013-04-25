@@ -36,7 +36,7 @@
     console.log("Receiving", element, x, y);
     collection.elements[element].x = x;
     collection.elements[element].y = y;
-    collection.elements[element].redraw();
+    collection.elements[element].redraw(true);
   });
   socket.on('updatedElement', function(element, key, value) {
     console.log("Receiving", element, key, value);
