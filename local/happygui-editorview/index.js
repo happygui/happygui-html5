@@ -137,6 +137,7 @@ EditorView.prototype.events = {
     var key = e.target.parentNode.parentNode.className.replace("sizemodifier sm_", '');
     var element = this.element();
     var value = parseInt(element[key]) + 3;
+    console.log(key, value);
     var input = document.getElementById('sm_'+key);
     input.value = value;
     this.setAttribute(key, value);
