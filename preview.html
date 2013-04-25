@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="wrapper">
-  <div id="preview" class="hidden">
+  <div id="preview">
     <!-- elements drawn by the user -->
   </div>
 </div>
@@ -20,7 +20,7 @@
   var socket = io.connect('http://happygui.azurewebsites.net');
   var collection = {};
   socket.on('gotCollection', function(data) {
-    collection = JSON.parse(data);
+    collection = data;
 
     collection = ElementFactory.decorateCollection(collection);
 
@@ -31,9 +31,14 @@
       });
 
   });
-  socket.on('updatedElement', function(i, data) {
-    collection.elements[i] = data;
-    collection.elements[i].redraw();
+  socket.on('updatedPosElement', function(element, x, y) {
+    collection.elements[element].x = x;
+    collection.elements[element].y = y;
+    collection.elements[element].redraw();
+  });
+  socket.on('updatedElement', function(element, key, value) {
+    collection.elements[element][key] = value;
+    collection.elements[element].redraw();
   });
   socket.on('createdElement', function(data) {
     var element = ElementFactory.create(data);
