@@ -5,7 +5,7 @@
   <link rel="stylesheet" type="text/css" href="css/default.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
-<body>
+<body class="globalpreview">
 <div class="wrapper">
   <div id="preview">
     <!-- elements drawn by the user -->
@@ -18,7 +18,7 @@
   var ElementFactory = require('happygui-elementfactory');
   var paper = Raphael(document.getElementById('preview'), 480, 600);
   var socket = io.connect('http://happygui.azurewebsites.net');
-  var collection = {};
+  var collection = {elements:[]};
   socket.on('gotCollection', function(data) {
     collection = data;
     console.log("Receiving", data);
@@ -28,7 +28,7 @@
     if (collection.elements.length > 0)
       collection.elements.forEach(function(element, i) {
         // TODO write something here
-        collection.elements[i].drawing = element.draw(true, paper);
+        collection.elements[i].drawing = element.draw(false, paper);
       });
 
   });

@@ -50,7 +50,7 @@ RectElement.prototype.redraw = function() {
 * @param paper {} Canvas on which the element will be drawn
 * @param callback {}
 */
-RectElement.prototype.draw = function (draggable, paper, callback) {
+RectElement.prototype.draw = function (draggable, paper, oncomplete, onmove) {
   var self = this;
 
   this.drawing = paper
@@ -76,13 +76,14 @@ RectElement.prototype.draw = function (draggable, paper, callback) {
           x: Math.min(Math.max(self.x + dx, self.borderThickness), 480 - (self.width + self.borderThickness)),
           y: Math.min(Math.max(self.y + dy, self.borderThickness), 600 - (self.height + self.borderThickness))
         });
+        if (onmove) onmove(this.attr("x"),this.attr("y"));
       },
       function () {
       },
       function () {
         self.x = this.attr("x");
         self.y = this.attr("y");
-        callback(self.x, self.y);
+        oncomplete(self.x, self.y);
       }
     );
 

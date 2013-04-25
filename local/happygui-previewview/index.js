@@ -36,10 +36,17 @@ PreviewView.prototype.render = function (currentCollection) {
   if (collection.elements.length > 0)
     collection.elements.forEach(function(element, currentElement) {
 
-      element.draw(true, self.paper, function() {
-        StorageCtrl.update(true, element, currentCollection, currentElement);
-        window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
-      });
+      element.draw(
+        true,
+        self.paper,
+        function() {
+          StorageCtrl.update(true, element, currentCollection, currentElement);
+          window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
+        },
+        function(x, y) {
+          Streaming.updatePosElement(element, x, y);
+        }
+      );
     });
 
   this.show();

@@ -49,7 +49,7 @@ TextElement.prototype.redraw = function () {
 * @param paper {} Canvas on which the element will be drawn
 * @param callback {}
 */
-TextElement.prototype.draw = function (draggable, paper, callback) {
+TextElement.prototype.draw = function (draggable, paper, oncomplete, onmove) {
   var self = this;
 
 
@@ -76,6 +76,7 @@ TextElement.prototype.draw = function (draggable, paper, callback) {
         console.log(dx, dy, x, y);
         this.attr({x: self.x + dx, y: self.y + dy, dy:0, dx:0});
         console.log("one", this.attr("x")+dx, this.attr("y")+dy);
+        if (onmove) onmove(this.attr("x"),this.attr("y"));
       },
       function () {
         console.log("two", this.attr("x"),this.attr("y"));
@@ -86,7 +87,7 @@ TextElement.prototype.draw = function (draggable, paper, callback) {
         self.x = this.attr("x");
         self.y = this.attr("y");
         console.log("three", this.attr("x"), this.attr("y"));
-        callback(self.x, self.y);
+        oncomplete(self.x, self.y);
       }
     );
 

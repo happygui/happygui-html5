@@ -62,7 +62,7 @@ CircleElement.prototype.redraw = function () {
 * @param paper {} Canvas on which the element will be drawn
 * @param callback {}
 */
-CircleElement.prototype.draw = function (draggable, paper, callback) {
+CircleElement.prototype.draw = function (draggable, paper, oncomplete, onmove) {
 
   var self = this;
 
@@ -86,13 +86,14 @@ CircleElement.prototype.draw = function (draggable, paper, callback) {
           cx: Math.min(Math.max(self.x + dx, self.r + self.borderThickness), 480-(self.r + self.borderThickness)),
           cy: Math.min(Math.max(self.y + dy, self.r + self.borderThickness), 600-(self.r + self.borderThickness))
         });
+        if (onmove) onmove(this.attr("cx"),this.attr("cy"));
       },
       function () {
       },
       function () {
         self.x = this.attr("cx");
         self.y = this.attr("cy");
-        callback(self.x, self.y);
+        oncomplete(self.x, self.y);
       }
     );
 

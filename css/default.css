@@ -349,6 +349,12 @@ body {
   -webkit-box-shadow: 10px 0px 20px #e2e6ec;
   -moz-box-shadow: 10px 0px 20px #e2e6ec;
 }
+.globalpreview #preview {
+  margin: 0 auto !important;
+  box-shadow: 0px 0px 20px #e2e6ec;
+  -webkit-box-shadow: 0px 0px 20px #e2e6ec;
+  -moz-box-shadow: 0px 0px 20px #e2e6ec;
+}
 #newpage input {
   border: 2px solid #000;
   padding: 10px;

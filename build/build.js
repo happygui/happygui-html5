@@ -9141,7 +9141,7 @@ TextElement.prototype.redraw = function () {
 * @param paper {} Canvas on which the element will be drawn
 * @param callback {}
 */
-TextElement.prototype.draw = function (draggable, paper, callback) {
+TextElement.prototype.draw = function (draggable, paper, oncomplete, onmove) {
   var self = this;
 
 
@@ -9168,6 +9168,7 @@ TextElement.prototype.draw = function (draggable, paper, callback) {
         console.log(dx, dy, x, y);
         this.attr({x: self.x + dx, y: self.y + dy, dy:0, dx:0});
         console.log("one", this.attr("x")+dx, this.attr("y")+dy);
+        if (onmove) onmove(this.attr("x"),this.attr("y"));
       },
       function () {
         console.log("two", this.attr("x"),this.attr("y"));
@@ -9178,7 +9179,7 @@ TextElement.prototype.draw = function (draggable, paper, callback) {
         self.x = this.attr("x");
         self.y = this.attr("y");
         console.log("three", this.attr("x"), this.attr("y"));
-        callback(self.x, self.y);
+        oncomplete(self.x, self.y);
       }
     );
 
@@ -9285,7 +9286,7 @@ CircleElement.prototype.redraw = function () {
 * @param paper {} Canvas on which the element will be drawn
 * @param callback {}
 */
-CircleElement.prototype.draw = function (draggable, paper, callback) {
+CircleElement.prototype.draw = function (draggable, paper, oncomplete, onmove) {
 
   var self = this;
 
@@ -9309,13 +9310,14 @@ CircleElement.prototype.draw = function (draggable, paper, callback) {
           cx: Math.min(Math.max(self.x + dx, self.r + self.borderThickness), 480-(self.r + self.borderThickness)),
           cy: Math.min(Math.max(self.y + dy, self.r + self.borderThickness), 600-(self.r + self.borderThickness))
         });
+        if (onmove) onmove(this.attr("cx"),this.attr("cy"));
       },
       function () {
       },
       function () {
         self.x = this.attr("cx");
         self.y = this.attr("cy");
-        callback(self.x, self.y);
+        oncomplete(self.x, self.y);
       }
     );
 
@@ -9377,7 +9379,7 @@ RectElement.prototype.redraw = function() {
 * @param paper {} Canvas on which the element will be drawn
 * @param callback {}
 */
-RectElement.prototype.draw = function (draggable, paper, callback) {
+RectElement.prototype.draw = function (draggable, paper, oncomplete, onmove) {
   var self = this;
 
   this.drawing = paper
@@ -9403,13 +9405,14 @@ RectElement.prototype.draw = function (draggable, paper, callback) {
           x: Math.min(Math.max(self.x + dx, self.borderThickness), 480 - (self.width + self.borderThickness)),
           y: Math.min(Math.max(self.y + dy, self.borderThickness), 600 - (self.height + self.borderThickness))
         });
+        if (onmove) onmove(this.attr("x"),this.attr("y"));
       },
       function () {
       },
       function () {
         self.x = this.attr("x");
         self.y = this.attr("y");
-        callback(self.x, self.y);
+        oncomplete(self.x, self.y);
       }
     );
 
@@ -9466,7 +9469,7 @@ ImageElement.prototype.redraw = function() {
 * @param paper {Raphael} Canvas on which the element will be drawn
 * @param callback {Function}
 */
-ImageElement.prototype.draw = function (draggable, paper, callback) {
+ImageElement.prototype.draw = function (draggable, paper, oncomplete, onmove) {
   var self = this;
 
   this.drawing = paper
@@ -9484,13 +9487,14 @@ ImageElement.prototype.draw = function (draggable, paper, callback) {
           x: Math.min(Math.max(self.x + dx, 0), 480 - self.width),
           y: Math.min(Math.max(self.y + dy, 0), 600 - self.height)
         });
+        if (onmove) onmove(this.attr("x"),this.attr("y"));
       },
       function () {
       },
       function () {
         self.x = this.attr("x");
         self.y = this.attr("y");
-        callback(self.x, self.y);
+        oncomplete(self.x, self.y);
       }
     );
 
@@ -9697,10 +9701,17 @@ PreviewView.prototype.render = function (currentCollection) {
   if (collection.elements.length > 0)
     collection.elements.forEach(function(element, currentElement) {
 
-      element.draw(true, self.paper, function() {
-        StorageCtrl.update(true, element, currentCollection, currentElement);
-        window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
-      });
+      element.draw(
+        true,
+        self.paper,
+        function() {
+          StorageCtrl.update(true, element, currentCollection, currentElement);
+          window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
+        },
+        function(x, y) {
+          Streaming.updatePosElement(element, x, y);
+        }
+      );
     });
 
   this.show();
@@ -10443,6 +10454,11 @@ Streaming.prototype.createElement = function(data) {
 
 Streaming.prototype.deleteElement = function(i) {
   if (this.streaming) this.socket.emit('deleteElement', i);
+  return this;
+};
+
+Streaming.prototype.updatePosElement = function(element, x, y) {
+  if (this.streaming) this.socket.emit('updateElement', element, x, y);
   return this;
 };
 
