@@ -32,10 +32,14 @@ Streaming.prototype.active = function () {
   return this.streaming;
 };
 Streaming.prototype.on = function() {
-    this.streaming = true;
+  // Showing streaming button
+  console.log("connected to Azure");
+  document.getElementById("stream").className = "btn-editor blue_bg";
+  this.streaming = true;
 };
 
 Streaming.prototype.off = function() {
+  document.getElementById("stream").className = "btn-editor blue_bg hidden";
   this.streaming = false;
 };
 
@@ -44,7 +48,6 @@ Streaming.prototype.connect = function() {
   this.socket = io.connect('http://happygui.azurewebsites.net');
   var self = this;
   this.socket.on("connected", function(data){
-    alert(data);
     self.on();
   })
 };

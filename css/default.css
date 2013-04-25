@@ -151,7 +151,7 @@ select {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .hidden {
-  display: none;
+  display: none !important;
 }
 .sm_button {
   float: left;
