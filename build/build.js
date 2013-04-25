@@ -9698,7 +9698,7 @@ PreviewView.prototype.render = function (currentCollection) {
     collection.elements.forEach(function(element, currentElement) {
 
       element.draw(true, self.paper, function() {
-        StorageCtrl.update(false, element, currentCollection, currentElement);
+        StorageCtrl.update(true, element, currentCollection, currentElement);
         window.location = "#editor/"+currentCollection+"/"+element.type+"/"+currentElement;
       });
     });
