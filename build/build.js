@@ -10462,7 +10462,7 @@ Streaming.prototype.off = function() {
 
 Streaming.prototype.connect = function() {
   //load socket
-  this.socket = io.connect('http://localhost:1234');
+  this.socket = io.connect('http://happygui.azurewebsites.net');
   var self = this;
   this.socket.on("connected", function(data){
     alert(data);
