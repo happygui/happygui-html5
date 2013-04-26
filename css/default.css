@@ -220,6 +220,13 @@ select {
   border: 2px solid #000000;
   padding: 18px 18px;
 }
+.dialog {
+  width: 40%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
 .row > div:last-child {
   margin-right: 0 !important;
 }
@@ -338,13 +345,27 @@ body {
 #editor footer .btn-editor {
   float: right;
 }
-#dialog_colorpicker {
-  background: #76799b;
-  position: fixed;
+#dialog_code {
   width: 40%;
   height: 100%;
+  position: fixed;
   top: 0;
   left: 0;
+  float: left;
+  font-family: monospace;
+  overflow: scroll;
+  font-size: 20px;
+}
+#dialog_code .inner {
+  margin: 30px;
+}
+#dialog_colorpicker {
+  width: 40%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #76799b;
 }
 #dialog_colorpicker .inner {
   margin: 0 10%;

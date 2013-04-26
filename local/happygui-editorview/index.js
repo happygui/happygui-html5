@@ -52,6 +52,7 @@ EditorView.prototype.bindAll = function() {
   this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
   // color picker
   this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
+  this.code.bind('click #'+this.code.container+' .go-editor', this.events.click_goEditor.bind(this));
   return this;
 };
 

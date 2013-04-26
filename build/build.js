@@ -9870,6 +9870,7 @@ EditorView.prototype.bindAll = function() {
   this.bind('click #'+this.container+' .go-cpDialog', this.events.click_goCpDialog);
   // color picker
   this.colorpicker.bind('click #'+this.colorpicker.container+' .colorpicker', this.events.click_dialogColorpicker.bind(this));
+  this.code.bind('click #'+this.code.container+' .go-editor', this.events.click_goEditor.bind(this));
   return this;
 };
 
@@ -10175,13 +10176,16 @@ CodeView.prototype.constructor = CodeView;
 CodeView.prototype.getCode = function(collection) {
   if (typeof jsObject !== 'undefined') {
     jsObject.getTouchDevelop(collection, 'editor.code.gotCode');
+  } else {
+    this.gotCode('Whooooops! <br/> \
+    Code can be generated only through a device!');
   }
   return this;
 };
 
 CodeView.prototype.gotCode = function(data) {
-  console.log(data);
-  document.getElementById(this.container).innerHTML = data;
+  console.log("got code");
+  document.getElementById(this.container).innerHTML = "<a class='btn-editor green_bg go-editor'>Go back</a><div class='inner'>"+data+"</div>";
 };
 
 module.exports = CodeView;

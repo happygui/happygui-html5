@@ -122,6 +122,14 @@
   .btnize(20px, 20px);
 }
 
+.dialog {
+  width: 40%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
 // Sub class objects
 .row > div {
   &:last-child {
@@ -227,14 +235,19 @@ body {
   }
 }
 
+#dialog_code {
+  .dialog;
+  float: left;
+  font-family: monospace;
+  overflow: scroll;
+  font-size: 20px;
+  .inner {
+    margin: 30px;
+  }
+}
 #dialog_colorpicker {
+  .dialog;
   background: #76799b;
-  position: fixed;
-  width: 40%;
-  height: 100%;
-  // margin-top: 119px;
-  top: 0;
-  left: 0;
 
   .inner {
     margin: 0 10%;

@@ -18,13 +18,16 @@ CodeView.prototype.constructor = CodeView;
 CodeView.prototype.getCode = function(collection) {
   if (typeof jsObject !== 'undefined') {
     jsObject.getTouchDevelop(collection, 'editor.code.gotCode');
+  } else {
+    this.gotCode('Whooooops! <br/> \
+    Code can be generated only through a device!');
   }
   return this;
 };
 
 CodeView.prototype.gotCode = function(data) {
-  console.log(data);
-  document.getElementById(this.container).innerHTML = data;
+  console.log("got code");
+  document.getElementById(this.container).innerHTML = "<a class='btn-editor green_bg go-editor'>Go back</a><div class='inner'>"+data+"</div>";
 };
 
 module.exports = CodeView;
