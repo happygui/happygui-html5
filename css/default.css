@@ -432,6 +432,33 @@ body {
   -moz-box-shadow: inset 0px 0px 0px 11px #c24f4f;
   background-color: #00ff00;
 }
+.green_txt {
+  color: #62bb11 !important;
+}
+.blue_txt {
+  color: #3498db !important;
+}
+.pink_txt {
+  color: #ce264a !important;
+}
+.yellow_txt {
+  color: #d9ba00 !important;
+}
+.orange_txt {
+  color: #ea6e26 !important;
+}
+.white_txt {
+  color: #ffffff !important;
+}
+.gray_txt {
+  color: #dfdfdf !important;
+}
+.dgray_txt {
+  color: #999999 !important;
+}
+.black_txt {
+  color: #000000 !important;
+}
 .green_bg {
   background-color: #62bb11 !important;
 }

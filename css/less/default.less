@@ -338,33 +338,28 @@ body {
     border-color: darken(@color, 20%);
   }
 }
-
-.green_bg {
-  .colour_bg(@green);
+.colour_txt(@color) {
+  color: @color !important;
 }
 
-.blue_bg {
-  .colour_bg(@blue);
-}
+.green_txt {.colour_txt(@green);}
+.blue_txt {.colour_txt(@blue);}
+.pink_txt {.colour_txt(@pink);}
+.yellow_txt {.colour_txt(@yellow);}
+.orange_txt {.colour_txt(@orange);}
+.white_txt {.colour_txt(@white);}
+.gray_txt {.colour_txt(@gray);}
+.dgray_txt {.colour_txt(@dgray);}
+.black_txt {.colour_txt(@black);}
 
-.pink_bg {
-  .colour_bg(@pink);
-}
+.green_bg {.colour_bg(@green);}
+.blue_bg {.colour_bg(@blue);}
+.pink_bg {.colour_bg(@pink);}
+.yellow_bg {.colour_bg(@yellow);}
+.orange_bg {.colour_bg(@orange);}
+.white_bg {.colour_bg(@white);}
+.gray_bg {.colour_bg(@gray);}
 
-.yellow_bg {
-  .colour_bg(@yellow);
-}
-
-.orange_bg {
-  .colour_bg(@orange);
-}
-
-.white_bg {
-  .colour_bg(@white);
-}
-.gray_bg {
-  .colour_bg(@gray);
-}
 .dgray_bg {
   .colour_bg(@dgray);
   &:hover {
