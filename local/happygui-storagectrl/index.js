@@ -31,7 +31,6 @@ var StorageCtrl = (function(){
 */
   var getRawData = function () {
     if (typeof Windows !== 'undefined') {
-      win8_datastore = require('happygui-win8-datastore');
       operating_system = 'windows';
     } else if (typeof jsObject !== 'undefined') {
       operating_system = 'android';

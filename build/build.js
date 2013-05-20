@@ -1,11 +1,4 @@
 
-
-/**
- * hasOwnProperty.
- */
-
-var has = Object.prototype.hasOwnProperty;
-
 /**
  * Require the given path.
  *
@@ -82,10 +75,10 @@ require.resolve = function(path) {
 
   for (var i = 0; i < paths.length; i++) {
     var path = paths[i];
-    if (has.call(require.modules, path)) return path;
+    if (require.modules.hasOwnProperty(path)) return path;
   }
 
-  if (has.call(require.aliases, index)) {
+  if (require.aliases.hasOwnProperty(index)) {
     return require.aliases[index];
   }
 };
@@ -139,7 +132,7 @@ require.register = function(path, definition) {
  */
 
 require.alias = function(from, to) {
-  if (!has.call(require.modules, from)) {
+  if (!require.modules.hasOwnProperty(from)) {
     throw new Error('Failed to alias "' + from + '", it does not exist');
   }
   require.aliases[to] = from;
@@ -201,7 +194,7 @@ require.relative = function(parent) {
    */
 
   localRequire.exists = function(path) {
-    return has.call(require.modules, localRequire.resolve(path));
+    return require.modules.hasOwnProperty(localRequire.resolve(path));
   };
 
   return localRequire;
@@ -10327,7 +10320,6 @@ var StorageCtrl = (function(){
 */
   var getRawData = function () {
     if (typeof Windows !== 'undefined') {
-      win8_datastore = require('happygui-win8-datastore');
       operating_system = 'windows';
     } else if (typeof jsObject !== 'undefined') {
       operating_system = 'android';
@@ -10582,15 +10574,18 @@ require.register("boot/boot.js", function(exports, require, module){
 
 });
 require.alias("component-emitter/index.js", "happygui/deps/emitter/index.js");
+require.alias("component-emitter/index.js", "emitter/index.js");
 require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
 
 require.alias("component-delegate/index.js", "happygui/deps/delegate/index.js");
+require.alias("component-delegate/index.js", "delegate/index.js");
 require.alias("component-matches-selector/index.js", "component-delegate/deps/matches-selector/index.js");
 
 require.alias("component-event/index.js", "component-delegate/deps/event/index.js");
 
 require.alias("richthegeek-raphael/raphael.js", "happygui/deps/raphael/raphael.js");
 require.alias("richthegeek-raphael/raphael.js", "happygui/deps/raphael/index.js");
+require.alias("richthegeek-raphael/raphael.js", "raphael/index.js");
 require.alias("adobe-webplatform-eve/eve.js", "richthegeek-raphael/deps/eve/eve.js");
 require.alias("adobe-webplatform-eve/eve.js", "richthegeek-raphael/deps/eve/index.js");
 require.alias("adobe-webplatform-eve/eve.js", "adobe-webplatform-eve/index.js");
@@ -10599,6 +10594,7 @@ require.alias("richthegeek-raphael/raphael.js", "richthegeek-raphael/index.js");
 
 require.alias("boot/boot.js", "happygui/deps/boot/boot.js");
 require.alias("boot/boot.js", "happygui/deps/boot/index.js");
+require.alias("boot/boot.js", "boot/index.js");
 require.alias("apily-router/index.js", "boot/deps/router/index.js");
 require.alias("apily-history/index.js", "apily-router/deps/history/index.js");
 require.alias("apily-emitter/index.js", "apily-history/deps/emitter/index.js");
