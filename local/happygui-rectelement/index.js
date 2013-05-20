@@ -45,6 +45,7 @@ RectElement.prototype.redraw = function(coords) {
     toDraw.y = this.y;
   }
 
+  if (!this.drawing.attr) this.drawing.attr = this.drawing.__proto__.attr;
   this.drawing.attr(toDraw)
 };
 

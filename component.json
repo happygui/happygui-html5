@@ -9,6 +9,7 @@
   "dependencies": {
     "component/emitter": "*",
     "component/delegate": "*",
-    "richthegeek/raphael": "*"
+    "richthegeek/raphael": "*",
+    "apily/router": "*"
   }
 }

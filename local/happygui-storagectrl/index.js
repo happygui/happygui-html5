@@ -30,9 +30,7 @@ var StorageCtrl = (function(){
 * @throws {NoPlatformException} If operating system is not one which is supported by the application, this error will be thrown
 */
   var getRawData = function () {
-    if (typeof Windows !== 'undefined') {
-      operating_system = 'windows';
-    } else if (typeof jsObject !== 'undefined') {
+    if (typeof jsObject !== 'undefined') {
       operating_system = 'android';
       jsObject.getObject("happy", "StorageCtrl.raw");
     } else if (typeof localStorage !== 'undefined') {

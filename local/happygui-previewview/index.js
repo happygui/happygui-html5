@@ -36,6 +36,7 @@ PreviewView.prototype.render = function (currentCollection) {
   if (collection.elements.length > 0)
     collection.elements.forEach(function(element, currentElement) {
 
+      if (!element.draw) element.draw = element.__proto__.draw;
       element.draw(
         true,
         self.paper,

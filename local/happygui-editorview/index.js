@@ -280,8 +280,9 @@ EditorView.prototype.select = function(collection, element) {
  */
 EditorView.prototype.setAttribute = function (key, value) {
   StorageCtrl.setElementAttribute(this.currentElement, this.currentCollection, key, value);
-  var attr;
-  this.element().redraw();
+  var element = this.element();
+  if (!element.redraw) element.redraw = element.__proto__.redraw;
+  element.redraw();
 };
 
 /**

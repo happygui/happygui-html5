@@ -8470,6 +8470,178 @@ window.Raphael && window.Raphael.vml && function (R) {
 }(window.Raphael);
 
 });
+require.register("apily-history/index.js", function(exports, require, module){
+/**
+ * history
+ * History component
+ *
+ * @copyright 2013 Enrico Marino and Federico Spini
+ * @license MIT
+ */ 
+
+/**
+ * Expose `History` singleton
+ */
+
+module.exports = history;
+
+/**
+ * Module dependencies
+ */
+
+var Emitter = require('emitter');
+
+/**
+ * singleton
+ */
+
+var singleton;
+
+/**
+ * history
+ * Get the singleton
+ */
+
+function history () {
+  if (!singleton) {
+    singleton = new History();
+  }
+  return singleton;
+}
+
+/**
+ * History
+ * Create an history.
+ *
+ * @constructor
+ */
+
+function History() {
+  if (!(this instanceof History)) {
+    return new History();
+  }
+  Emitter.call(this);
+  this.handlers = [];
+  this.onchange = this.onchange.bind(this);
+  this.started = false;
+}
+
+/**
+ * Inherit from `Emitter`
+ */
+
+History.prototype = Object.create(Emitter.prototype);
+History.prototype.constructor = History;
+
+/**
+ * route
+ * Add a route to be tested when the hash changes. 
+ * 
+ * @param {String|RegExp} route route
+ * @param {Function} callback callback
+ * @return {History} this for chaining
+ * @api public
+ */
+
+History.prototype.route = function (route, callback) {
+  route = new RegExp(route);
+  this.handlers.push({route: route, callback: callback});
+};
+
+/** 
+ * bind
+ * 
+ * @return {History} this for chaining
+ * @api public
+ */
+
+History.prototype.bind = function (route, handler, context) {
+  if (typeof route === 'object') {
+    return this.bind_all(route);
+  }
+  route = new RegExp(route);
+  this.handlers.push({route: route, handler: handler, context: context});
+  return this;
+};
+
+/** 
+ * bind_all
+ * 
+ * @return {History} this for chaining
+ * @api public
+ */
+
+History.prototype.bind_all = function (routes) {
+  Object.keys(routes).forEach(function (route) {
+    this.bind(route, routes[route]);
+  }, this);
+  return this;
+};
+
+/**
+ * onchange
+ * Load the url, if it's changed.
+ * It's called by the browser.
+ *
+ * @param {Event} event event
+ * @api private
+ */
+
+function isWindows() { return typeof WinJS !== "undefined"; }
+
+History.prototype.onchange = function (event) {
+  var hash = '#';
+  var new_hash = isWindows() ? window.location.hash : hash + event.newURL.split(hash)[1];
+  var old_hash = isWindows() ? previous_hash || "" : hash + event.oldURL.split(hash)[1];
+  if (isWindows()) previous_hash = new_hash;
+  var handlers = this.handlers;
+  var n = handlers.length - 1;
+  var i;
+  var handler;
+  var route;
+  var callback;
+  
+  for (i = n; i >= 0; i -= 1) {
+    handler = handlers[i];
+    route = handler.route;
+    callback = handler.callback;
+    
+    if (route.test(new_hash)) {
+      callback(new_hash, old_hash);
+      this.emit('change', new_hash, old_hash);
+      return true;
+    }
+  }
+  
+  return false;
+};
+
+/**
+ * start
+ * 
+ * @return {History} this for chaining
+ * @api public
+ */
+
+History.prototype.start = function () {
+  if (this.started) return;
+  window.addEventListener('hashchange', this.onchange);
+  this.started = true;
+};
+
+/**
+ * stop
+ * 
+ * @return {History} this for chaining
+ * @api public
+ */
+
+History.prototype.stop = function () {
+  window.removeEventListener('hashchange', this.onchange);
+  this.started = false;
+};
+
+});
 require.register("apily-emitter/index.js", function(exports, require, module){
 /**
  * Emitter
@@ -8750,175 +8922,6 @@ Router.prototype.route_to_regexp = function (route) {
 
 Router.prototype.extract_params = function (regexp, fragment) {
   return regexp.exec(fragment).slice(1);
-};
-
-});
-require.register("apily-history/index.js", function(exports, require, module){
-/**
- * history
- * History component
- *
- * @copyright 2013 Enrico Marino and Federico Spini
- * @license MIT
- */ 
-
-/**
- * Expose `History` singleton
- */
-
-module.exports = history;
-
-/**
- * Module dependencies
- */
-
-var Emitter = require('emitter');
-
-/**
- * singleton
- */
-
-var singleton;
-
-/**
- * history
- * Get the singleton
- */
-
-function history () {
-  if (!singleton) {
-    singleton = new History();
-  }
-  return singleton;
-}
-
-/**
- * History
- * Create an history.
- *
- * @constructor
- */
-
-function History() {
-  if (!(this instanceof History)) {
-    return new History();
-  }
-  Emitter.call(this);
-  this.handlers = [];
-  this.onchange = this.onchange.bind(this);
-  this.started = false;
-}
-
-/**
- * Inherit from `Emitter`
- */
-
-History.prototype = Object.create(Emitter.prototype);
-History.prototype.constructor = History;
-
-/**
- * route
- * Add a route to be tested when the hash changes. 
- * 
- * @param {String|RegExp} route route
- * @param {Function} callback callback
- * @return {History} this for chaining
- * @api public
- */
-
-History.prototype.route = function (route, callback) {
-  route = new RegExp(route);
-  this.handlers.push({route: route, callback: callback});
-};
-
-/** 
- * bind
- * 
- * @return {History} this for chaining
- * @api public
- */
-
-History.prototype.bind = function (route, handler, context) {
-  if (typeof route === 'object') {
-    return this.bind_all(route);
-  }
-  route = new RegExp(route);
-  this.handlers.push({route: route, handler: handler, context: context});
-  return this;
-};
-
-/** 
- * bind_all
- * 
- * @return {History} this for chaining
- * @api public
- */
-
-History.prototype.bind_all = function (routes) {
-  Object.keys(routes).forEach(function (route) {
-    this.bind(route, routes[route]);
-  }, this);
-  return this;
-};
-
-/**
- * onchange
- * Load the url, if it's changed.
- * It's called by the browser.
- *
- * @param {Event} event event
- * @api private
- */
-
-History.prototype.onchange = function (event) {
-  var hash = '#';
-  var new_hash = hash + event.newURL.split(hash)[1];
-  var old_hash = hash + event.oldURL.split(hash)[1];
-  var handlers = this.handlers;
-  var n = handlers.length - 1;
-  var i;
-  var handler;
-  var route;
-  var callback;
-  
-  for (i = n; i >= 0; i -= 1) {
-    handler = handlers[i];
-    route = handler.route;
-    callback = handler.callback;
-    
-    if (route.test(new_hash)) {
-      callback(new_hash, old_hash);
-      this.emit('change', new_hash, old_hash);
-      return true;
-    }
-  }
-  
-  return false;
-};
-
-/**
- * start
- * 
- * @return {History} this for chaining
- * @api public
- */
-
-History.prototype.start = function () {
-  if (this.started) return;
-  window.addEventListener('hashchange', this.onchange);
-  this.started = true;
-};
-
-/**
- * stop
- * 
- * @return {History} this for chaining
- * @api public
- */
-
-History.prototype.stop = function () {
-  window.removeEventListener('hashchange', this.onchange);
-  this.started = false;
 };
 
 });
@@ -9384,6 +9387,7 @@ RectElement.prototype.redraw = function(coords) {
     toDraw.y = this.y;
   }
 
+  if (!this.drawing.attr) this.drawing.attr = this.drawing.__proto__.attr;
   this.drawing.attr(toDraw)
 };
 
@@ -9591,7 +9595,7 @@ View.prototype.hide = function() {
 };
 
 View.prototype.el = function(html) {
-  document.getElementById(this.container).innerHTML = html;
+  document.getElementById(this.container).innerHTML = (window.toStaticHTML) ? window.toStaticHTML(html) : html;
 
   return this;
 };
@@ -9730,6 +9734,7 @@ PreviewView.prototype.render = function (currentCollection) {
   if (collection.elements.length > 0)
     collection.elements.forEach(function(element, currentElement) {
 
+      if (!element.draw) element.draw = element.__proto__.draw;
       element.draw(
         true,
         self.paper,
@@ -10091,8 +10096,9 @@ EditorView.prototype.select = function(collection, element) {
  */
 EditorView.prototype.setAttribute = function (key, value) {
   StorageCtrl.setElementAttribute(this.currentElement, this.currentCollection, key, value);
-  var attr;
-  this.element().redraw();
+  var element = this.element();
+  if (!element.redraw) element.redraw = element.__proto__.redraw;
+  element.redraw();
 };
 
 /**
@@ -10319,9 +10325,7 @@ var StorageCtrl = (function(){
 * @throws {NoPlatformException} If operating system is not one which is supported by the application, this error will be thrown
 */
   var getRawData = function () {
-    if (typeof Windows !== 'undefined') {
-      operating_system = 'windows';
-    } else if (typeof jsObject !== 'undefined') {
+    if (typeof jsObject !== 'undefined') {
       operating_system = 'android';
       jsObject.getObject("happy", "StorageCtrl.raw");
     } else if (typeof localStorage !== 'undefined') {
@@ -10591,6 +10595,13 @@ require.alias("adobe-webplatform-eve/eve.js", "richthegeek-raphael/deps/eve/inde
 require.alias("adobe-webplatform-eve/eve.js", "adobe-webplatform-eve/index.js");
 
 require.alias("richthegeek-raphael/raphael.js", "richthegeek-raphael/index.js");
+
+require.alias("apily-router/index.js", "happygui/deps/router/index.js");
+require.alias("apily-router/index.js", "router/index.js");
+require.alias("apily-history/index.js", "apily-router/deps/history/index.js");
+require.alias("apily-emitter/index.js", "apily-history/deps/emitter/index.js");
+
+require.alias("apily-emitter/index.js", "apily-router/deps/emitter/index.js");
 
 require.alias("boot/boot.js", "happygui/deps/boot/boot.js");
 require.alias("boot/boot.js", "happygui/deps/boot/index.js");

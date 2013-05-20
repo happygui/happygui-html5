@@ -64,7 +64,7 @@ View.prototype.hide = function() {
 };
 
 View.prototype.el = function(html) {
-  document.getElementById(this.container).innerHTML = html;
+  document.getElementById(this.container).innerHTML = (window.toStaticHTML) ? window.toStaticHTML(html) : html;
 
   return this;
 };
