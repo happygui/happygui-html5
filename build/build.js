@@ -8587,7 +8587,7 @@ History.prototype.bind_all = function (routes) {
  * @api private
  */
 
-function isWindows() { return typeof WinJS !== "undefined"; }
+function isWindows() { return typeof Windows !== "undefined"; }
 
 History.prototype.onchange = function (event) {
   var hash = '#';
