@@ -8589,10 +8589,11 @@ History.prototype.bind_all = function (routes) {
 
 function isWindows() { return typeof Windows !== "undefined"; }
 
+var previous_hash;
 History.prototype.onchange = function (event) {
   var hash = '#';
   var new_hash = isWindows() ? window.location.hash : hash + event.newURL.split(hash)[1];
-  var old_hash = isWindows() ? previous_hash || "" : hash + event.oldURL.split(hash)[1];
+  var old_hash = isWindows() ? previous_hash : hash + event.oldURL.split(hash)[1];
   if (isWindows()) previous_hash = new_hash;
   var handlers = this.handlers;
   var n = handlers.length - 1;
