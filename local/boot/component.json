@@ -33,7 +33,8 @@
         "happygui-noplatformexception",
         "happygui-storagectrl",
 
-        "happygui-streaming"
+        "happygui-streaming",
+        "touchdevelop-html"
     ],
     "scripts": ["boot.js"],
     "main": "boot.js"

@@ -1,4 +1,6 @@
 var View = require('happygui-view');
+var Translator = require('touchdevelop-html');
+var StorageCtrl = require('happygui-storagectrl');
 
 /**
  * Handles the colour picker which allows the user to change colour of different aspects of the elements
@@ -16,12 +18,7 @@ CodeView.prototype = Object.create(View.prototype);
 CodeView.prototype.constructor = CodeView;
 
 CodeView.prototype.getCode = function(collection) {
-  if (typeof jsObject !== 'undefined') {
-    jsObject.getTouchDevelop(collection, 'editor.code.gotCode');
-  } else {
-    this.gotCode('Whooooops! <br/> \
-    Code can be generated only through a device!');
-  }
+  this.gotCode(Translator(StorageCtrl.getCollection(collection)));
   return this;
 };
 
